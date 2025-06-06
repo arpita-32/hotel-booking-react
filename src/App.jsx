@@ -11,7 +11,7 @@ const App = () => {
   return (
     <Router>
       <div className="font-sans text-gray-800 min-h-screen flex flex-col">
-        <Navbar />
+      
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -20,7 +20,6 @@ const App = () => {
             <Route path="/book" element={<BookingPage />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </Router>
   );
