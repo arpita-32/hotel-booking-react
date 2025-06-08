@@ -1,13 +1,12 @@
-import React from 'react';
-import HighlightText from '../components/core/HomePage/HighlightText';
-
-import Quote from '../components/core/AboutPage/Quote';
-import Stats from '../components/core/AboutPage/Stats';
+import HighlightText from '../components/common/HighlightText';
+import React from 'react'
+import Footer from '../components/common/Footer';
+import Navbar from '../components/common/NavBar';
+import ReviewSlider from '../components/common/ReviewSlider';
 import AmenitiesGrid from '../components/core/AboutPage/AmenitiesGrid';
 import ContactFormSection from '../components/core/AboutPage/ContactFormSection';
-import ReviewSlider from '../components/common/ReviewSlider';
-import Footer from '../components/Footer';
-import Navbar from '../components/NavBar';
+import Quote from '../components/core/AboutPage/Quote';
+import Stats from '../components/core/AboutPage/Stats';
 
 // Placeholder image URLs
 const image1 = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";

@@ -23,7 +23,7 @@ const ReviewSlider = ({ reviews }) => {
           {[...Array(5)].map((_, i) => (
             <svg 
               key={i}
-              className={`w-6 h-6 ${i < 4 ? 'text-yellow-400' : 'text-gray-600'}`}
+              className={`w-6 h-6 ${i < 4 ? 'text-orange-300' : 'text-gray-600'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -34,7 +34,7 @@ const ReviewSlider = ({ reviews }) => {
         <p className="text-gray-200 text-lg md:text-xl italic mb-6 text-center">
           "{reviews[currentIndex].text}"
         </p>
-        <p className="text-yellow-400 font-medium text-right">
+        <p className="text-orange-400 font-medium text-right">
           — {reviews[currentIndex].author}
         </p>
       </div>

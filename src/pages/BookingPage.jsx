@@ -1,9 +1,10 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { FiArrowLeft, FiArrowRight, FiCalendar, FiCreditCard, FiUser } from 'react-icons/fi';
 import { useLocation } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
-import { FiCalendar, FiUser, FiCreditCard, FiArrowRight, FiArrowLeft } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
+import Footer from '../components/common/Footer';
+import NavBar from '../components/common/NavBar';
 
 
 const BookingPage = () => {
@@ -390,7 +391,7 @@ const BookingPage = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="flex items-center justify-center bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
+                    className="flex items-center justify-center bg-yellow-600 hover:bg-yellow-700 text-black px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
                   >
                     Next: Guest Information <FiArrowRight className="ml-2" />
                   </button>
@@ -461,7 +462,7 @@ const BookingPage = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="flex items-center justify-center bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
+                    className="flex items-center justify-center bg-yellow-600 hover:bg-yellow-700 text-black px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
                   >
                     Next: Payment <FiArrowRight className="ml-2" />
                   </button>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import React from 'react';
+import { FiCalendar, FiChevronRight, FiStar, FiUser, FiX } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { FiStar, FiCalendar, FiUser, FiX, FiChevronRight } from 'react-icons/fi';
-import Footer from '../components/Footer';
-import Navbar from '../components/NavBar';
+import Footer from '../components/common/Footer';
+import Navbar from '../components/common/NavBar';
 
 const Rooms = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -86,7 +87,7 @@ const Rooms = () => {
       description: 'Romantic suite with special amenities for couples, including champagne on arrival.',
       longDescription: 'Celebrate your love in our romantic Honeymoon Suite, featuring a king-size canopy bed, in-room jacuzzi, and private balcony with sunset views. Includes champagne and chocolate-covered strawberries on arrival, rose petal turndown service, and couple\'s massage discount.',
       amenities: ['WiFi', 'Breakfast', 'Smart TV', 'Jacuzzi', 'Champagne', 'Balcony', 'Turndown Service'],
-      image: 'https://images.unsplash.com/photo-1566669437685-5f63f8b1c0fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      image: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80',
       type: 'suite'
     }
   ];
@@ -127,7 +128,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
       <div className="bg-richblack-800 py-12 sm:py-16">
         <div className="w-11/12 max-w-maxContent mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
-            Our <span className="text-yellow-500">Rooms</span> & Suites
+            Our <span className="text-orange-500">Rooms</span> & Suites
           </h1>
           <p className="text-richblack-200 max-w-2xl mx-auto">
             Experience unparalleled comfort in our exquisite accommodations
@@ -167,10 +168,10 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             <div className="p-6">
               <div className="flex justify-between items-start mb-3">
                 <h3 className="text-xl font-bold">{room.name}</h3>
-                <div className="text-yellow-500 font-bold">${room.price}<span className="text-richblack-300 text-sm"> / night</span></div>
+                <div className="text-orange-300 font-bold">${room.price}<span className="text-richblack-300 text-sm"> / night</span></div>
               </div>
               <div className="flex items-center text-sm text-richblack-300 mb-2">
-                <FiStar className="text-yellow-500 mr-1" />
+                <FiStar className="text-orange-300 mr-1" />
                 <span>{room.size} • {room.beds}</span>
               </div>
               <p className="text-richblack-200 text-sm mb-4">{room.description}</p>
@@ -190,13 +191,13 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
               <div className="flex gap-2">
                 <button
                   onClick={() => handleViewDetails(room)}
-                  className="w-1/2 border border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-black py-2 rounded-lg font-medium transition duration-300"
+                  className="w-1/2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black py-2 rounded-lg font-medium transition duration-300"
                 >
                   View Details
                 </button>
                 <button
                   onClick={() => handleBookNow(room)}
-                  className="w-1/2 bg-yellow-600 hover:bg-yellow-700 text-black py-2 rounded-lg font-medium transition duration-300"
+                  className="w-1/2 bg-orange-500 hover:bg-orange-600 text-black py-2 rounded-lg font-medium transition duration-300"
                 >
                   Book Now
                 </button>
@@ -254,7 +255,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
           <div className="grid grid-cols-2 gap-2 mb-6">
             {selectedRoom.amenities.map((amenity, index) => (
               <div key={index} className="flex items-center">
-                <FiChevronRight className="text-yellow-500 mr-2" />
+                <FiChevronRight className="text-orange-400 mr-2" />
                 <span className="text-gray-700">{amenity}</span>
               </div>
             ))}
@@ -271,7 +272,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                 children: 0
               }
             }}
-            className="inline-block w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 text-center"
+            className="inline-block w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-white px-6 py-3 rounded-lg font-medium transition duration-300 text-center"
           >
             Book Now
           </Link>
@@ -376,7 +377,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
               room: selectedRoom,
               bookingDetails: bookingForm
             }}
-            className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition duration-300 text-center"
+            className="px-6 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg font-medium transition duration-300 text-center"
           >
             Continue to Booking
           </Link>

@@ -13,7 +13,7 @@ const NavBar = () => {
       <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
         {/* Logo - Centered on mobile, left on desktop */}
         <div className="flex items-center mb-2 md:mb-0">
-          <FiStar className="text-yellow-500 text-lg md:text-2xl mr-2" />
+          <FiStar className="text-orange-500 text-lg md:text-2xl mr-2" />
           <Link to="/" className="text-md md:text-xl font-bold text-gray-800">Luxury Haven</Link>
         </div>
         
@@ -27,7 +27,7 @@ const NavBar = () => {
 
         {/* Book Now Button - Right on desktop */}
         <div className="hidden md:block">
-          <Link to="/book" className="bg-yellow-600 hover:bg-yellow-700 text-black px-4 md:px-6 py-1 md:py-2 rounded-md font-medium transition duration-300 text-sm md:text-base">
+          <Link to="/book" className="bg-orange-400 hover:bg-orange-400 text-black px-4 md:px-6 py-1 md:py-2 rounded-md font-medium transition duration-300 text-sm md:text-base">
             Book Now
           </Link>
         </div>
