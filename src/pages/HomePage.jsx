@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { FiMenu, FiX, FiPhone, FiMapPin, FiMail, FiStar, FiWifi, FiCoffee, FiDroplet, FiTv } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiMenu, FiX, FiPhone, FiMapPin, FiMail, FiStar, FiWifi, FiCoffee, FiDroplet, FiTv, FiArrowRight } from 'react-icons/fi';
 import { FaSwimmingPool, FaSpa, FaParking, FaUtensils } from 'react-icons/fa';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
+
 // Room Card Component
 const RoomCard = ({ title, price, image, description, amenities }) => {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
+    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col transform hover:-translate-y-1">
       <img src={image} alt={title} className="w-full h-48 sm:h-56 md:h-48 lg:h-56 xl:h-64 object-cover" />
       <div className="p-4 md:p-6 flex-grow">
         <div className="flex justify-between items-start mb-2">
@@ -24,9 +26,12 @@ const RoomCard = ({ title, price, image, description, amenities }) => {
             ))}
           </ul>
         </div>
-        <button className="mt-4 md:mt-6 w-full bg-yellow-600 hover:bg-yellow-700 text- py-black rounded-md font-medium transition duration-300 text-sm md:text-base">
-          View Details
-        </button>
+        <Link 
+          to="/rooms" 
+          className="mt-4 md:mt-6 w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-md font-medium transition duration-300 text-sm md:text-base flex items-center justify-center"
+        >
+          View Details <FiArrowRight className="ml-2" />
+        </Link>
       </div>
     </div>
   );
@@ -35,9 +40,9 @@ const RoomCard = ({ title, price, image, description, amenities }) => {
 // Amenity Card Component
 const AmenityCard = ({ icon, title, description }) => {
   return (
-    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 h-full">
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 h-full transform hover:-translate-y-1">
       <div className="text-center">
-        {React.cloneElement(icon, { className: "text-3xl md:text-4xl text-yellow-600 mb-3 md:mb-4" })}
+        {React.cloneElement(icon, { className: "text-3xl md:text-4xl text-yellow-600 mb-3 md:mb-4 mx-auto" })}
         <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">{title}</h3>
         <p className="text-gray-600 text-sm md:text-base">{description}</p>
       </div>
@@ -48,11 +53,11 @@ const AmenityCard = ({ icon, title, description }) => {
 // Gallery Image Component
 const GalleryImage = ({ src, alt }) => {
   return (
-    <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition duration-300 h-full">
+    <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition duration-300 h-full group">
       <img 
         src={src} 
         alt={alt} 
-        className="w-full h-48 sm:h-56 md:h-48 lg:h-56 xl:h-64 object-cover hover:scale-105 transition duration-500"
+        className="w-full h-48 sm:h-56 md:h-48 lg:h-56 xl:h-64 object-cover transform transition duration-500 group-hover:scale-105"
       />
     </div>
   );
@@ -61,12 +66,12 @@ const GalleryImage = ({ src, alt }) => {
 // Testimonial Card Component
 const TestimonialCard = ({ quote, author, rating }) => {
   return (
-    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md h-full">
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md h-full transform hover:-translate-y-1 transition duration-300">
       <div className="mb-3 md:mb-4">
         {[...Array(5)].map((_, i) => (
           <FiStar 
             key={i} 
-            className={`inline ${i < rating ? 'text-yellow-500' : 'text-gray-300'} text-sm md:text-base`} 
+            className={`inline ${i < rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'} text-sm md:text-base`} 
           />
         ))}
       </div>
@@ -76,123 +81,131 @@ const TestimonialCard = ({ quote, author, rating }) => {
   );
 };
 
-const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const HomePage = () => {
   const [activeTab, setActiveTab] = useState('rooms');
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const [bookingForm, setBookingForm] = useState({
-    checkIn: '',
-    checkOut: '',
-    guests: 1,
-    roomType: 'deluxe'
-  });
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => setIsMenuOpen(false);
-
-  const handleBookingChange = (e) => {
-    const { name, value } = e.target;
-    setBookingForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleBookingSubmit = (e) => {
-    e.preventDefault();
-    alert(`Booking request received!\nCheck-in: ${bookingForm.checkIn}\nCheck-out: ${bookingForm.checkOut}\nGuests: ${bookingForm.guests}\nRoom Type: ${bookingForm.roomType}`);
-    setShowBookingModal(false);
-  };
+  
+  // Highlight text animation effect
+  const highlightText = "Luxury Redefined";
+  const highlightedLetters = highlightText.split("").map((letter, index) => (
+    <span 
+      key={index} 
+      className="inline-block transition-all duration-300 hover:text-yellow-600 hover:scale-110"
+      style={{ animationDelay: `${index * 0.1}s` }}
+    >
+      {letter === " " ? "\u00A0" : letter}
+    </span>
+  ));
 
   return (
-    <div className="font-sans text-gray-800">
+    <div className="font-sans text-gray-800 bg-white">
       {/* Header/Navigation */}
-     
-<Navbar/>
+      <Navbar/>
+
       {/* Hero Section */}
-      <section id="home" className="pt-20 pb-12 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24 bg-gray-100 relative">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-8 md:mb-0 md:pr-4 lg:pr-8">
-            <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 mb-4">
-              Experience Luxury <span className="text-yellow-600">Redefined</span>
+      <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32 bg-gradient-to-b from-gray-50 to-gray-100 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-5">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-yellow-500 filter blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-yellow-500 filter blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10">
+          <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8 lg:pr-12">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-800 mb-6 leading-tight">
+              Experience <br />
+              <span className="text-yellow-600">
+                {highlightedLetters}
+              </span>
             </h1>
-            <p className="text-base sm:text-lg text-gray-600 mb-6 md:mb-8">
-              Discover unparalleled comfort in our exquisite rooms and suites, designed to provide the perfect retreat for your stay.
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 md:mb-10 max-w-lg">
+              Discover unparalleled comfort in our exquisite rooms and suites, designed to provide the perfect retreat for your stay. Our award-winning service ensures every moment is memorable.
             </p>
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-              <button 
-                onClick={() => setShowBookingModal(true)}
-                className="bg-yellow-600 hover:bg-yellow-700 text-black px-6 py-2 sm:px-8 sm:py-3 rounded-md font-medium transition duration-300 text-sm sm:text-base"
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+              <Link 
+                to="/book" 
+                className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 rounded-lg font-medium transition duration-300 text-lg flex items-center justify-center shadow-lg hover:shadow-xl"
               >
-                Book Your Stay
-              </button>
-              <button className="border-2 border-gray-800 hover:bg-gray-800 hover:text-white px-6 py-2 sm:px-8 sm:py-3 rounded-md font-medium transition duration-300 text-sm sm:text-base">
-                Explore Rooms
-              </button>
+                Book Your Stay <FiArrowRight className="ml-3" />
+              </Link>
+              <Link 
+                to="/rooms" 
+                className="border-2 border-gray-800 hover:bg-gray-800 hover:text-white px-8 py-4 rounded-lg font-medium transition duration-300 text-lg flex items-center justify-center"
+              >
+                Explore Rooms <FiArrowRight className="ml-3" />
+              </Link>
             </div>
           </div>
-          <div className="md:w-1/2">
-            <img 
-              src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
-              alt="Luxury Hotel Room" 
-              className="rounded-lg shadow-xl w-full h-auto max-h-[400px] object-cover"
-            />
+          <div className="md:w-1/2 relative">
+            <div className="relative rounded-xl overflow-hidden shadow-2xl transform hover:scale-[1.01] transition duration-500">
+              <img 
+                src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
+                alt="Luxury Hotel Room" 
+                className="w-full h-auto max-h-[500px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 p-6 text-white">
+                <p className="text-sm sm:text-base">Our Signature Ocean View Suite</p>
+                <h3 className="text-xl sm:text-2xl font-bold">Starting from $499/night</h3>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Booking Bar */}
-      <div className="bg-gray-800 text-white py-3 md:py-4 shadow-lg">
+      <div className="bg-gray-800 text-white py-4 md:py-5 shadow-lg relative z-20">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-3 md:mb-0 text-center md:text-left">
-              <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Ready for an unforgettable stay?</h3>
-              <p className="text-gray-300 text-sm md:text-base">Book directly with us for the best rates and exclusive benefits.</p>
+              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2">Ready for an unforgettable stay?</h3>
+              <p className="text-gray-300 text-base md:text-lg">Book directly with us for the best rates and exclusive benefits.</p>
             </div>
-            <button 
-              onClick={() => setShowBookingModal(true)}
-              className="bg-yellow-600 hover:bg-yellow-700 text-black px-6 py-2 md:px-8 md:py-3 rounded-md font-medium transition duration-300 whitespace-nowrap text-sm md:text-base"
+            <Link 
+              to="/book"
+              className="bg-yellow-600 hover:bg-yellow-700 text-black px-8 py-3 md:px-10 md:py-4 rounded-lg font-medium transition duration-300 whitespace-nowrap text-lg flex items-center shadow-lg hover:shadow-xl"
             >
-              Check Availability
-            </button>
+              Check Availability <FiArrowRight className="ml-3" />
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Rooms Section */}
-      <section id="rooms" className="py-12 md:py-16 bg-white">
+      <section id="rooms" className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3 md:mb-4">Our Rooms & Suites</h2>
-            <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              Our <span className="text-yellow-600">Accommodations</span>
+            </h2>
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
               Each of our rooms is designed to provide maximum comfort and luxury, with attention to every detail.
             </p>
           </div>
           
-          <div className="flex justify-center mb-6 md:mb-8 overflow-x-auto pb-2">
-            <div className="inline-flex rounded-md shadow-sm">
+          <div className="flex justify-center mb-8 md:mb-12 overflow-x-auto pb-4">
+            <div className="inline-flex rounded-lg shadow-sm bg-gray-100 p-1">
               <button
                 onClick={() => setActiveTab('rooms')}
-                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-l-lg font-medium text-sm sm:text-base ${activeTab === 'rooms' ? 'bg-yellow-600 text-black' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
+                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'rooms' ? 'bg-white text-yellow-600 shadow-md' : 'text-gray-800 hover:text-yellow-600'}`}
               >
                 Rooms
               </button>
               <button
                 onClick={() => setActiveTab('suites')}
-                className={`px-4 py-2 sm:px-6 sm:py-3 font-medium text-sm sm:text-base ${activeTab === 'suites' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
+                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'suites' ? 'bg-white text-yellow-600 shadow-md' : 'text-gray-800 hover:text-yellow-600'}`}
               >
                 Suites
               </button>
               <button
                 onClick={() => setActiveTab('villas')}
-                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-r-lg font-medium text-sm sm:text-base ${activeTab === 'villas' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
+                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'villas' ? 'bg-white text-yellow-600 shadow-md' : 'text-gray-800 hover:text-yellow-600'}`}
               >
                 Villas
               </button>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {activeTab === 'rooms' && (
               <>
                 <RoomCard 
@@ -205,7 +218,7 @@ const App = () => {
                 <RoomCard 
                   title="Executive Room" 
                   price={249} 
-                  image="https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                  image="https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
                   description="Elegant room with premium furnishings, lounge area, and enhanced workspace."
                   amenities={['WiFi', 'Breakfast', 'TV', 'Mini Bar', 'Air Conditioning']}
                 />
@@ -271,20 +284,31 @@ const App = () => {
               </>
             )}
           </div>
+
+          <div className="text-center mt-12">
+            <Link 
+              to="/rooms" 
+              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-yellow-600 hover:bg-yellow-700 shadow-lg hover:shadow-xl transition duration-300"
+            >
+              View All Accommodations <FiArrowRight className="ml-3" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Amenities Section */}
-      <section id="amenities" className="py-12 md:py-16 bg-gray-100">
+      <section id="amenities" className="py-16 md:py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3 md:mb-4">Hotel Amenities</h2>
-            <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
-              We provide world-class facilities to ensure your stay is comfortable and memorable.
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              World-Class <span className="text-yellow-600">Facilities</span>
+            </h2>
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+              We provide exceptional facilities to ensure your stay is comfortable and memorable.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             <AmenityCard 
               icon={<FaSwimmingPool />}
               title="Infinity Pool"
@@ -330,16 +354,18 @@ const App = () => {
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-12 md:py-16 bg-white">
+      <section id="gallery" className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3 md:mb-4">Photo Gallery</h2>
-            <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              Our <span className="text-yellow-600">Gallery</span>
+            </h2>
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
               Take a visual journey through our luxurious accommodations and facilities.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             <GalleryImage src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Beach View" />
             <GalleryImage src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Luxury Suite" />
             <GalleryImage src="https://images.unsplash.com/photo-1582719471387-9c060cce8e38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Pool Area" />
@@ -347,20 +373,31 @@ const App = () => {
             <GalleryImage src="https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Spa" />
             <GalleryImage src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Lobby" />
           </div>
+
+          <div className="text-center mt-12">
+            <Link 
+              to="/gallery" 
+              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-yellow-600 hover:bg-yellow-700 shadow-lg hover:shadow-xl transition duration-300"
+            >
+              View Full Gallery <FiArrowRight className="ml-3" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-12 md:py-16 bg-gray-100">
+      <section className="py-16 md:py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3 md:mb-4">Guest Reviews</h2>
-            <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              Guest <span className="text-yellow-600">Testimonials</span>
+            </h2>
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
               Hear what our guests have to say about their experiences.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             <TestimonialCard 
               quote="The most amazing hotel I've ever stayed at. The service was impeccable and the room was stunning."
               author="Sarah Johnson"
@@ -380,12 +417,36 @@ const App = () => {
         </div>
       </section>
 
-     
+      {/* CTA Section */}
+      <section className="py-16 md:py-20 bg-gradient-to-r from-yellow-600 to-yellow-700 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+            Ready for Your Dream Vacation?
+          </h2>
+          <p className="text-xl mb-8 max-w-3xl mx-auto">
+            Book your stay today and experience luxury like never before.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link 
+              to="/book" 
+              className="bg-white text-yellow-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition duration-300 shadow-lg hover:shadow-xl"
+            >
+              Book Now
+            </Link>
+            <Link 
+              to="/contact" 
+              className="border-2 border-white hover:bg-white/10 px-8 py-4 rounded-lg font-bold text-lg transition duration-300"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <Footer/>
-
     </div>
   );
 }
-export default App; 
+
+export default HomePage;

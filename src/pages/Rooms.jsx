@@ -120,7 +120,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
   };
 
   return (
-    <div className="overflow-x-hidden bg-richblack-900 text-white">
+    <div className="overflow-x-hidden bg-richblack-900 text-black">
       <Navbar />
       
       {/* Hero Section */}
@@ -140,19 +140,19 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
         <div className="inline-flex rounded-md shadow-sm">
           <button
             onClick={() => setActiveFilter('all')}
-            className={`px-4 py-2 rounded-l-lg font-medium ${activeFilter === 'all' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-white'}`}
+            className={`px-4 py-2 rounded-l-lg font-medium ${activeFilter === 'all' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-black'}`}
           >
             All Rooms
           </button>
           <button
             onClick={() => setActiveFilter('room')}
-            className={`px-4 py-2 font-medium ${activeFilter === 'room' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-white'}`}
+            className={`px-4 py-2 font-medium ${activeFilter === 'room' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-black'}`}
           >
             Standard Rooms
           </button>
           <button
             onClick={() => setActiveFilter('suite')}
-            className={`px-4 py-2 rounded-r-lg font-medium ${activeFilter === 'suite' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-white'}`}
+            className={`px-4 py-2 rounded-r-lg font-medium ${activeFilter === 'suite' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-black'}`}
           >
             Suites
           </button>
@@ -207,166 +207,184 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
       </div>
 
       {/* Room Details Modal */}
-      {showDetailsModal && selectedRoom && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-richblack-800 rounded-xl p-6 sm:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-start mb-4">
-              <h2 className="text-2xl font-bold">{selectedRoom.name}</h2>
-              <button onClick={() => setShowDetailsModal(false)} className="text-richblack-300 hover:text-white">
-                <FiX size={24} />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <img src={selectedRoom.image} alt={selectedRoom.name} className="w-full h-64 sm:h-80 object-cover rounded-lg" />
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">Room Features</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-richblack-700 p-3 rounded-lg">
-                      <div className="text-sm text-richblack-300">Size</div>
-                      <div className="font-medium">{selectedRoom.size}</div>
-                    </div>
-                    <div className="bg-richblack-700 p-3 rounded-lg">
-                      <div className="text-sm text-richblack-300">Bed Type</div>
-                      <div className="font-medium">{selectedRoom.beds}</div>
-                    </div>
-                    <div className="bg-richblack-700 p-3 rounded-lg">
-                      <div className="text-sm text-richblack-300">Price</div>
-                      <div className="font-medium">${selectedRoom.price}/night</div>
-                    </div>
-                  </div>
-                </div>
+     {showDetailsModal && selectedRoom && (
+  <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-xl p-6 sm:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="flex justify-between items-start mb-4">
+        <h2 className="text-2xl font-bold text-gray-900">{selectedRoom.name}</h2>
+        <button 
+          onClick={() => setShowDetailsModal(false)} 
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <FiX size={24} />
+        </button>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <img 
+            src={selectedRoom.image} 
+            alt={selectedRoom.name} 
+            className="w-full h-64 sm:h-80 object-cover rounded-lg shadow-md"
+          />
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold mb-2 text-gray-800">Room Features</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <div className="text-sm text-gray-500">Size</div>
+                <div className="font-medium text-gray-900">{selectedRoom.size}</div>
               </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Description</h3>
-                <p className="text-richblack-200 mb-6">{selectedRoom.longDescription}</p>
-                
-                <h3 className="text-lg font-semibold mb-2">Amenities</h3>
-                <div className="grid grid-cols-2 gap-2 mb-6">
-                  {selectedRoom.amenities.map((amenity, index) => (
-                    <div key={index} className="flex items-center">
-                      <FiChevronRight className="text-yellow-500 mr-2" />
-                      <span className="text-richblack-200">{amenity}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <Link
-                  to="/book"
-                  state={{ room: selectedRoom }}
-                  className="w-full bg-yellow-600 hover:bg-yellow-700 text-black py-3 rounded-lg font-medium text-center block transition duration-300"
-                >
-                  Book This Room
-                </Link>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <div className="text-sm text-gray-500">Bed Type</div>
+                <div className="font-medium text-gray-900">{selectedRoom.beds}</div>
+              </div>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <div className="text-sm text-gray-500">Price</div>
+                <div className="font-medium text-yellow-600">${selectedRoom.price}/night</div>
               </div>
             </div>
           </div>
         </div>
-      )}
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-2 text-gray-800">Description</h3>
+          <p className="text-gray-600 mb-6">{selectedRoom.longDescription}</p>
+          
+          <h3 className="text-lg font-semibold mb-2 text-gray-800">Amenities</h3>
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {selectedRoom.amenities.map((amenity, index) => (
+              <div key={index} className="flex items-center">
+                <FiChevronRight className="text-yellow-500 mr-2" />
+                <span className="text-gray-700">{amenity}</span>
+              </div>
+            ))}
+          </div>
+          
+          <Link
+            to="/book"
+            state={{ 
+              room: selectedRoom,
+              bookingDetails: {
+                checkIn: '',
+                checkOut: '',
+                adults: 1,
+                children: 0
+              }
+            }}
+            className="inline-block w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 text-center"
+          >
+            Book Now
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Booking Modal */}
-      {showBookingModal && selectedRoom && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-richblack-800 rounded-xl p-6 sm:p-8 max-w-md w-full">
-            <div className="flex justify-between items-start mb-4">
-              <h2 className="text-2xl font-bold">Book {selectedRoom.name}</h2>
-              <button onClick={() => setShowBookingModal(false)} className="text-richblack-300 hover:text-white">
-                <FiX size={24} />
-              </button>
+     {showBookingModal && selectedRoom && (
+  <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-xl p-6 sm:p-8 max-w-md w-full">
+      <div className="flex justify-between items-start mb-4">
+        <h2 className="text-2xl font-bold text-gray-900">Book {selectedRoom.name}</h2>
+        <button 
+          onClick={() => setShowBookingModal(false)} 
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <FiX size={24} />
+        </button>
+      </div>
+      
+      <form onSubmit={handleBookingSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-gray-700 mb-2 font-medium">Check-in</label>
+            <div className="relative">
+              <FiCalendar className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="date"
+                name="checkIn"
+                value={bookingForm.checkIn}
+                onChange={handleBookingChange}
+                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                required
+              />
             </div>
-            
-            <form onSubmit={handleBookingSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-richblack-200 mb-2">Check-in</label>
-                  <div className="relative">
-                    <FiCalendar className="absolute left-3 top-3 text-richblack-400" />
-                    <input
-                      type="date"
-                      name="checkIn"
-                      value={bookingForm.checkIn}
-                      onChange={handleBookingChange}
-                      className="w-full bg-richblack-700 rounded-lg pl-10 pr-4 py-2 text-white border border-richblack-600"
-                      required
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-richblack-200 mb-2">Check-out</label>
-                  <div className="relative">
-                    <FiCalendar className="absolute left-3 top-3 text-richblack-400" />
-                    <input
-                      type="date"
-                      name="checkOut"
-                      value={bookingForm.checkOut}
-                      onChange={handleBookingChange}
-                      className="w-full bg-richblack-700 rounded-lg pl-10 pr-4 py-2 text-white border border-richblack-600"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-richblack-200 mb-2">Adults</label>
-                  <div className="relative">
-                    <FiUser className="absolute left-3 top-3 text-richblack-400" />
-                    <select
-                      name="adults"
-                      value={bookingForm.adults}
-                      onChange={handleBookingChange}
-                      className="w-full bg-richblack-700 rounded-lg pl-10 pr-4 py-2 text-white border border-richblack-600"
-                    >
-                      {[1, 2, 3, 4, 5].map(num => (
-                        <option key={num} value={num}>{num}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-richblack-200 mb-2">Children</label>
-                  <div className="relative">
-                    <FiUser className="absolute left-3 top-3 text-richblack-400" />
-                    <select
-                      name="children"
-                      value={bookingForm.children}
-                      onChange={handleBookingChange}
-                      className="w-full bg-richblack-700 rounded-lg pl-10 pr-4 py-2 text-white border border-richblack-600"
-                    >
-                      {[0, 1, 2, 3, 4].map(num => (
-                        <option key={num} value={num}>{num}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setShowBookingModal(false)}
-                  className="px-6 py-2 border border-richblack-300 text-white rounded-lg hover:bg-richblack-700 transition duration-300"
-                >
-                  Cancel
-                </button>
-                <Link
-                  to="/book"
-                  state={{ 
-                    room: selectedRoom,
-                    bookingDetails: bookingForm
-                  }}
-                  className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-black rounded-lg font-medium transition duration-300 text-center"
-                >
-                  Continue to Booking
-                </Link>
-              </div>
-            </form>
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2 font-medium">Check-out</label>
+            <div className="relative">
+              <FiCalendar className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="date"
+                name="checkOut"
+                value={bookingForm.checkOut}
+                onChange={handleBookingChange}
+                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                required
+              />
+            </div>
           </div>
         </div>
-      )}
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label className="block text-gray-700 mb-2 font-medium">Adults</label>
+            <div className="relative">
+              <FiUser className="absolute left-3 top-3 text-gray-400" />
+              <select
+                name="adults"
+                value={bookingForm.adults}
+                onChange={handleBookingChange}
+                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none"
+              >
+                {[1, 2, 3, 4, 5].map(num => (
+                  <option key={num} value={num}>{num}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2 font-medium">Children</label>
+            <div className="relative">
+              <FiUser className="absolute left-3 top-3 text-gray-400" />
+              <select
+                name="children"
+                value={bookingForm.children}
+                onChange={handleBookingChange}
+                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none"
+              >
+                {[0, 1, 2, 3, 4].map(num => (
+                  <option key={num} value={num}>{num}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => setShowBookingModal(false)}
+            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition duration-300"
+          >
+            Cancel
+          </button>
+          <Link
+            to="/book"
+            state={{ 
+              room: selectedRoom,
+              bookingDetails: bookingForm
+            }}
+            className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition duration-300 text-center"
+          >
+            Continue to Booking
+          </Link>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
       <Footer />
     </div>

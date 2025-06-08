@@ -1,17 +1,22 @@
+import { useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { FiCalendar, FiUser, FiCreditCard, FiHome, FiArrowRight, FiArrowLeft } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import { FiCalendar, FiUser, FiCreditCard, FiArrowRight, FiArrowLeft } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 const BookingPage = () => {
+  const location = useLocation();
+  const { room: roomData, bookingDetails: initialBookingDetails } = location.state || {};
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    checkIn: '',
-    checkOut: '',
-    adults: 1,
-    children: 0,
-    roomType: 'deluxe',
+    checkIn: initialBookingDetails?.checkIn || '',
+    checkOut: initialBookingDetails?.checkOut || '',
+    adults: initialBookingDetails?.adults || 1,
+    children: initialBookingDetails?.children || 0,
+    roomType: roomData?.id || 'deluxe',  // Use the passed room ID
     name: '',
     email: '',
     phone: '',
@@ -155,10 +160,43 @@ const BookingPage = () => {
   };
 
   const roomTypes = [
-    { id: 'deluxe', name: 'Deluxe Room', price: 199, description: 'Elegant comfort with premium amenities' },
-    { id: 'executive', name: 'Executive Suite', price: 299, description: 'Spacious luxury with separate living area' },
-    { id: 'presidential', name: 'Presidential Suite', price: 499, description: 'Ultimate luxury with premium services' },
-  ];
+  {
+    id: 'deluxe',
+    name: 'Deluxe Room',
+    price: 199,
+    description: 'Spacious room with king-size bed, work desk, and luxurious bathroom amenities.'
+  },
+  {
+    id: 'executive',
+    name: 'Executive Suite',
+    price: 299,
+    description: 'Elegant suite with separate living area, premium furnishings, and enhanced workspace.'
+  },
+  {
+    id: 'presidential',
+    name: 'Presidential Suite',
+    price: 499,
+    description: 'The ultimate in luxury with multiple rooms, premium furnishings, and exclusive services.'
+  },
+  {
+    id: 'family',
+    name: 'Family Suite',
+    price: 349,
+    description: 'Spacious suite perfect for families with children, featuring separate sleeping areas.'
+  },
+  {
+    id: 'oceanview',
+    name: 'Ocean View Room',
+    price: 249,
+    description: 'Beautiful room with stunning ocean views and balcony access.'
+  },
+  {
+    id: 'honeymoon',
+    name: 'Honeymoon Suite',
+    price: 399,
+    description: 'Romantic suite with special amenities for couples, including champagne on arrival.'
+  }
+];
 
   const selectedRoom = roomTypes.find(room => room.id === formData.roomType);
   const totalPrice = selectedRoom ? selectedRoom.price * nights : 0;
