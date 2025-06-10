@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Brand & Social */}
           <div>
             <div className="flex items-center mb-4">
-              <FiStar className="text-orange-500 text-2xl mr-2" />
+              <FiStar className="text-orange-600 text-2xl mr-2" />
               <span className="text-xl font-bold">Luxury Haven</span>
             </div>
             <p className="text-gray-400 mb-4">

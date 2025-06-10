@@ -23,7 +23,7 @@ const ReviewSlider = ({ reviews }) => {
           {[...Array(5)].map((_, i) => (
             <svg 
               key={i}
-              className={`w-6 h-6 ${i < 4 ? 'text-orange-300' : 'text-gray-600'}`}
+              className={`w-6 h-6 ${i < 4 ? 'text-orange-500' : 'text-gray-600'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -34,7 +34,7 @@ const ReviewSlider = ({ reviews }) => {
         <p className="text-gray-200 text-lg md:text-xl italic mb-6 text-center">
           "{reviews[currentIndex].text}"
         </p>
-        <p className="text-orange-400 font-medium text-right">
+        <p className="text-orange-500 font-medium text-right">
           — {reviews[currentIndex].author}
         </p>
       </div>
@@ -43,7 +43,7 @@ const ReviewSlider = ({ reviews }) => {
       <div className="flex items-center justify-between mt-4">
         <button 
           onClick={prevReview}
-          className="p-3 rounded-full bg-black hover:bg-gray-900 text-white hover:text-gray-200 transition-colors duration-200 shadow-md"
+          className="p-3 rounded-full bg-black hover:bg-gray-900 text-black hover:text-black-200 transition-colors duration-200 shadow-md"
           aria-label="Previous review"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@ const ReviewSlider = ({ reviews }) => {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-colors duration-200 ${currentIndex === index ? 'bg-yellow-500 w-6' : 'bg-gray-600 hover:bg-gray-500'}`}
+              className={`w-3 h-3 rounded-full transition-colors duration-200 ${currentIndex === index ? 'bg-orange-500 w-6' : 'bg-gray-600 hover:bg-gray-500'}`}
               aria-label={`Go to review ${index + 1}`}
             />
           ))}
@@ -64,7 +64,7 @@ const ReviewSlider = ({ reviews }) => {
         
         <button 
           onClick={nextReview}
-          className="p-3 rounded-full bg-black hover:bg-gray-900 text-white hover:text-gray-200 transition-colors duration-200 shadow-md"
+          className="p-3 rounded-full bg-black hover:bg-gray-900 text-black hover:text-black-200 transition-colors duration-200 shadow-md"
           aria-label="Next review"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

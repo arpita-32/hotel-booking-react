@@ -11,7 +11,7 @@ const ContactForm = ({ title, subtitle }) => {
             <label className='block text-richblack-200 mb-2'>Full Name</label>
             <input 
               type='text' 
-              className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-yellow-500 focus:outline-none'
+              className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-orange-500 focus:outline-none'
               placeholder='Your Name'
             />
           </div>
@@ -19,7 +19,7 @@ const ContactForm = ({ title, subtitle }) => {
             <label className='block text-richblack-200 mb-2'>Email</label>
             <input 
               type='email' 
-              className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-yellow-500 focus:outline-none'
+              className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-orange-500 focus:outline-none'
               placeholder='Your Email'
             />
           </div>
@@ -27,7 +27,7 @@ const ContactForm = ({ title, subtitle }) => {
         
         <div>
           <label className='block text-richblack-200 mb-2'>Subject</label>
-          <select className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-yellow-500 focus:outline-none'>
+          <select className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-orange-500 focus:outline-none'>
             <option>General Inquiry</option>
             <option>Reservation Question</option>
             <option>Special Request</option>
@@ -39,14 +39,14 @@ const ContactForm = ({ title, subtitle }) => {
         <div>
           <label className='block text-richblack-200 mb-2'>Message</label>
           <textarea 
-            className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black h-32 border border-richblack-600 focus:border-yellow-500 focus:outline-none'
+            className='w-full bg-richblack-700 rounded-lg px-4 py-3 text-black h-32 border border-richblack-600 focus:border-orange-500 focus:outline-none'
             placeholder='How can we assist you?'
           ></textarea>
         </div>
         
         <button 
           type='submit'
-          className='w-full bg-yellow-600 hover:bg-yellow-700 text-black py-3 rounded-lg font-medium mt-4 transition duration-300 border border-yellow-700'
+          className='w-full bg-orange-600 hover:bg-orange-700 text-black py-3 rounded-lg font-medium mt-4 transition duration-300 border border-orange-700'
         >
           Send Message
         </button>

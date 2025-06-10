@@ -62,7 +62,7 @@ const RoomCard = ({ title, price, image, description, amenities }) => {
         </div>
         <Link 
           to="/rooms" 
-          className="mt-4 md:mt-6 w-full bg-gradient-to-r from-orange-400 to-orange-400 hover:from-orange-500 hover:to-orange-300 text-white py-3 rounded-md font-medium transition duration-300 text-sm md:text-base flex items-center justify-center shadow-md hover:shadow-lg"
+          className="mt-4 md:mt-6 w-full bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-3 rounded-md font-medium transition duration-300 text-sm md:text-base flex items-center justify-center shadow-md hover:shadow-lg"
         >
           View Details <FiArrowRight className="ml-2" />
         </Link>
@@ -150,11 +150,11 @@ const HomePage = () => {
       <Navbar/>
 
       {/* Hero Section */}
-      <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32 bg-gradient-to-b from-gray-50 to-gray-100 relative overflow-hidden">
+      <section id="home" className="pt-22 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32 bg-gradient-to-b from-gray-50 to-gray-100 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-orange-400 filter blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-orange-400 filter blur-3xl"></div>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-orange-500 filter blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-orange-500 filter blur-3xl"></div>
         </div>
         
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10">
@@ -184,7 +184,7 @@ const HomePage = () => {
             >
               <Link 
                 to="/book" 
-                className="bg-gradient-to-r from-orange-400 to-orange-400 hover:from-orange-500 hover:to-orange-300 text-white px-8 py-4 rounded-lg font-medium transition duration-300 text-lg flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-400 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-medium transition duration-300 text-lg flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Book Your Stay <FiArrowRight className="ml-3" />
               </Link>
@@ -234,7 +234,7 @@ const HomePage = () => {
             </div>
             <Link 
               to="/book"
-              className="bg-gradient-to-r from-orange-400 to-orange-400 hover:from-orange-500 hover:to-orange-300 text-white px-8 py-3 md:px-10 md:py-4 rounded-lg font-medium transition duration-300 whitespace-nowrap text-lg flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-500 hover:to-orange-300 text-white px-8 py-3 md:px-10 md:py-4 rounded-lg font-medium transition duration-300 whitespace-nowrap text-lg flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Check Availability <FiArrowRight className="ml-3" />
             </Link>
@@ -384,7 +384,7 @@ const HomePage = () => {
           >
             <Link 
               to="/rooms" 
-              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-gradient-to-r from-orange-400 to-orange-400 hover:from-orange-500 hover:to-orange-300 shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
+              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-500 hover:to-orange-400 shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
             >
               View All Accommodations <FiArrowRight className="ml-3" />
             </Link>

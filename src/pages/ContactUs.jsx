@@ -5,6 +5,7 @@ import ContactForm from '../components/core/ContactPage/ContactForm';
 import React from 'react';
 import { FiMapPin, FiPhone, FiMail, FiClock } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import HighlightText from '../components/common/HighlightText';
 
 const ContactUs = () => {
   return (
@@ -12,7 +13,7 @@ const ContactUs = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-richblack-800 w-full py-12 md:py-16 lg:py-20 pt-23">
+      <section className="bg-richblack-800 w-full py-12 md:py-16 lg:py-20 pt-22">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -20,7 +21,7 @@ const ContactUs = () => {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6"
           >
-            Get in <span className="text-orange-400">Touch</span>
+            Get in <HighlightText text="Touch" />
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -46,11 +47,11 @@ const ContactUs = () => {
                 viewport={{ once: true }}
                 className="bg-richblack-800 rounded-xl p-6 sm:p-8 md:p-10 h-full"
               >
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Contact Information</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-500">Contact Information</h2>
                 
                 <div className="space-y-5">
                   <div className="flex items-start gap-4">
-                    <FiMapPin className="text-orange-400 mt-1 text-xl flex-shrink-0" />
+                    <FiMapPin className="text-orange-500 mt-1 text-xl flex-shrink-0" />
                     <div>
                       <h3 className="font-semibold text-lg mb-1">Address</h3>
                       <p className="text-richblack-200">123 Luxury Avenue, Beachfront District<br />Coastal City 90210</p>
@@ -58,23 +59,23 @@ const ContactUs = () => {
                   </div>
                   
                   <div className="flex items-center gap-4">
-                    <FiPhone className="text-orange-400 text-xl flex-shrink-0" />
+                    <FiPhone className="text-orange-500 text-xl flex-shrink-0" />
                     <div>
                       <h3 className="font-semibold text-lg mb-1">Phone</h3>
-                      <a href="tel:+15551234567" className="text-richblack-200 hover:text-orange-400 transition">+1 (555) 123-4567</a>
+                      <a href="tel:+15551234567" className="text-richblack-200 hover:text-orange-500 transition">+1 (555) 123-4567</a>
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-4">
-                    <FiMail className="text-orange-400 text-xl flex-shrink-0" />
+                    <FiMail className="text-orange-500 text-xl flex-shrink-0" />
                     <div>
                       <h3 className="font-semibold text-lg mb-1">Email</h3>
-                      <a href="mailto:info@luxuryhaven.com" className="text-richblack-200 hover:text-orange-400 transition">info@luxuryhaven.com</a>
+                      <a href="mailto:info@luxuryhaven.com" className="text-richblack-200 hover:text-orange-500 transition">info@luxuryhaven.com</a>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <FiClock className="text-orange-400 mt-1 text-xl flex-shrink-0" />
+                    <FiClock className="text-orange-500 mt-1 text-xl flex-shrink-0" />
                     <div>
                       <h3 className="font-semibold text-lg mb-2">Business Hours</h3>
                       <ul className="space-y-2 text-richblack-200">

@@ -4,6 +4,7 @@ import { FiCalendar, FiChevronRight, FiStar, FiUser, FiX } from 'react-icons/fi'
 import { Link } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navbar from '../components/common/NavBar';
+import HighlightText from '../components/common/HighlightText';
 
 const Rooms = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -126,9 +127,9 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
       
       {/* Hero Section */}
       <div className="bg-richblack-800 w-full py-12 sm:py-16">
-        <div className="mx-auto pt-20 max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto pt-22 max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-black">
-            Our <span className="text-orange-500">Rooms</span> & Suites
+            Our <HighlightText text="Rooms" /> & Suites
           </h1>
           <p className="text-richblack-200 max-w-2xl mx-auto text-sm sm:text-base">
             Experience unparalleled comfort in our exquisite accommodations
@@ -143,8 +144,8 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             onClick={() => setActiveFilter('all')}
             className={`px-4 py-2 sm:rounded-l-lg font-medium text-sm sm:text-base ${
               activeFilter === 'all' 
-                ? 'bg-yellow-600 text-black' 
-                : 'bg-richblack-700 text-white'
+                ? 'bg-orange-600 text-black' 
+                : 'bg-richblack-700 text-black'
             }`}
           >
             All Rooms
@@ -153,8 +154,8 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             onClick={() => setActiveFilter('room')}
             className={`px-4 py-2 font-medium text-sm sm:text-base ${
               activeFilter === 'room' 
-                ? 'bg-yellow-600 text-black' 
-                : 'bg-richblack-700 text-white'
+                ? 'bg-orange-600 text-black' 
+                : 'bg-richblack-700 text-black'
             }`}
           >
             Standard Rooms
@@ -163,8 +164,8 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             onClick={() => setActiveFilter('suite')}
             className={`px-4 py-2 sm:rounded-r-lg font-medium text-sm sm:text-base ${
               activeFilter === 'suite' 
-                ? 'bg-yellow-600 text-black' 
-                : 'bg-richblack-700 text-white'
+                ? 'bg-orange-600 text-black' 
+                : 'bg-richblack-700 text-black'
             }`}
           >
             Suites
@@ -188,12 +189,12 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
               <div className="p-4 sm:p-6 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="text-lg sm:text-xl font-bold text-black">{room.name}</h3>
-                  <div className="text-orange-300 font-bold text-lg">
+                  <div className="text-orange-500 font-bold text-lg">
                     ${room.price}<span className="text-richblack-300 text-sm"> / night</span>
                   </div>
                 </div>
                 <div className="flex items-center text-sm text-richblack-300 mb-2">
-                  <FiStar className="text-orange-300 mr-1" />
+                  <FiStar className="text-orange-500 mr-1" />
                   <span>{room.size} • {room.beds}</span>
                 </div>
                 <p className="text-richblack-200 text-sm mb-4 flex-grow">{room.description}</p>
@@ -269,7 +270,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     </div>
                     <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
                       <div className="text-xs sm:text-sm text-gray-500">Price</div>
-                      <div className="font-medium text-yellow-600 text-sm sm:text-base">${selectedRoom.price}/night</div>
+                      <div className="font-medium text-orange-600 text-sm sm:text-base">${selectedRoom.price}/night</div>
                     </div>
                   </div>
                 </div>
@@ -283,7 +284,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                   {selectedRoom.amenities.map((amenity, index) => (
                     <div key={index} className="flex items-center">
-                      <FiChevronRight className="text-orange-400 mr-2" />
+                      <FiChevronRight className="text-orange-500 mr-2" />
                       <span className="text-gray-700 text-sm sm:text-base">{amenity}</span>
                     </div>
                   ))}
@@ -300,7 +301,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       children: 0
                     }
                   }}
-                  className="inline-block w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                  className="inline-block w-full sm:w-auto bg-orange-500 hover:bg-orange-500 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
                 >
                   Book Now
                 </Link>
@@ -335,7 +336,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="checkIn"
                       value={bookingForm.checkIn}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
                       required
                     />
                   </div>
@@ -349,7 +350,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="checkOut"
                       value={bookingForm.checkOut}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
                       required
                     />
                   </div>
@@ -365,7 +366,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="adults"
                       value={bookingForm.adults}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none text-sm sm:text-base"
                     >
                       {[1, 2, 3, 4, 5].map(num => (
                         <option key={num} value={num}>{num}</option>
@@ -381,7 +382,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="children"
                       value={bookingForm.children}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none text-sm sm:text-base"
                     >
                       {[0, 1, 2, 3, 4].map(num => (
                         <option key={num} value={num}>{num}</option>

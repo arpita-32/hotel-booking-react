@@ -2,7 +2,7 @@ import React from 'react';
 const ContactDetails = ({ address, phone, email, hours }) => {
   return (
     <div className='w-full lg:w-[40%] bg-richblack-800 p-6 sm:p-8 rounded-xl'>
-      <h2 className='text-2xl font-bold mb-6 text-orange-400'>Contact Information</h2>
+      <h2 className='text-2xl font-bold mb-6 text-orange-500'>Contact Information</h2>
       
       <div className='space-y-6'>
         <div>

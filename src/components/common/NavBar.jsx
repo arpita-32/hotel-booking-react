@@ -74,7 +74,7 @@ const NavBar = () => {
           <div className="hidden md:block">
             <Link 
               to="/book" 
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300 text-sm lg:text-base"
+              className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300 text-sm lg:text-base"
               onClick={closeMenu}
             >
               Book Now
