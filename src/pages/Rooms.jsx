@@ -121,39 +121,51 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
   };
 
   return (
-    <div className="overflow-x-hidden bg-richblack-900 text-black">
+    <div className="bg-richblack-900 text-black min-h-screen flex flex-col">
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-richblack-800 py-12 sm:py-16">
-        <div className="w-11/12 max-w-maxContent mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
+      <div className="bg-richblack-800 w-full py-12 sm:py-16">
+        <div className="mx-auto pt-20 max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-black">
             Our <span className="text-orange-500">Rooms</span> & Suites
           </h1>
-          <p className="text-richblack-200 max-w-2xl mx-auto">
+          <p className="text-richblack-200 max-w-2xl mx-auto text-sm sm:text-base">
             Experience unparalleled comfort in our exquisite accommodations
           </p>
         </div>
       </div>
 
       {/* Room Filter Tabs */}
-      <div className="flex justify-center my-6 sm:my-8">
-        <div className="inline-flex rounded-md shadow-sm">
+      <div className="flex justify-center my-6 sm:my-8 px-4">
+        <div className="inline-flex rounded-md shadow-sm flex-wrap justify-center gap-2 sm:gap-0">
           <button
             onClick={() => setActiveFilter('all')}
-            className={`px-4 py-2 rounded-l-lg font-medium ${activeFilter === 'all' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-black'}`}
+            className={`px-4 py-2 sm:rounded-l-lg font-medium text-sm sm:text-base ${
+              activeFilter === 'all' 
+                ? 'bg-yellow-600 text-black' 
+                : 'bg-richblack-700 text-white'
+            }`}
           >
             All Rooms
           </button>
           <button
             onClick={() => setActiveFilter('room')}
-            className={`px-4 py-2 font-medium ${activeFilter === 'room' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-black'}`}
+            className={`px-4 py-2 font-medium text-sm sm:text-base ${
+              activeFilter === 'room' 
+                ? 'bg-yellow-600 text-black' 
+                : 'bg-richblack-700 text-white'
+            }`}
           >
             Standard Rooms
           </button>
           <button
             onClick={() => setActiveFilter('suite')}
-            className={`px-4 py-2 rounded-r-lg font-medium ${activeFilter === 'suite' ? 'bg-yellow-600 text-black' : 'bg-richblack-700 text-black'}`}
+            className={`px-4 py-2 sm:rounded-r-lg font-medium text-sm sm:text-base ${
+              activeFilter === 'suite' 
+                ? 'bg-yellow-600 text-black' 
+                : 'bg-richblack-700 text-white'
+            }`}
           >
             Suites
           </button>
@@ -161,231 +173,247 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
       </div>
 
       {/* Rooms Grid */}
-      <div className="w-11/12 max-w-maxContent mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-8 sm:my-12">
-        {filteredRooms.map((room) => (
-          <div key={room.id} className="bg-richblack-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
-            <img src={room.image} alt={room.name} className="w-full h-48 sm:h-56 object-cover" />
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-xl font-bold">{room.name}</h3>
-                <div className="text-orange-300 font-bold">${room.price}<span className="text-richblack-300 text-sm"> / night</span></div>
-              </div>
-              <div className="flex items-center text-sm text-richblack-300 mb-2">
-                <FiStar className="text-orange-300 mr-1" />
-                <span>{room.size} • {room.beds}</span>
-              </div>
-              <p className="text-richblack-200 text-sm mb-4">{room.description}</p>
-              <div className="mb-4">
-                <h4 className="text-sm font-semibold mb-2">Amenities:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {room.amenities.slice(0, 4).map((amenity, index) => (
-                    <span key={index} className="bg-richblack-700 px-3 py-1 rounded-full text-xs">
-                      {amenity}
-                    </span>
-                  ))}
-                  {room.amenities.length > 4 && (
-                    <span className="bg-richblack-700 px-3 py-1 rounded-full text-xs">+{room.amenities.length - 4} more</span>
-                  )}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredRooms.map((room) => (
+            <div 
+              key={room.id} 
+              className="bg-richblack-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
+            >
+              <img 
+                src={room.image} 
+                alt={room.name} 
+                className="w-full h-48 sm:h-56 object-cover"
+              />
+              <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-black">{room.name}</h3>
+                  <div className="text-orange-300 font-bold text-lg">
+                    ${room.price}<span className="text-richblack-300 text-sm"> / night</span>
+                  </div>
+                </div>
+                <div className="flex items-center text-sm text-richblack-300 mb-2">
+                  <FiStar className="text-orange-300 mr-1" />
+                  <span>{room.size} • {room.beds}</span>
+                </div>
+                <p className="text-richblack-200 text-sm mb-4 flex-grow">{room.description}</p>
+                <div className="mb-4">
+                  <h4 className="text-sm font-semibold text-black mb-2">Amenities:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {room.amenities.slice(0, 4).map((amenity, index) => (
+                      <span 
+                        key={index} 
+                        className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black"
+                      >
+                        {amenity}
+                      </span>
+                    ))}
+                    {room.amenities.length > 4 && (
+                      <span className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black">
+                        +{room.amenities.length - 4} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-auto">
+                  <button
+                    onClick={() => handleViewDetails(room)}
+                    className="flex-1 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                  >
+                    Details
+                  </button>
+                  <button
+                    onClick={() => handleBookNow(room)}
+                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                  >
+                    Book Now
+                  </button>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleViewDetails(room)}
-                  className="w-1/2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black py-2 rounded-lg font-medium transition duration-300"
-                >
-                  View Details
-                </button>
-                <button
-                  onClick={() => handleBookNow(room)}
-                  className="w-1/2 bg-orange-500 hover:bg-orange-600 text-black py-2 rounded-lg font-medium transition duration-300"
-                >
-                  Book Now
-                </button>
-              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Room Details Modal */}
-     {showDetailsModal && selectedRoom && (
-  <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-xl p-6 sm:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-      <div className="flex justify-between items-start mb-4">
-        <h2 className="text-2xl font-bold text-gray-900">{selectedRoom.name}</h2>
-        <button 
-          onClick={() => setShowDetailsModal(false)} 
-          className="text-gray-500 hover:text-gray-700"
-        >
-          <FiX size={24} />
-        </button>
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <img 
-            src={selectedRoom.image} 
-            alt={selectedRoom.name} 
-            className="w-full h-64 sm:h-80 object-cover rounded-lg shadow-md"
-          />
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800">Room Features</h3>
-            <div className="grid grid-cols-2 gap-2">
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <div className="text-sm text-gray-500">Size</div>
-                <div className="font-medium text-gray-900">{selectedRoom.size}</div>
+      {showDetailsModal && selectedRoom && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-4 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{selectedRoom.name}</h2>
+              <button 
+                onClick={() => setShowDetailsModal(false)} 
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <FiX size={24} />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div>
+                <img 
+                  src={selectedRoom.image} 
+                  alt={selectedRoom.name} 
+                  className="w-full h-48 sm:h-64 md:h-80 object-cover rounded-lg shadow-md"
+                />
+                <div className="mt-4">
+                  <h3 className="text-md sm:text-lg font-semibold mb-2 text-gray-800">Room Features</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-500">Size</div>
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">{selectedRoom.size}</div>
+                    </div>
+                    <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-500">Bed Type</div>
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">{selectedRoom.beds}</div>
+                    </div>
+                    <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-500">Price</div>
+                      <div className="font-medium text-yellow-600 text-sm sm:text-base">${selectedRoom.price}/night</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <div className="text-sm text-gray-500">Bed Type</div>
-                <div className="font-medium text-gray-900">{selectedRoom.beds}</div>
-              </div>
-              <div className="bg-gray-100 p-3 rounded-lg">
-                <div className="text-sm text-gray-500">Price</div>
-                <div className="font-medium text-yellow-600">${selectedRoom.price}/night</div>
+              
+              <div>
+                <h3 className="text-md sm:text-lg font-semibold mb-2 text-gray-800">Description</h3>
+                <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">{selectedRoom.longDescription}</p>
+                
+                <h3 className="text-md sm:text-lg font-semibold mb-2 text-gray-800">Amenities</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
+                  {selectedRoom.amenities.map((amenity, index) => (
+                    <div key={index} className="flex items-center">
+                      <FiChevronRight className="text-orange-400 mr-2" />
+                      <span className="text-gray-700 text-sm sm:text-base">{amenity}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <Link
+                  to="/book"
+                  state={{ 
+                    room: selectedRoom,
+                    bookingDetails: {
+                      checkIn: '',
+                      checkOut: '',
+                      adults: 1,
+                      children: 0
+                    }
+                  }}
+                  className="inline-block w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                >
+                  Book Now
+                </Link>
               </div>
             </div>
           </div>
         </div>
-        
-        <div>
-          <h3 className="text-lg font-semibold mb-2 text-gray-800">Description</h3>
-          <p className="text-gray-600 mb-6">{selectedRoom.longDescription}</p>
-          
-          <h3 className="text-lg font-semibold mb-2 text-gray-800">Amenities</h3>
-          <div className="grid grid-cols-2 gap-2 mb-6">
-            {selectedRoom.amenities.map((amenity, index) => (
-              <div key={index} className="flex items-center">
-                <FiChevronRight className="text-orange-400 mr-2" />
-                <span className="text-gray-700">{amenity}</span>
-              </div>
-            ))}
-          </div>
-          
-          <Link
-            to="/book"
-            state={{ 
-              room: selectedRoom,
-              bookingDetails: {
-                checkIn: '',
-                checkOut: '',
-                adults: 1,
-                children: 0
-              }
-            }}
-            className="inline-block w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-white px-6 py-3 rounded-lg font-medium transition duration-300 text-center"
-          >
-            Book Now
-          </Link>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
 
       {/* Booking Modal */}
-     {showBookingModal && selectedRoom && (
-  <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-xl p-6 sm:p-8 max-w-md w-full">
-      <div className="flex justify-between items-start mb-4">
-        <h2 className="text-2xl font-bold text-gray-900">Book {selectedRoom.name}</h2>
-        <button 
-          onClick={() => setShowBookingModal(false)} 
-          className="text-gray-500 hover:text-gray-700"
-        >
-          <FiX size={24} />
-        </button>
-      </div>
-      
-      <form onSubmit={handleBookingSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-gray-700 mb-2 font-medium">Check-in</label>
-            <div className="relative">
-              <FiCalendar className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="date"
-                name="checkIn"
-                value={bookingForm.checkIn}
-                onChange={handleBookingChange}
-                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-2 font-medium">Check-out</label>
-            <div className="relative">
-              <FiCalendar className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="date"
-                name="checkOut"
-                value={bookingForm.checkOut}
-                onChange={handleBookingChange}
-                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                required
-              />
-            </div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <label className="block text-gray-700 mb-2 font-medium">Adults</label>
-            <div className="relative">
-              <FiUser className="absolute left-3 top-3 text-gray-400" />
-              <select
-                name="adults"
-                value={bookingForm.adults}
-                onChange={handleBookingChange}
-                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none"
+      {showBookingModal && selectedRoom && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-4 sm:p-6 max-w-md w-full">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Book {selectedRoom.name}</h2>
+              <button 
+                onClick={() => setShowBookingModal(false)} 
+                className="text-gray-500 hover:text-gray-700"
               >
-                {[1, 2, 3, 4, 5].map(num => (
-                  <option key={num} value={num}>{num}</option>
-                ))}
-              </select>
+                <FiX size={24} />
+              </button>
             </div>
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-2 font-medium">Children</label>
-            <div className="relative">
-              <FiUser className="absolute left-3 top-3 text-gray-400" />
-              <select
-                name="children"
-                value={bookingForm.children}
-                onChange={handleBookingChange}
-                className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none"
-              >
-                {[0, 1, 2, 3, 4].map(num => (
-                  <option key={num} value={num}>{num}</option>
-                ))}
-              </select>
-            </div>
+            
+            <form onSubmit={handleBookingSubmit}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-700 mb-1 sm:mb-2 font-medium text-sm sm:text-base">Check-in</label>
+                  <div className="relative">
+                    <FiCalendar className="absolute left-3 top-2.5 sm:top-3 text-gray-400" />
+                    <input
+                      type="date"
+                      name="checkIn"
+                      value={bookingForm.checkIn}
+                      onChange={handleBookingChange}
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 mb-1 sm:mb-2 font-medium text-sm sm:text-base">Check-out</label>
+                  <div className="relative">
+                    <FiCalendar className="absolute left-3 top-2.5 sm:top-3 text-gray-400" />
+                    <input
+                      type="date"
+                      name="checkOut"
+                      value={bookingForm.checkOut}
+                      onChange={handleBookingChange}
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div>
+                  <label className="block text-gray-700 mb-1 sm:mb-2 font-medium text-sm sm:text-base">Adults</label>
+                  <div className="relative">
+                    <FiUser className="absolute left-3 top-2.5 sm:top-3 text-gray-400" />
+                    <select
+                      name="adults"
+                      value={bookingForm.adults}
+                      onChange={handleBookingChange}
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none text-sm sm:text-base"
+                    >
+                      {[1, 2, 3, 4, 5].map(num => (
+                        <option key={num} value={num}>{num}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 mb-1 sm:mb-2 font-medium text-sm sm:text-base">Children</label>
+                  <div className="relative">
+                    <FiUser className="absolute left-3 top-2.5 sm:top-3 text-gray-400" />
+                    <select
+                      name="children"
+                      value={bookingForm.children}
+                      onChange={handleBookingChange}
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none text-sm sm:text-base"
+                    >
+                      {[0, 1, 2, 3, 4].map(num => (
+                        <option key={num} value={num}>{num}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowBookingModal(false)}
+                  className="px-4 sm:px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition duration-300 text-sm sm:text-base"
+                >
+                  Cancel
+                </button>
+                <Link
+                  to="/book"
+                  state={{ 
+                    room: selectedRoom,
+                    bookingDetails: bookingForm
+                  }}
+                  className="px-4 sm:px-6 py-2 bg-orange-400 hover:bg-orange-500 text-black rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                >
+                  Continue to Booking
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
-        
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={() => setShowBookingModal(false)}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition duration-300"
-          >
-            Cancel
-          </button>
-          <Link
-            to="/book"
-            state={{ 
-              room: selectedRoom,
-              bookingDetails: bookingForm
-            }}
-            className="px-6 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg font-medium transition duration-300 text-center"
-          >
-            Continue to Booking
-          </Link>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
+      )}
 
       <Footer />
     </div>

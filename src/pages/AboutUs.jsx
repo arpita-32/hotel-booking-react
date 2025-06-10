@@ -22,7 +22,7 @@ const AboutUs = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative w-full bg-richblack-700 pt-16 pb-12 md:pt-24 md:pb-16 lg:pt-32 lg:pb-24">
+      <section className="relative w-full bg-richblack-700 pt-23 pb-12 md:pt-24 md:pb-16 lg:pt-32 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Redefining Luxury Hospitality for a <br className="hidden sm:block" />
