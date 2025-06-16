@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiMenu, FiX, FiStar, FiLogIn } from 'react-icons/fi';
+import { FiMenu, FiX, FiStar, FiLogIn, FiUser } from 'react-icons/fi';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../services/operations/authAPI';
 import ProfileDropdown from './ProfileDropdown';
@@ -8,7 +8,8 @@ import ProfileDropdown from './ProfileDropdown';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user } = useSelector((state) => state.auth); // Changed from state.profile to state.auth
+  const { token } = useSelector((state) => state.auth); // Changed to get token
+  const { user } = useSelector((state) => state.profile); // Changed to get user profile
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -79,25 +80,25 @@ const NavBar = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <ProfileDropdown />
-            ) : (
+            {token === null ? (
               <>
                 <Link 
                   to="/login" 
-                  className="flex items-center text-gray-700 hover:text-orange-500 font-medium transition-colors text-sm lg:text-base"
+                  className="flex items-center bg-orange-500 hover:bg-orange-100 text-orange-600 px-4 py-2 rounded-md font-medium transition-colors duration-300 text-sm lg:text-base"
                   onClick={closeMenu}
                 >
-                  <FiLogIn className="mr-1" /> Login
+                Login
                 </Link>
                 <Link 
                   to="/signup" 
-                  className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300 text-sm lg:text-base"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300 text-sm lg:text-base"
                   onClick={closeMenu}
                 >
                   Sign Up
                 </Link>
               </>
+            ) : (
+              <ProfileDropdown />
             )}
             <Link 
               to="/book" 
@@ -151,51 +152,44 @@ const NavBar = () => {
             >
               Contact Us
             </Link>
-            <div className="border-t border-gray-200 pt-2 mt-2">
-              {user ? (
+            <div className="border-t border-gray-200 pt-2 mt-2 space-y-2">
+              {token === null ? (
+                <>
+                  <Link 
+                    to="/login" 
+                    className="flex items-center justify-center bg-orange-500 hover:bg-orange-100 text-orange-600 py-2 px-4 rounded-md font-medium transition-colors"
+                    onClick={closeMenu}
+                  >
+                   Login
+                  </Link>
+                  <Link 
+                    to="/signup" 
+                    className="flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-md font-medium transition-colors"
+                    onClick={closeMenu}
+                  >
+                    Create Account
+                  </Link>
+                </>
+              ) : (
                 <>
                   <Link 
                     to="/dashboard" 
                     className="flex items-center text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
                     onClick={closeMenu}
                   >
-                    Dashboard
+                    <FiUser className="mr-2" /> Dashboard
                   </Link>
-                  <Link 
-                    to="/profile" 
-                    className="flex items-center text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
-                    onClick={closeMenu}
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
                   >
-                    My Profile
-                  </Link>
-                 <button
-        onClick={handleLogout}
-        className="w-full text-left text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
-      >
-        Logout
-      </button>
-                </>
-              ) : (
-                <>
-                  <Link 
-                    to="/login" 
-                    className="flex items-center text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
-                    onClick={closeMenu}
-                  >
-                    Login
-                  </Link>
-                  <Link 
-                    to="/signup" 
-                    className="bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md font-medium transition-colors text-center block mt-2"
-                    onClick={closeMenu}
-                  >
-                    Sign Up
-                  </Link>
+                    <FiLogIn className="mr-2 transform rotate-180" /> Logout
+                  </button>
                 </>
               )}
               <Link 
                 to="/book" 
-                className="bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-md font-medium transition-colors text-center block mt-2"
+                className="flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md font-medium transition-colors"
                 onClick={closeMenu}
               >
                 Book Now

@@ -1,8 +1,10 @@
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api/v1";
+
 export const authEndpoints = {
-  LOGIN_API: "/auth/login",
-  SIGNUP_API: "/auth/signup",
-  LOGOUT_API: "/auth/logout",
-  SEND_OTP_API: "/auth/send-otp",
+  LOGIN_API: BASE_URL + "/auth/login",
+  SIGNUP_API:BASE_URL +  "/auth/signup",
+  LOGOUT_API: BASE_URL + "/auth/logout",
+  SEND_OTP_API: BASE_URL + "/auth/send-otp",
 };
 
 export const profileEndpoints = {

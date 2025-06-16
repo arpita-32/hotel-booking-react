@@ -1,27 +1,27 @@
 import axios from "axios";
-import { toast } from "react-hot-toast";
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
+// 1. Axios instance with defaults
+export const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:4000", // Fallback for dev
+  withCredentials: true, // For cookies/auth headers
+  timeout: 10000, // Avoid hanging requests
 });
 
+// 2. Generic API connector
 export const apiConnector = async (method, url, bodyData, headers, params) => {
   try {
     const response = await axiosInstance({
       method,
       url,
-      data: bodyData ? bodyData : null,
-      headers: headers ? headers : null,
-      params: params ? params : null,
+      data: bodyData,
+      headers: headers || {
+        "Content-Type": "application/json", // Default to JSON
+      },
+      params,
     });
-    return response;
+    return response.data;
   } catch (error) {
-    console.error("API CALL ERROR:", error);
-    toast.error(error.response?.data?.message || "Something went wrong");
-    throw error;
+    console.error("API Error:", error.response?.data || error.message);
+    throw error; // Re-throw for error handling in components
   }
 };
