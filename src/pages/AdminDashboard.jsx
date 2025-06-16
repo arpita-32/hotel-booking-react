@@ -1,6 +1,6 @@
 // src/pages/dashboard/AdminDashboard.jsx
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../components/dashboard/Sidebar';
+import Sidebar from '../components/core/Dashboard/Sidebar';
 import { FaHotel, FaUsers, FaBed, FaPlusCircle, FaChartBar } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
 

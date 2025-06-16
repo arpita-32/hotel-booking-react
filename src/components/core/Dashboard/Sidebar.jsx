@@ -1,10 +1,10 @@
 // src/components/dashboard/Sidebar.jsx
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../services/operations/authAPI';
+import { logout } from '../../../services/operations/authAPI';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { VscSettingsGear, VscSignOut } from 'react-icons/vsc';
 import { useState } from 'react';
-import ConfirmationModal from '../common/ConfirmationModal';
+import ConfirmationModal from '../../common/ConfirmationModal';
 
 const Sidebar = ({ links }) => {
   const { user } = useSelector((state) => state.profile);

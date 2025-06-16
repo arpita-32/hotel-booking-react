@@ -1,14 +1,14 @@
-// src/components/ProfileDropdown.jsx
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { VscDashboard, VscSignOut } from 'react-icons/vsc';
 import { FiUser } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../services/operations/authAPI';
+import { logout } from '../../services/operations/authAPI';
 import { useNavigate } from 'react-router-dom';
-import useOnClickOutside from '../hooks/useOnClickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
+import React from 'react';
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({ testingMode = false }) => {
   const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,7 +17,17 @@ const ProfileDropdown = () => {
 
   useOnClickOutside(ref, () => setOpen(false));
 
-  if (!user) return null;
+  // For testing - show dropdown even without user
+  const showDropdown = testingMode || user;
+  if (!showDropdown) return null;
+
+  // Mock user data for testing
+  const displayUser = testingMode 
+    ? { 
+        firstName: "Test", 
+        image: "/default-user.png" 
+      }
+    : user;
 
   return (
     <div className="relative" ref={ref}>
@@ -26,8 +36,8 @@ const ProfileDropdown = () => {
         onClick={() => setOpen(!open)}
       >
         <img
-          src={user?.image || "/default-user.png"}
-          alt={`profile-${user?.firstName}`}
+          src={displayUser?.image}
+          alt={`profile-${displayUser?.firstName}`}
           className="aspect-square w-8 h-8 rounded-full object-cover"
         />
       </button>

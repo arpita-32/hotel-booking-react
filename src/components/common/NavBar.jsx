@@ -1,23 +1,21 @@
-// src/components/NavBar.jsx
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiStar, FiLogIn } from 'react-icons/fi';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../services/operations/authAPI';
 import ProfileDropdown from './ProfileDropdown';
-import { useSelector } from 'react-redux';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.auth); // Changed from state.profile to state.auth
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // Handle scroll effect for navbar
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -25,6 +23,11 @@ const NavBar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleLogout = () => {
+    dispatch(logout(navigate));
+    closeMenu();
+  };
 
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg py-2' : 'bg-white shadow-md py-4'}`}>
@@ -165,15 +168,12 @@ const NavBar = () => {
                   >
                     My Profile
                   </Link>
-                  <button
-                    onClick={() => {
-                      dispatch(logout(navigate));
-                      closeMenu();
-                    }}
-                    className="w-full text-left text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
-                  >
-                    Logout
-                  </button>
+                 <button
+        onClick={handleLogout}
+        className="w-full text-left text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"
+      >
+        Logout
+      </button>
                 </>
               ) : (
                 <>
