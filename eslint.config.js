@@ -7,15 +7,19 @@ export default [
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
-    },
+   languageOptions: {
+  ecmaVersion: 2020,
+  globals: {
+    ...globals.browser,
+    ...globals.node,
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    ecmaFeatures: { jsx: true },
+    sourceType: 'module',
+  },
+},
+
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,

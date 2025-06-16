@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
-import { hash, compare } from 'bcryptjs';
-import { isEmail } from 'validator';
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: [true, 'First name is required'],
@@ -18,7 +18,7 @@ const userSchema = new Schema({
     required: [true, 'Email is required'],
     unique: true,
     lowercase: true,
-    validate: [isEmail, 'Please provide a valid email']
+    validate: [validator.isEmail, 'Please provide a valid email']
   },
   password: {
     type: String,
@@ -45,15 +45,15 @@ const userSchema = new Schema({
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   
-  this.password = await hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
 // Method to compare passwords
 userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
-  return await compare(candidatePassword, userPassword);
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-const User = model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
-export default User;
+module.exports = User;

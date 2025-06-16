@@ -1,8 +1,8 @@
-import User from '../models/User.js';
-import jwt from 'jsonwebtoken';
-import { promisify } from 'util';
-import crypto from 'crypto';
-import sendEmail from '../utils/email.js';
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
+const crypto = require('crypto');
+const sendEmail = require('../utils/email');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -25,7 +25,7 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password, confirmPassword, role } = req.body;
 
@@ -65,7 +65,7 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -157,7 +157,7 @@ exports.restrictTo = (...roles) => {
   };
 };
 
-exports.sendOTP = async (req, res, next) => {
+exports.sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -172,7 +172,6 @@ exports.sendOTP = async (req, res, next) => {
 
     // 2) Generate random OTP
     const otp = crypto.randomInt(100000, 999999).toString();
-    const otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
 
     // 3) Save OTP to user (in a real app, you would save this to the database)
     // For now, we'll just return it
@@ -194,7 +193,7 @@ exports.sendOTP = async (req, res, next) => {
         status: 'success',
         message: 'OTP sent to email!'
       });
-    } catch (err) {
+    } catch {
       return res.status(500).json({
         status: 'fail',
         message: 'There was an error sending the email. Try again later!'

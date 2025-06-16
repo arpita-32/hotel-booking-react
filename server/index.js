@@ -1,60 +1,58 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import morgan from 'morgan';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-
-// Load env vars
-dotenv.config({ path: './config.env' });
-
-// Route files
-import authRoutes from './routes/authRoutes.js';
-
-// Create express app
+const express = require("express");
 const app = express();
+const database = require("./config/database");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const { cloudinaryConnect } = require("./config/cloudinary");
+const fileUpload = require("express-fileupload");
+const dotenv = require("dotenv");
+const authRoutes = require("./routes/authRoutes");
 
-// Body parser
-app.use(express.json());
+dotenv.config();
+const PORT = process.env.PORT || 4000;
+
+// Database connection
+database.connect();
+
+// Middlewares - ORDER MATTERS!
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cookieParser());
-
-// Enable CORS
-app.use(cors());
-
-// Dev logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-
-// Mount routers
-app.use('/api/v1/auth', authRoutes);
-
-// DB connection
-const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
+);
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp",
+  })
 );
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  })
-  .then(() => console.log('DB connection successful!'));
+// Cloudinary connection
+cloudinaryConnect();
 
-// Server
-const port = process.env.PORT || 5000;
-const server = app.listen(port, () => {
-  console.log(`Server running on port ${port}...`);
+// Routes
+app.use("/api/v1/auth", authRoutes);
+
+// Default route
+app.get("/", (req, res) => {
+  return res.json({
+    success: true,
+    message: 'Your server is up and running....'
+  });
 });
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
-  console.log(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
-  });
+// Error handling middleware
+app.use((err, req, res) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
+app.listen(PORT, () => {
+  console.log(`App is running at ${PORT}`);
 });
