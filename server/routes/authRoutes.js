@@ -1,11 +1,32 @@
-const express = require('express');
-const authController = require('../controllers/authController');
-
+const express = require("express");
 const router = express.Router();
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
-router.post('/logout', authController.logout);
-router.post('/send-otp', authController.sendOTP);
+// Import controllers with proper error handling
+const authController = require("../controllers/authController");
+const resetPasswordController = require("../controllers/resetPasswordController");
+const authMiddleware = require("../middlewares/auth");
+
+// Verify all imported functions exist
+const {
+  login,
+  signup,
+  sendotp,
+  changePassword
+} = authController;
+
+const {
+  resetPasswordToken,
+  resetPassword
+} = resetPasswordController;
+
+// Authentication routes
+router.post("/login", login);
+router.post("/signup", signup);
+router.post("/sendotp", sendotp);
+router.post("/changepassword", authMiddleware, changePassword);
+
+// Reset Password routes
+router.post("/reset-password-token", resetPasswordToken);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;

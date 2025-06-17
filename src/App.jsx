@@ -15,7 +15,7 @@ import AddRoom from './components/core/Dashboard/admin/AddRoom';
 import CustomerProfile from './components/core/Dashboard/customer/Profile';
 import CustomerBookings from './components/core/Dashboard/customer/Bookings';
 import Settings from './components/core/Dashboard/Settings';
-import ProtectedRoute from './components/core/Auth/ProtectedRoute';
+import ProtectedRoute from './components/core/Auth/PrivateRoute';
 import NavBar from './components/common/NavBar';
 import Footer from './components/common/Footer';
 import { useSelector } from 'react-redux';

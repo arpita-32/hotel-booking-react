@@ -6,7 +6,6 @@ const cors = require("cors");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
-const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -14,16 +13,17 @@ const PORT = process.env.PORT || 4000;
 // Database connection
 database.connect();
 
-// Middlewares - ORDER MATTERS!
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"], // Allow both ports
+    origin: ["http://localhost:5173"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   })
 );
 app.use(
@@ -36,8 +36,13 @@ app.use(
 // Cloudinary connection
 cloudinaryConnect();
 
-// Routes
-app.use("/api/v1/auth", authRoutes);
+// Route imports with error handling
+try {
+  const authRoutes = require("./routes/authRoutes");
+  app.use("/api/v1/auth", authRoutes);
+} catch (err) {
+  console.error("Failed to load auth routes:", err);
+}
 
 // Default route
 app.get("/", (req, res) => {
@@ -48,11 +53,15 @@ app.get("/", (req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).json({
+    success: false,
+    message: 'Internal Server Error',
+    error: err.message
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`App is running at ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`); 
 });

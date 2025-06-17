@@ -6,6 +6,8 @@ import NavBar from "../components/common/NavBar";
 import Footer from "../components/common/Footer";
 import { toast } from "react-hot-toast";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { signUp } from "../services/operations/authAPI";
 
 // Define role types
 const USER_ROLE = {
@@ -14,6 +16,7 @@ const USER_ROLE = {
 };
 
 function Signup() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [role, setRole] = useState(USER_ROLE.CUSTOMER);
   const [formData, setFormData] = useState({
@@ -47,24 +50,29 @@ function Signup() {
     }));
   };
 
-  const handleOnSubmit = (e) => {
+ 
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
+    console.log("Signup form submitted with:", {...formData, role}); // Debug log
     
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords don't match!");
       return;
     }
-    
-    const signupData = {
-      ...formData,
-      role,
-    };
-    
-    console.log("Signup submitted:", signupData);
-    toast.success("Account created successfully!");
-    navigate("/");
-  };
 
+    try {
+      await dispatch(signUp({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        role
+      }, navigate));
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
+  };
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />

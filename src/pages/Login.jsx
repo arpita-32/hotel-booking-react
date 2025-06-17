@@ -5,8 +5,12 @@ import hotelImage from "../assets/Images/loginpage.png";
 import NavBar from "../components/common/NavBar";
 import Footer from "../components/common/Footer";
 import React from "react";
+import { useDispatch } from 'react-redux';
+import { login } from "../services/operations/authAPI";
+import { toast } from "react-hot-toast";
 
 function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -21,10 +25,16 @@ function Login() {
     }));
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login submitted:", formData);
-    navigate("/");
+    console.log("Login form submitted with:", formData); // Debug log
+    
+    try {
+      await dispatch(login(formData.email, formData.password, navigate));
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Login failed. Please try again.");
+    }
   };
 
   return (
