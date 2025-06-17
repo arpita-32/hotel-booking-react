@@ -6,6 +6,8 @@ const cors = require("cors");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
+const authRoutes = require("./routes/authRoutes");
+const Profile = require("./routes/Profile");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -37,13 +39,8 @@ app.use(
 cloudinaryConnect();
 
 // Route imports with error handling
-try {
-  const authRoutes = require("./routes/authRoutes");
-  app.use("/api/v1/auth", authRoutes);
-} catch (err) {
-  console.error("Failed to load auth routes:", err);
-}
-
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/profile", Profile);
 // Default route
 app.get("/", (req, res) => {
   return res.json({
@@ -53,7 +50,7 @@ app.get("/", (req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,

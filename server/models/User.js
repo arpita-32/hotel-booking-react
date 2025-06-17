@@ -33,25 +33,8 @@ const userSchema = new mongoose.Schema(
 			enum: ["Admin", "Student", "Instructor"],
 			required: true,
 		},
-		active: {
-			type: Boolean,
-			default: true,
-		},
-		approved: {
-			type: Boolean,
-			default: true,
-		},
-		additionalDetails: {
-			type: mongoose.Schema.Types.ObjectId,
-			required: true,
-			ref: "Profile",
-		},
-		courses: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "Course",
-			},
-		],
+		
+		
 		token: {
 			type: String,
 		},
@@ -62,12 +45,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			//required: true,
 		},
-		courseProgress: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "courseProgress",
-			},
-		],
+		
 
 		// Add timestamps for when the document is created and last modified
 	},

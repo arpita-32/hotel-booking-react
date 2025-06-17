@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Import controllers with proper error handling
 const authController = require("../controllers/authController");
-const resetPasswordController = require("../controllers/resetPasswordController");
+const resetPasswordController = require("../controllers/ResetPassword");
 const authMiddleware = require("../middlewares/auth");
 
 // Verify all imported functions exist

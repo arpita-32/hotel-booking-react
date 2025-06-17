@@ -9,7 +9,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { signUp } from "../services/operations/authAPI";
 
-// Define role types
 const USER_ROLE = {
   CUSTOMER: "Customer",
   ADMIN: "Admin",
@@ -28,8 +27,9 @@ function Signup() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Tab data for role selection
+  // Define tabData for role selection
   const tabData = [
     {
       id: 1,
@@ -44,35 +44,43 @@ function Signup() {
   ];
 
   const handleOnChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup form submitted with:", {...formData, role}); // Debug log
-    
+    setIsLoading(true);
+
+    // Validation
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords don't match!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      setIsLoading(false);
       return;
     }
 
     try {
-      await dispatch(signUp({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
-        role
-      }, navigate));
+      const signupData = {
+        ...formData,
+        role,
+      };
+      
+      console.log("Dispatching signup with:", signupData);
+      
+      await dispatch(signUp(signupData, navigate));
     } catch (error) {
       console.error("Signup error:", error);
+      toast.error("Signup failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { VscDashboard, VscSignOut } from 'react-icons/vsc';
 import { FiUser, FiSettings, FiChevronDown } from 'react-icons/fi';
 import { HiOutlineUserCircle } from 'react-icons/hi';
@@ -11,19 +11,17 @@ const ProfileDropdown = () => {
   const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
   useOnClickOutside(dropdownRef, () => setIsOpen(false));
 
-  // Close dropdown when navigating
+  // Close dropdown when location changes
   useEffect(() => {
-    const unlisten = navigate.listen(() => {
-      setIsOpen(false);
-    });
-    return unlisten;
-  }, [navigate]);
+    setIsOpen(false);
+  }, [location]);
 
   if (!user) return null;
 

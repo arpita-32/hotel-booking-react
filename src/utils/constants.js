@@ -1,10 +1,6 @@
 export const ACCOUNT_TYPE = {
-    STUDENT: "Student",
-    INSTRUCTOR: "Instructor",
+    CUSTOMER: "Customer",
     ADMIN: "Admin",
   }
   
-  export const COURSE_STATUS = {
-    DRAFT: "Draft",
-    PUBLISHED: "Published",
-  }
+  
