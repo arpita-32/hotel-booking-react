@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
+import AdminSidebar from "../components/core/Dashboard/AdminSidebar";
 import Sidebar from "../components/core/Dashboard/Sidebar";
+import { USER_ROLE } from "../services/operations/authAPI";
 
 function Dashboard() {
-  const { loading: profileLoading } = useSelector((state) => state.profile);
+  const { loading: profileLoading, user } = useSelector((state) => state.profile);
   const { loading: authLoading } = useSelector((state) => state.auth);
 
   if (profileLoading || authLoading) {
@@ -14,9 +16,13 @@ function Dashboard() {
     );
   }
 
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <div className="relative flex min-h-[calc(100vh-3.5rem)]">
-      <Sidebar />
+      {user.role === USER_ROLE.ADMIN ? <AdminSidebar /> : <Sidebar />}
       <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
         <div className="mx-auto w-11/12 max-w-[1000px] py-6 sm:py-8 md:py-10">
           <Outlet />

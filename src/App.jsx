@@ -11,8 +11,10 @@ import Login from './pages/Login';
 import Rooms from './pages/Rooms';
 import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
-import Setting from './components/core/Dashboard/Settings';
+import Settings from './components/core/Dashboard/Settings';
 import Profile from './components/core/Dashboard/customer/Profile';
+import AddRoomForm from './components/core/Dashboard/admin/AddRoomForm';
+import AllRooms from './components/core/Dashboard/admin/AllRooms';
 
 const App = () => {
   return (
@@ -40,10 +42,18 @@ const App = () => {
             </OpenRoute>
           }
         />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="dashboard/settings" element={<Setting />} />
-        <Route path="dashboard/my-profile" element={<Profile />} />
+      
+<Route path="/admin/dashboard" element={<Dashboard />}>
+  <Route path="my-profile" element={<Profile />} />
+  <Route path="settings" element={<Settings />} />
+  <Route path="add-room" element={<AddRoomForm />} />
+  <Route path="all-rooms" element={<AllRooms />} />
+</Route>
 
+<Route path="/dashboard" element={<Dashboard />}>
+  <Route path="my-profile" element={<Profile />} />
+  <Route path="settings" element={<Settings />} />
+</Route>
           </Routes>
         </main>
         

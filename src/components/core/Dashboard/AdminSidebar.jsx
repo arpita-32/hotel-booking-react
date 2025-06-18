@@ -1,5 +1,5 @@
 import React from 'react';
-import { normalUserSidebarLinks } from "../../../data/dashboard-links";
+import { adminSidebarLinks } from "../../../data/dashboard-links";
 import { logout } from "../../../services/operations/authAPI";
 import { useDispatch, useSelector } from 'react-redux';
 import SidebarLink from "./SidebarLink";
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../common/ConfirmationModal';
 import { useState } from 'react';
 
-const Sidebar = () => {
+const AdminSidebar = () => {
   const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Sidebar = () => {
     <div className="hidden md:flex flex-col w-64 h-screen bg-gray-800 text-white">
       <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
         <div className="flex flex-col space-y-1">
-          {normalUserSidebarLinks.map((link) => (
+          {adminSidebarLinks.map((link) => (
             <SidebarLink key={link.id} link={link} iconName={link.icon} />
           ))}
         </div>
@@ -46,4 +46,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

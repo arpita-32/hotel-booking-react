@@ -3,46 +3,45 @@ export const ACCOUNT_TYPE = {
   CUSTOMER: "Customer",
 };
 
-export const sidebarLinks = [
+export const normalUserSidebarLinks = [
   {
     id: 1,
     name: "My Profile",
     path: "/dashboard/my-profile",
-    icon: "VscAccount", // User icon
+    icon: "VscAccount",
   },
   {
     id: 2,
-    name: "Admin Dashboard",
-    path: "/dashboard/admin",
-    type: ACCOUNT_TYPE.ADMIN,
-    icon: "VscDashboard",
+    name: "Settings",
+    path: "/dashboard/settings",
+    icon: "VscSettingsGear",
+  },
+  // Add more normal user links as needed
+];
+
+export const adminSidebarLinks = [
+  {
+    id: 1,
+    name: "My Profile",
+    path: "/admin/dashboard/my-profile",
+    icon: "VscAccount",
+  },
+  {
+    id: 2,
+    name: "Settings",
+    path: "/admin/dashboard/settings",
+    icon: "VscSettingsGear",
   },
   {
     id: 3,
-    name: "Manage Rooms",
-    path: "/dashboard/manage-rooms",
-    type: ACCOUNT_TYPE.ADMIN,
-    icon: "VscHome", // Room icon
-  },
-  {
-    id: 4,
     name: "Add Room",
-    path: "/dashboard/add-room",
-    type: ACCOUNT_TYPE.ADMIN,
+    path: "/admin/dashboard/add-room",
     icon: "VscAdd",
   },
   {
-    id: 5,
-    name: "My Bookings",
-    path: "/dashboard/my-bookings",
-    type: ACCOUNT_TYPE.CUSTOMER,
-    icon: "VscCalendar", // Bookings icon
-  },
-  {
-    id: 6,
-    name: "Book a Room",
-    path: "/dashboard/book-room",
-    type: ACCOUNT_TYPE.CUSTOMER,
-    icon: "VscCreditCard", // Payment icon
+    id: 4,
+    name: "All Rooms",
+    path: "/admin/dashboard/all-rooms",
+    icon: "VscListFlat",
   },
 ];
