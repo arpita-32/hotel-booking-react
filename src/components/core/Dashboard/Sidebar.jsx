@@ -1,65 +1,52 @@
-// src/components/dashboard/Sidebar.jsx
+import React from 'react';
+import { sidebarLinks } from "../../../data/dashboard-links";
+import { logout } from "../../../services/operations/authAPI";
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../../services/operations/authAPI';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { VscSettingsGear, VscSignOut } from 'react-icons/vsc';
-import { useState } from 'react';
+import SidebarLink from "./SidebarLink";
+import { VscSignOut } from 'react-icons/vsc';
+import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../common/ConfirmationModal';
+import { useState } from 'react';
 
-const Sidebar = ({ links }) => {
+const Sidebar = () => {
   const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const [confirmationModal, setConfirmationModal] = useState(null);
 
-  const matchRoute = (route) => {
-    return location.pathname === route;
-  };
+  // Filter links based on user role
+  const filteredLinks = sidebarLinks.filter((link) => {
+    // Show common links (without type) and links matching user's role
+    return !link.type || user?.accountType === link.type;
+  });
 
   return (
     <div className="hidden md:flex flex-col w-64 h-screen bg-gray-800 text-white">
-      <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
-        <div className="flex items-center flex-shrink-0 px-4">
-          <h1 className="text-xl font-bold">Luxury Haven</h1>
-        </div>
-        <nav className="flex-1 mt-5 px-2 space-y-1">
-          {links.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={`flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                matchRoute(link.path)
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-              }`}
-            >
-              <link.icon className="mr-3 h-5 w-5" />
-              {link.name}
-            </Link>
+      <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
+        <div className="flex flex-col space-y-1">
+          {filteredLinks.map((link) => (
+            <SidebarLink key={link.id} link={link} iconName={link.icon} />
           ))}
-        </nav>
-      </div>
-      <div className="flex-shrink-0 flex bg-gray-700 p-4">
-        <div className="flex items-center">
-          <div>
-            <button
-              onClick={() => setConfirmationModal({
-                text1: "Are you sure?",
-                text2: "You will be logged out of your account",
-                btn1Text: "Logout",
-                btn2Text: "Cancel",
-                btn1Handler: () => dispatch(logout(navigate)),
-                btn2Handler: () => setConfirmationModal(null),
-              })}
-              className="flex items-center text-sm text-gray-300 hover:text-white"
-            >
-              <VscSignOut className="mr-3 h-5 w-5" />
-              Logout
-            </button>
-          </div>
+        </div>
+
+        <div className="mt-auto p-4">
+          <button
+            onClick={() => setConfirmationModal({
+              text1: "Are you sure?",
+              text2: "You will be logged out of your account",
+              btn1Text: "Logout",
+              btn2Text: "Cancel",
+              btn1Handler: () => dispatch(logout(navigate)),
+              btn2Handler: () => setConfirmationModal(null),
+            })}
+            className="flex items-center space-x-2 w-full px-4 py-2 text-sm font-medium rounded-md text-gray-200 hover:bg-gray-700"
+          >
+            <VscSignOut className="h-5 w-5" />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
+
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </div>
   );

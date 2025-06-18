@@ -1,17 +1,18 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AboutUs from './pages/AboutUs';
-import ContactUs from './pages/ContactUs';
-import BookingPage from './pages/BookingPage';
-import Rooms from './pages/Rooms';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import NavBar from './components/common/NavBar';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Footer from './components/common/Footer';
+import NavBar from './components/common/NavBar';
+import OpenRoute from './components/core/Auth/OpenRoute';
+import AboutUs from './pages/AboutUs';
+import BookingPage from './pages/BookingPage';
+import ContactUs from './pages/ContactUs';
+import Dashboard from './pages/Dashboard';
+import HomePage from './pages/HomePage';
+import Login from './pages/Login';
+import Rooms from './pages/Rooms';
+import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
-import OpenRoute from './components/core/Auth/OpenRoute'; // Assuming OpenRoute is a component that handles public routes
-
+import Setting from './components/core/Dashboard/Settings';
+import Profile from './components/core/Dashboard/customer/Profile';
 
 const App = () => {
   return (
@@ -39,6 +40,10 @@ const App = () => {
             </OpenRoute>
           }
         />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="dashboard/settings" element={<Setting />} />
+        <Route path="dashboard/my-profile" element={<Profile />} />
+
           </Routes>
         </main>
         
