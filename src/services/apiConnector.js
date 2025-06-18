@@ -47,71 +47,55 @@ axiosInstance.interceptors.response.use(
  * @param {object} [params] - Query parameters
  * @returns {Promise} - Axios response
  */
-export const apiConnector = async (method, url, bodyData, headers, params) => {
+export const apiConnector = async (method, url, bodyData, headers = {}, params = {}) => {
   try {
-    // Log request details
-    console.groupCollapsed(`API Request: ${method} ${url}`);
-    console.log('Request Data:', bodyData);
-    console.log('Headers:', headers);
-    console.log('Params:', params);
-    console.groupEnd();
-
-    const response = await axiosInstance({
+    const config = {
       method,
       url,
-      data: bodyData,
       headers: {
         ...headers,
-        'X-Request-ID': generateRequestId(), // Add unique request ID
+        'X-Request-ID': generateRequestId(),
       },
-      params
-    });
-
-    // Log successful response
-    console.groupCollapsed(`API Response: ${method} ${url} (${response.status})`);
-    console.log('Response Data:', response.data);
-    console.log('Full Response:', response);
-    console.groupEnd();
-
-    return response;
-  } catch (error) {
-    // Enhanced error logging
-    const errorDetails = {
-      url: error.config?.url,
-      method: error.config?.method,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      requestData: error.config?.data,
-      responseData: error.response?.data,
-      message: error.message,
+      params,
     };
 
-    console.groupCollapsed(`API Error: ${method} ${url} (${error.response?.status || 'No Response'})`);
-    console.error('Error Details:', errorDetails);
-    console.groupEnd();
-
-    // Convert specific error statuses to more readable messages
-    if (error.response) {
-      const { status, data } = error.response;
-      switch (status) {
-        case 400:
-          throw new Error(data.message || 'Bad request');
-        case 401:
-          throw new Error(data.message || 'Unauthorized access');
-        case 403:
-          throw new Error(data.message || 'Forbidden');
-        case 404:
-          throw new Error(data.message || 'Resource not found');
-        case 500:
-          throw new Error(data.message || 'Internal server error');
-        default:
-          throw new Error(data.message || `Request failed with status ${status}`);
-      }
-    } else if (error.request) {
-      throw new Error('Network error - no response received');
+    // Handle FormData differently from regular JSON
+    if (bodyData instanceof FormData) {
+      config.data = bodyData;
+      // Don't set Content-Type header - browser will set it with boundary
+      delete config.headers['Content-Type'];
     } else {
-      throw new Error(error.message || 'Request setup error');
+      config.data = bodyData;
+      config.headers['Content-Type'] = 'application/json';
     }
+
+    const response = await axiosInstance(config);
+    return response;
+  } catch (error) {
+    // Enhanced error handling
+    let errorMessage = 'Something went wrong';
+    
+    if (error.response) {
+      // Server responded with error status
+      errorMessage = error.response.data?.message || 
+                    error.response.statusText || 
+                    `Request failed with status ${error.response.status}`;
+    } else if (error.request) {
+      // Request was made but no response received
+      errorMessage = 'No response from server - is the backend running?';
+    } else {
+      // Something happened in setting up the request
+      errorMessage = error.message || 'Request setup error';
+    }
+
+    // Create a new Error object with the proper message
+    const apiError = new Error(errorMessage);
+    // Attach additional info
+    apiError.isAxiosError = true;
+    apiError.response = error.response;
+    apiError.config = error.config;
+    
+    throw apiError;
   }
 };
 

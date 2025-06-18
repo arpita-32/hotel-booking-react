@@ -8,6 +8,7 @@ const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const Profile = require("./routes/Profile");
+const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -41,6 +42,8 @@ cloudinaryConnect();
 // Route imports with error handling
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", Profile);
+app.use('api/v1/admin', adminRoutes);
+
 
 // Default route
 app.get("/", (req, res) => {
@@ -51,7 +54,7 @@ app.get("/", (req, res) => {
 });
 
 // Error handling middleware (fixed - added next parameter)
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,

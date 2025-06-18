@@ -1,37 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { apiConnector } from '../../../../services/apiconnector';
-import { adminEndpoints } from '../../../../services/apis';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllRooms, deleteRoomById } from '../../../../services/operations/roomAPI';
+import AddRoomForm from './AddRoomForm';
+import { toast } from 'react-hot-toast';
 
-const { GET_ALL_ROOMS_API } = adminEndpoints;
 
 const AllRooms = () => {
-  const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+const { data: rooms = [], loading, error } = useSelector((state) => state.room);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
-    const fetchRooms = async () => {
+    dispatch(fetchAllRooms());
+  }, [dispatch]);
+
+  const handleDelete = async (roomId) => {
+    if (window.confirm('Are you sure you want to delete this room?')) {
       try {
-        const response = await apiConnector("GET", GET_ALL_ROOMS_API);
-        if (response.data.success) {
-          setRooms(response.data.rooms);
-        }
+        await dispatch(deleteRoomById(roomId)).unwrap();
+        toast.success('Room deleted successfully');
       } catch (error) {
-        console.error('Error fetching rooms:', error);
-      } finally {
-        setLoading(false);
+        toast.error(error.message || 'Failed to delete room');
       }
-    };
+    }
+  };
 
-    fetchRooms();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div className="p-6">Loading...</div>;
+  if (error) return (
+    <div className="p-6 text-red-500">
+      Error: {error.message || 'Failed to load rooms'}
+      <button 
+        onClick={() => dispatch(fetchAllRooms())}
+        className="ml-4 bg-blue-500 text-white px-3 py-1 rounded"
+      >
+        Retry
+      </button>
+    </div>
+  );
+  if (error) return <div className="p-6 text-red-500">Error: {error}</div>;
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">All Rooms</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">All Rooms ({rooms.length})</h2>
+        <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+        >
+          {showAddForm ? 'Hide Form' : 'Add New Room'}
+        </button>
+      </div>
+
+      {showAddForm && (
+        <div className="mb-8">
+          <AddRoomForm onRoomAdded={() => dispatch(fetchAllRooms())} />
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg overflow-hidden">
           <thead className="bg-gray-800 text-white">
@@ -41,6 +66,7 @@ const AllRooms = () => {
               <th className="py-3 px-4 text-left">Price</th>
               <th className="py-3 px-4 text-left">Capacity</th>
               <th className="py-3 px-4 text-left">Status</th>
+              <th className="py-3 px-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -56,6 +82,14 @@ const AllRooms = () => {
                   }`}>
                     {room.isAvailable ? 'Available' : 'Occupied'}
                   </span>
+                </td>
+                <td className="py-3 px-4">
+                  <button
+                    onClick={() => handleDelete(room._id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
