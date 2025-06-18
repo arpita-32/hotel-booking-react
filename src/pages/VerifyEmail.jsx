@@ -6,6 +6,9 @@ import { RxCountdownTimer } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { sendOtp, signUp } from "../services/operations/authAPI";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../components/common/NavBar";
+import Footer from "../components/common/Footer";
+
 
 function VerifyEmail() {
   const [otp, setOtp] = useState("");
@@ -22,7 +25,7 @@ function VerifyEmail() {
   const handleVerifyAndSignup = (e) => {
     e.preventDefault();
     const {
-      accountType,
+      role,
       firstName,
       lastName,
       email,
@@ -32,7 +35,7 @@ function VerifyEmail() {
 
     dispatch(
       signUp(
-        accountType,
+        role,
         firstName,
         lastName,
         email,
@@ -45,18 +48,18 @@ function VerifyEmail() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] grid place-items-center px-4">
-      {loading ? (
-        <div className="spinner"></div>
-      ) : (
-        <div className="w-full max-w-[500px] p-4 sm:p-6 lg:p-8">
-          <h1 className="text-richblack-5 font-semibold text-xl sm:text-2xl md:text-[1.875rem] leading-[1.5] sm:leading-[2.375rem]">
-            Verify Email
+    <div className="flex flex-col min-h-screen">
+      <NavBar />
+      <div className="flex-grow grid place-items-center bg-gray-50 px-4 py-12">
+        <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-xl">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            Verify Your Email
           </h1>
-          <p className="text-sm sm:text-base md:text-[1.125rem] my-3 sm:my-4 leading-[1.5] sm:leading-[1.625rem] text-richblack-100">
-            A verification code has been sent to you. Enter the code below
+          <p className="text-gray-600 mb-6">
+            We've sent a verification code to {signupData?.email}
           </p>
-          <form onSubmit={handleVerifyAndSignup}>
+          
+          <form onSubmit={handleVerifyAndSignup} className="mb-6">
             <OtpInput
               value={otp}
               onChange={setOtp}
@@ -65,40 +68,44 @@ function VerifyEmail() {
                 <input
                   {...props}
                   placeholder="-"
-                  style={{
-                    boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
-                  }}
-                  className="w-[40px] sm:w-[48px] lg:w-[60px] border-0 bg-richblack-800 rounded-[0.5rem] text-richblack-5 aspect-square text-center focus:border-0 focus:outline-2 focus:outline-yellow-50 text-sm sm:text-base"
+                  className="w-12 h-12 border-2 border-gray-300 rounded-md text-center text-lg focus:outline-none focus:border-orange-500 mx-1"
                 />
               )}
-              containerStyle={{
-                justifyContent: "space-between",
-                gap: "0 4px",
-              }}
+              containerStyle="flex justify-center my-6"
+              inputStyle=""
             />
+            
             <button
               type="submit"
-              className="w-full bg-yellow-50 py-2 sm:py-[12px] px-[12px] rounded-[8px] mt-4 sm:mt-6 font-medium text-richblack-900 text-sm sm:text-base"
+              disabled={loading}
+              className={`w-full bg-orange-500 text-white py-3 rounded-md font-medium ${
+                loading ? "opacity-75" : "hover:bg-orange-600"
+              } transition-colors`}
             >
-              Verify Email
+              {loading ? "Verifying..." : "Verify Email"}
             </button>
           </form>
-          <div className="mt-4 sm:mt-6 flex items-center justify-between">
-            <Link to="/signup">
-              <p className="text-richblack-5 flex items-center gap-x-2 text-sm sm:text-base">
-                <BiArrowBack /> Back To Signup
-              </p>
-            </Link>
-            <button
-              className="flex items-center text-blue-100 gap-x-2 text-sm sm:text-base"
-              onClick={() => dispatch(sendOtp(signupData.email, navigate))}
+          
+          <div className="flex justify-between items-center text-sm">
+            <Link 
+              to="/signup" 
+              className="text-gray-600 hover:text-orange-500 flex items-center"
             >
-              <RxCountdownTimer />
-              Resend it
+              <BiArrowBack className="mr-1" />
+              Back to Signup
+            </Link>
+            
+            <button
+              onClick={() => dispatch(sendOtp(signupData.email, navigate))}
+              className="text-orange-500 hover:text-orange-600 flex items-center"
+            >
+              <RxCountdownTimer className="mr-1" />
+              Resend OTP
             </button>
           </div>
         </div>
-      )}
+      </div>
+      <Footer />
     </div>
   );
 }

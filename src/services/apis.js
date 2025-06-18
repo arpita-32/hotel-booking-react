@@ -13,15 +13,3 @@ export const profileEndpoints = {
   UPDATE_PROFILE_API: BASE_URL + "/profile/update",
 };
 
-export const roomEndpoints = {
-  GET_ALL_ROOMS_API:BASE_URL + "/rooms",
-  CREATE_ROOM_API:BASE_URL + "/rooms/create",
-  UPDATE_ROOM_API:BASE_URL + "/rooms/update",
-  DELETE_ROOM_API:BASE_URL + "/rooms/delete",
-};
-
-export const bookingEndpoints = {
-  CREATE_BOOKING:BASE_URL + "/bookings/create",
-  GET_ALL_BOOKINGS:BASE_URL + "/bookings",
- 
-};

@@ -7,20 +7,11 @@ import BookingPage from './pages/BookingPage';
 import Rooms from './pages/Rooms';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import AdminDashboard from './pages/AdminDashboard';
-import CustomerDashboard from './pages/CustomerDashboard';
-import AdminBookings from './components/core/Dashboard/admin/Dashboard';
-import AdminRooms from './components/core/Dashboard/admin/Rooms';
-import AddRoom from './components/core/Dashboard/admin/AddRoom';
-import CustomerProfile from './components/core/Dashboard/customer/Profile';
-import CustomerBookings from './components/core/Dashboard/customer/Bookings';
-import Settings from './components/core/Dashboard/Settings';
-import ProtectedRoute from './components/core/Auth/PrivateRoute';
 import NavBar from './components/common/NavBar';
 import Footer from './components/common/Footer';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import VerifyEmail from './pages/VerifyEmail';
+import OpenRoute from './components/core/Auth/OpenRoute'; // Assuming OpenRoute is a component that handles public routes
+
 
 const App = () => {
   return (
@@ -39,56 +30,15 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
-            {/* Dashboard Redirect */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Navigate to="/dashboard/redirect" replace />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Admin Dashboard Routes */}
-            <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<AdminDashboard />} />
-              <Route path="bookings" element={<AdminBookings />} />
-              <Route path="rooms" element={<AdminRooms />} />
-              <Route path="add-room" element={<AddRoom />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-
-            {/* Customer Dashboard Routes */}
-            <Route
-              path="/customer/dashboard"
-              element={
-                <ProtectedRoute>
-                  <CustomerDashboard />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<CustomerProfile />} />
-              <Route path="profile" element={<CustomerProfile />} />
-              <Route path="bookings" element={<CustomerBookings />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-
-            {/* Role-based redirect */}
-            <Route
-              path="/dashboard/redirect"
-              element={
-                <ProtectedRoute>
-                  <DashboardRedirect />
-                </ProtectedRoute>
-              }
-            />
+            
+        <Route
+          path="verify-email"
+          element={
+            <OpenRoute>
+              <VerifyEmail />
+            </OpenRoute>
+          }
+        />
           </Routes>
         </main>
         
@@ -98,20 +48,6 @@ const App = () => {
   );
 };
 
-// Component to redirect based on user role
-function DashboardRedirect() {
-  const { user } = useSelector((state) => state.profile);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user?.role === 'Admin') {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/customer/dashboard');
-    }
-  }, [user, navigate]);
-
-  return <div className="flex justify-center items-center h-screen">Loading...</div>;
-}
 
 export default App;

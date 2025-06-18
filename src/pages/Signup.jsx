@@ -5,9 +5,9 @@ import hotelImage from "../assets/Images/signuppage.png";
 import NavBar from "../components/common/NavBar";
 import Footer from "../components/common/Footer";
 import { toast } from "react-hot-toast";
-import React from "react";
 import { useDispatch } from "react-redux";
-import { signUp } from "../services/operations/authAPI";
+import { sendOtp } from "../services/operations/authAPI";
+import { setSignupData } from "../slices/authSlice";
 
 const USER_ROLE = {
   CUSTOMER: "Customer",
@@ -29,53 +29,40 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Define tabData for role selection
-  const tabData = [
-    {
-      id: 1,
-      tabName: "Customer",
-      type: USER_ROLE.CUSTOMER,
-    },
-    {
-      id: 2,
-      tabName: "Admin",
-      type: USER_ROLE.ADMIN,
-    },
-  ];
-
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    
+    if (!formData.firstName || !formData.lastName || !formData.email || 
+        !formData.password || !formData.confirmPassword) {
+      toast.error("Please fill all fields");
+      return;
+    }
 
-    // Validation
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords don't match!");
-      setIsLoading(false);
+      toast.error("Passwords don't match");
       return;
     }
 
     if (formData.password.length < 6) {
       toast.error("Password must be at least 6 characters");
-      setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      const signupData = {
+      await dispatch(sendOtp(formData.email, navigate));
+      dispatch(setSignupData({
         ...formData,
         role,
-      };
-      
-      console.log("Dispatching signup with:", signupData);
-      
-      await dispatch(signUp(signupData, navigate));
+      }));
     } catch (error) {
       console.error("Signup error:", error);
-      toast.error("Signup failed. Please try again.");
+      toast.error(error.message || "Signup failed");
     } finally {
       setIsLoading(false);
     }
@@ -86,8 +73,8 @@ function Signup() {
       <NavBar />
       <div className="flex-grow flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-xl rounded-lg overflow-hidden">
-          {/* Form Section - Left side */}
-          <div className="w-full md:w-1/2 p-8 sm:p-12 order-1 md:order-1">
+          {/* Form Section */}
+          <div className="w-full md:w-1/2 p-8 sm:p-12">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
               <p className="mt-2 text-gray-600">
@@ -95,28 +82,37 @@ function Signup() {
               </p>
             </div>
             
-            {/* Role Selection Tabs */}
+            {/* Role Selection */}
             <div className="flex bg-gray-100 p-1 gap-x-1 my-6 rounded-full max-w-max mx-auto">
-              {tabData.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setRole(tab.type)}
-                  className={`${
-                    role === tab.type
-                      ? "bg-orange-500 text-white"
-                      : "bg-transparent text-gray-700"
-                  } py-2 px-5 rounded-full transition-all duration-200 text-sm font-medium`}
-                >
-                  {tab.tabName}
-                </button>
-              ))}
+              <button
+                type="button"
+                onClick={() => setRole(USER_ROLE.CUSTOMER)}
+                className={`${
+                  role === USER_ROLE.CUSTOMER
+                    ? "bg-orange-500 text-white"
+                    : "bg-transparent text-gray-700"
+                } py-2 px-5 rounded-full transition-all duration-200 text-sm font-medium`}
+              >
+                Customer
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole(USER_ROLE.ADMIN)}
+                className={`${
+                  role === USER_ROLE.ADMIN
+                    ? "bg-orange-500 text-white"
+                    : "bg-transparent text-gray-700"
+                } py-2 px-5 rounded-full transition-all duration-200 text-sm font-medium`}
+              >
+                Admin
+              </button>
             </div>
             
             <form onSubmit={handleOnSubmit} className="flex flex-col gap-y-4">
-              <div className="flex gap-4">
+              <div className="flex gap-x-4">
                 <label className="w-full">
-                  <p className="mb-1 text-sm font-medium text-gray-700">
-                    First Name <span className="text-orange-500">*</span>
+                  <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-gray-700">
+                    First Name <sup className="text-orange-500">*</sup>
                   </p>
                   <input
                     required
@@ -125,12 +121,12 @@ function Signup() {
                     value={formData.firstName}
                     onChange={handleOnChange}
                     placeholder="Enter first name"
-                    className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
+                    className="w-full rounded-[0.5rem] bg-gray-100 p-[12px] text-gray-800"
                   />
                 </label>
                 <label className="w-full">
-                  <p className="mb-1 text-sm font-medium text-gray-700">
-                    Last Name <span className="text-orange-500">*</span>
+                  <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-gray-700">
+                    Last Name <sup className="text-orange-500">*</sup>
                   </p>
                   <input
                     required
@@ -139,14 +135,14 @@ function Signup() {
                     value={formData.lastName}
                     onChange={handleOnChange}
                     placeholder="Enter last name"
-                    className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
+                    className="w-full rounded-[0.5rem] bg-gray-100 p-[12px] text-gray-800"
                   />
                 </label>
               </div>
               
               <label className="w-full">
-                <p className="mb-1 text-sm font-medium text-gray-700">
-                  Email Address <span className="text-orange-500">*</span>
+                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-gray-700">
+                  Email Address <sup className="text-orange-500">*</sup>
                 </p>
                 <input
                   required
@@ -154,15 +150,15 @@ function Signup() {
                   name="email"
                   value={formData.email}
                   onChange={handleOnChange}
-                  placeholder="Enter your email"
-                  className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
+                  placeholder="Enter email address"
+                  className="w-full rounded-[0.5rem] bg-gray-100 p-[12px] text-gray-800"
                 />
               </label>
               
-              <div className="flex gap-4">
+              <div className="flex gap-x-4">
                 <label className="relative w-full">
-                  <p className="mb-1 text-sm font-medium text-gray-700">
-                    Password <span className="text-orange-500">*</span>
+                  <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-gray-700">
+                    Password <sup className="text-orange-500">*</sup>
                   </p>
                   <input
                     required
@@ -170,24 +166,25 @@ function Signup() {
                     name="password"
                     value={formData.password}
                     onChange={handleOnChange}
-                    placeholder="Create password"
-                    className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition pr-10"
+                    placeholder="Create Password"
+                    className="w-full rounded-[0.5rem] bg-gray-100 p-[12px] pr-10 text-gray-800"
+                    autoComplete="new-password"
                   />
                   <span
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 top-[38px] z-[10] cursor-pointer text-gray-500 hover:text-gray-700"
+                    className="absolute right-3 top-[38px] z-[10] cursor-pointer text-gray-500"
                   >
                     {showPassword ? (
-                      <AiOutlineEyeInvisible size={20} />
+                      <AiOutlineEyeInvisible fontSize={24} />
                     ) : (
-                      <AiOutlineEye size={20} />
+                      <AiOutlineEye fontSize={24} />
                     )}
                   </span>
                 </label>
                 
                 <label className="relative w-full">
-                  <p className="mb-1 text-sm font-medium text-gray-700">
-                    Confirm Password <span className="text-orange-500">*</span>
+                  <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-gray-700">
+                    Confirm Password <sup className="text-orange-500">*</sup>
                   </p>
                   <input
                     required
@@ -195,17 +192,18 @@ function Signup() {
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleOnChange}
-                    placeholder="Confirm password"
-                    className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition pr-10"
+                    placeholder="Confirm Password"
+                    className="w-full rounded-[0.5rem] bg-gray-100 p-[12px] pr-10 text-gray-800"
+                    autoComplete="new-password"
                   />
                   <span
                     onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    className="absolute right-3 top-[38px] z-[10] cursor-pointer text-gray-500 hover:text-gray-700"
+                    className="absolute right-3 top-[38px] z-[10] cursor-pointer text-gray-500"
                   >
                     {showConfirmPassword ? (
-                      <AiOutlineEyeInvisible size={20} />
+                      <AiOutlineEyeInvisible fontSize={24} />
                     ) : (
-                      <AiOutlineEye size={20} />
+                      <AiOutlineEye fontSize={24} />
                     )}
                   </span>
                 </label>
@@ -213,9 +211,12 @@ function Signup() {
               
               <button
                 type="submit"
-                className="mt-4 rounded-md bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 font-medium transition-colors duration-300"
+                disabled={isLoading}
+                className={`mt-6 rounded-[8px] bg-orange-500 py-[8px] px-[12px] font-medium text-white ${
+                  isLoading ? "opacity-75" : "hover:bg-orange-600"
+                } transition-colors`}
               >
-                Create Account
+                {isLoading ? "Sending OTP..." : "Create Account"}
               </button>
               
               <div className="mt-4 text-center text-sm text-gray-600">
@@ -230,8 +231,8 @@ function Signup() {
             </form>
           </div>
           
-          {/* Image Section - Right side */}
-          <div className="hidden md:block md:w-1/2 bg-gray-100 order-2 md:order-2">
+          {/* Image Section */}
+          <div className="hidden md:block md:w-1/2 bg-gray-100">
             <img
               src={hotelImage}
               alt="Luxury hotel room"

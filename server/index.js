@@ -41,6 +41,7 @@ cloudinaryConnect();
 // Route imports with error handling
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", Profile);
+
 // Default route
 app.get("/", (req, res) => {
   return res.json({
@@ -49,8 +50,8 @@ app.get("/", (req, res) => {
   });
 });
 
-// Error handling middleware
-app.use((err, req, res) => {
+// Error handling middleware (fixed - added next parameter)
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,

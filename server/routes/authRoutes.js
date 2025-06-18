@@ -4,7 +4,6 @@ const router = express.Router();
 // Import controllers with proper error handling
 const authController = require("../controllers/authController");
 const resetPasswordController = require("../controllers/ResetPassword");
-const authMiddleware = require("../middlewares/auth");
 
 // Verify all imported functions exist
 const {
@@ -23,7 +22,7 @@ const {
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/sendotp", sendotp);
-router.post("/changepassword", authMiddleware, changePassword);
+router.post("/changepassword",  changePassword);
 
 // Reset Password routes
 router.post("/reset-password-token", resetPasswordToken);
