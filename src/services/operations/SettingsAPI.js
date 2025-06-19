@@ -49,7 +49,8 @@ export function updateProfile(token, formData) {
     try {
       const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
         Authorization: `Bearer ${token}`,
-      })
+        "Content-Type": "application/json", // Ensure content type is set
+      });
       console.log("UPDATE_PROFILE_API API RESPONSE............", response)
 
       if (!response.data.success) {

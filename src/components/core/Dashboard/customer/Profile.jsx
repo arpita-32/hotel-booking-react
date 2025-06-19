@@ -2,13 +2,14 @@
 import { useSelector } from 'react-redux';
 import { RiEditBoxLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import HighlightText from '../../../common/HighlightText';
 
 export default function MyProfile() {
   const { user } = useSelector((state) => state.profile);
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">My Profile</h1>
+      <h1 className="text-2xl font-bold mb-6"><HighlightText text="Profile"/></h1>
       
       <div className="bg-white rounded-lg shadow overflow-hidden mb-6">
         <div className="p-6 flex justify-between items-center">
@@ -26,7 +27,7 @@ export default function MyProfile() {
             </div>
           </div>
           <Link
-            to="/customer/settings"
+            to="/dashboard/settings"
             className="flex items-center text-blue-600 hover:text-blue-800"
           >
             <RiEditBoxLine className="mr-1" />

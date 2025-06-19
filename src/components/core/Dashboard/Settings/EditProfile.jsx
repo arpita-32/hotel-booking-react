@@ -31,10 +31,9 @@ export default function EditProfile() {
     <form onSubmit={handleSubmit(submitProfileForm)}>
       <div className="rounded-lg border border-richblack-700 bg-richblack-800 p-6 md:p-8">
         <h2 className="text-lg font-semibold text-richblack-5 mb-6">
-          Profile <HighlightText text="Information" />
+          Edit <HighlightText text="Profile" />
         </h2>
         
-        {/* Form fields remain the same but with responsive classes */}
         <div className="space-y-6">
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="flex-1">
@@ -75,13 +74,102 @@ export default function EditProfile() {
             </div>
           </div>
 
-          {/* Other form fields... */}
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex-1">
+              <label htmlFor="dateOfBirth" className="lable-style">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                id="dateOfBirth"
+                className="form-style w-full"
+                {...register("dateOfBirth", {
+                  required: {
+                    value: true,
+                    message: "Please enter your Date of Birth.",
+                  },
+                  max: {
+                    value: new Date().toISOString().split("T")[0],
+                    message: "Date of Birth cannot be in the future.",
+                  },
+                })}
+                defaultValue={user?.additionalDetails?.dateOfBirth}
+              />
+              {errors.dateOfBirth && (
+                <span className="-mt-1 text-xs text-yellow-100">
+                  {errors.dateOfBirth.message}
+                </span>
+              )}
+            </div>
+            <div className="flex-1">
+              <label htmlFor="gender" className="lable-style">
+                Gender
+              </label>
+              <select
+                id="gender"
+                className="form-style w-full"
+                {...register("gender", { required: true })}
+                defaultValue={user?.additionalDetails?.gender}
+              >
+                {GENDERS.map((gender, i) => (
+                  <option key={i} value={gender}>
+                    {gender}
+                  </option>
+                ))}
+              </select>
+              {errors.gender && (
+                <span className="-mt-1 text-xs text-yellow-100">
+                  Please select your gender.
+                </span>
+              )}
+            </div>
+          </div>
 
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex-1">
+              <label htmlFor="contactNumber" className="lable-style">
+                Contact Number
+              </label>
+              <input
+                type="tel"
+                id="contactNumber"
+                placeholder="Enter Contact Number"
+                className="form-style w-full"
+                {...register("contactNumber", {
+                  required: {
+                    value: true,
+                    message: "Please enter your Contact Number.",
+                  },
+                  maxLength: { value: 12, message: "Invalid Contact Number" },
+                  minLength: { value: 10, message: "Invalid Contact Number" },
+                })}
+                defaultValue={user?.additionalDetails?.contactNumber}
+              />
+              {errors.contactNumber && (
+                <span className="-mt-1 text-xs text-yellow-100">
+                  {errors.contactNumber.message}
+                </span>
+              )}
+            </div>
+            <div className="flex-1">
+              <label htmlFor="about" className="lable-style">
+                About
+              </label>
+              <textarea
+                id="about"
+                placeholder="Enter Bio Details"
+                className="form-style w-full h-24"
+                {...register("about")}
+                defaultValue={user?.additionalDetails?.about}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="flex justify-end gap-3 mt-6">
         <button
+          type="button"
           onClick={() => navigate("/dashboard/my-profile")}
           className="rounded-lg bg-richblack-700 py-2 px-5 font-medium text-richblack-50 hover:bg-richblack-600 transition-all"
         >

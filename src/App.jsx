@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Router>
       <div className="font-sans text-gray-800 min-h-screen flex flex-col">
-        <NavBar />
+        
         
         <main className="flex-grow">
           <Routes>
@@ -75,7 +75,7 @@ const App = () => {
           </Routes>
         </main>
         
-        <Footer />
+      
       </div>
     </Router>
   );

@@ -9,8 +9,7 @@ export const endpoints = {
 }
 
 export const profileEndpoints = {
-  GET_USER_PROFILE_API:BASE_URL + "/profile/details",
-  UPDATE_PROFILE_API: BASE_URL + "/profile/update",
+  GET_USER_PROFILE_API:BASE_URL + "/profile/getProfile",
 };
 export const settingsEndpoints = {
   UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profile/updateDisplayPicture",
