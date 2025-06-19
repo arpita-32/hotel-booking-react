@@ -1,13 +1,11 @@
 const Profile = require("../models/Profile")
 const User = require("../models/User")
 
-// Create or Update User Profile
 exports.createOrUpdateProfile = async (req, res) => {
   try {
     const { gender, dateOfBirth, about, contactNumber } = req.body;
     const userId = req.user.id; // Assuming you have user info in req.user from auth middleware
 
-    // Check if profile already exists
     let profile = await Profile.findOne({ user: userId });
 
     if (profile) {

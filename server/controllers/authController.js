@@ -6,13 +6,11 @@ const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 
-// Signup Controller for Registering Users
-// Signup Controller
+
 exports.signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password, confirmPassword, role, otp } = req.body;
 
-    // Validate input
     if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
       return res.status(403).json({
         success: false,
@@ -57,7 +55,6 @@ exports.signup = async (req, res) => {
       role,
     });
 
-    // Clear sensitive data before sending response
     user.password = undefined;
 
     return res.status(201).json({
@@ -75,7 +72,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-// Login Controller
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

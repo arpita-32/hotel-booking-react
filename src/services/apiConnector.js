@@ -1,14 +1,12 @@
 import axios from "axios";
 
-// Create axios instance with default configuration
-// axiosInstance.js
+
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
   timeout: 10000,
 });
 
-// Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     // Don't overwrite Content-Type for FormData
@@ -54,7 +52,6 @@ export const apiConnector = async (method, url, bodyData, headers = {}, params =
       },
     };
 
-    // Add authorization if token exists
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
