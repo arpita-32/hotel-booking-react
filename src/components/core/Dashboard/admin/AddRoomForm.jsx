@@ -2,19 +2,25 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addNewRoom } from '../../../../services/operations/roomAPI';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
+
+const initialFormState = {
+  roomNumber: '',
+  roomType: 'Standard',
+  price: '',
+  capacity: '',
+  description: '',
+  amenities: '',
+  thumbnail: null,
+  images: []
+};
+
 
 const AddRoomForm = ({ onRoomAdded }) => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    roomNumber: '',
-    roomType: 'Standard',
-    price: '',
-    capacity: '',
-    description: '',
-    amenities: '',
-    thumbnail: null,
-    images: []
-  });
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState(initialFormState);
   const [previewImages, setPreviewImages] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -51,51 +57,73 @@ const AddRoomForm = ({ onRoomAdded }) => {
     setFormData({ ...formData, images: updatedImages });
     setPreviewImages(updatedPreviews);
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsUploading(true);
-    
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('roomNumber', formData.roomNumber);
-      formDataToSend.append('roomType', formData.roomType);
-      formDataToSend.append('price', formData.price);
-      formDataToSend.append('capacity', formData.capacity);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('amenities', formData.amenities);
-      formDataToSend.append('thumbnail', formData.thumbnail);
-      
-      formData.images.forEach((image) => {
-        formDataToSend.append(`images`, image);
-      });
-
-      await dispatch(addNewRoom(formDataToSend)).unwrap();
-      
-      toast.success('Room added successfully!');
-      setFormData({
-        roomNumber: '',
-        roomType: 'Standard',
-        price: '',
-        capacity: '',
-        description: '',
-        amenities: '',
-        thumbnail: null,
-        images: []
-      });
-      setPreviewImages([]);
-      setThumbnailPreview(null);
-      
-      if (onRoomAdded) {
-        onRoomAdded();
-      }
-    } catch (error) {
-      toast.error(error.message || 'Failed to add room');
-    } finally {
-      setIsUploading(false);
+// AddRoomForm.jsx
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsUploading(true);
+  
+  try {
+    // Verify we have a token
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Please login first');
     }
-  };
 
+    // Prepare FormData - use the component's formData state
+    const formDataToSend = new FormData();
+    formDataToSend.append('roomNumber', formData.roomNumber);
+    formDataToSend.append('roomType', formData.roomType);
+    formDataToSend.append('price', formData.price);
+    formDataToSend.append('capacity', formData.capacity);
+    formDataToSend.append('description', formData.description || '');
+    
+    // Handle amenities - convert string to array
+    const amenitiesArray = formData.amenities 
+      ? formData.amenities.split(',').map(item => item.trim())
+      : [];
+    formDataToSend.append('amenities', JSON.stringify(amenitiesArray));
+
+    // Verify and append thumbnail
+    if (!formData.thumbnail) {
+      throw new Error('Thumbnail image is required');
+    }
+    formDataToSend.append('thumbnailImage', formData.thumbnail);
+
+    // Append additional images
+    formData.images.forEach((image) => {
+      formDataToSend.append('images', image);
+    });
+
+    // Dispatch the action
+    const result = await dispatch(addNewRoom(formDataToSend));
+
+    // Handle success
+    if (result.error) {
+      throw result.error;
+    }
+
+    // Reset form on success
+    setFormData(initialFormState);
+    setPreviewImages([]);
+    setThumbnailPreview(null);
+    toast.success('Room added successfully!');
+    onRoomAdded?.();
+    
+  } catch (error) {
+    console.error('Add room error:', error);
+    
+    // Handle specific error cases
+    if (error.shouldLogout) {
+      // Clear user data and redirect to login
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+    
+    toast.error(error.message || 'Failed to add room');
+  } finally {
+    setIsUploading(false);
+  }
+};
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6">Add New Room</h2>

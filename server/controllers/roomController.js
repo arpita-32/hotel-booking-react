@@ -2,76 +2,88 @@ const Room = require('../models/Room');
 const cloudinary = require('cloudinary').v2;
 const { uploadImageToCloudinary } = require('../utils/imageUploader');
 
-// Configure Cloudinary (ensure this is in your config)
+// Configure Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
 });
 
 // Add a new room with image uploads
 exports.addRoom = async (req, res) => {
   try {
-    const { roomNumber, roomType, price, capacity, description, amenities } = req.body;
-    const thumbnail = req.files?.thumbnailImage;
-
     // Validate required fields
-    if (!roomNumber || !roomType || !price || !capacity || !thumbnail) {
+    const requiredFields = ['roomNumber', 'roomType', 'price', 'capacity'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({
+          success: false,
+          message: `${field} is required`
+        });
+      }
+    }
+
+    // Check for thumbnail image
+    if (!req.files?.thumbnailImage) {
       return res.status(400).json({
         success: false,
-        message: "All fields including thumbnail are mandatory"
+        message: 'Thumbnail image is required'
       });
     }
 
-    // Upload thumbnail to Cloudinary
-    const thumbnailImage = await uploadImageToCloudinary(
-      thumbnail,
-      process.env.FOLDER_NAME || 'hotel_rooms'
+    // Upload thumbnail
+    const thumbnailUpload = await uploadImageToCloudinary(
+      req.files.thumbnailImage,
+      process.env.FOLDER_NAME
     );
 
-    // Process amenities if provided
-    const amenitiesArray = amenities 
-      ? JSON.parse(amenities) 
-      : [];
+    // Process additional images
+    const images = req.files.images || [];
+    const uploadedImages = await Promise.all(
+      images.map(image => 
+        uploadImageToCloudinary(image, process.env.FOLDER_NAME)
+      )
+    );
 
-    // Create new room
-    const newRoom = await Room.create({
-      roomNumber,
-      roomType,
-      price,
-      capacity,
-      description,
-      amenities: amenitiesArray,
-      thumbnail: thumbnailImage.secure_url,
+    // Create room
+    const room = await Room.create({
+      roomNumber: req.body.roomNumber,
+      roomType: req.body.roomType,
+      price: req.body.price,
+      capacity: req.body.capacity,
+      description: req.body.description || '',
+      amenities: req.body.amenities ? JSON.parse(req.body.amenities) : [],
+      thumbnail: thumbnailUpload.secure_url,
+      images: uploadedImages.map(img => img.secure_url),
       isAvailable: true
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "Room added successfully",
-      room: newRoom
+      message: 'Room added successfully',
+      room
     });
+
   } catch (error) {
-    console.error("Error adding room:", error);
+    console.error('Error adding room:', error);
     
-    // Handle duplicate room number
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        message: "Room number already exists"
+        message: 'Room number already exists'
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Failed to add room",
-      error: error.message
+      message: 'Failed to add room',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };
 
-// Edit Room Details
-exports.editRoom = async (req, res) => {
+
+exports.updateRoom = async (req, res) => {
   try {
     const { roomId } = req.body;
     const updates = req.body;
@@ -183,9 +195,11 @@ exports.getRoomDetails = async (req, res) => {
 // Delete a room
 exports.deleteRoom = async (req, res) => {
   try {
-    const { roomId } = req.body;
-    const room = await Room.findByIdAndDelete(roomId);
+    const { roomId } = req.params; // Get roomId from URL params
 
+    // Find and delete the room
+    const room = await Room.findByIdAndDelete(roomId);
+    
     if (!room) {
       return res.status(404).json({
         success: false,
@@ -197,7 +211,19 @@ exports.deleteRoom = async (req, res) => {
     if (room.thumbnail) {
       const publicId = room.thumbnail.split('/').pop().split('.')[0];
       await cloudinary.uploader.destroy(
-        `${process.env.FOLDER_NAME || 'hotel_rooms'}/${publicId}`
+        `${process.env.FOLDER_NAME || 'web'}/${publicId}`
+      );
+    }
+
+    // Delete additional images from Cloudinary
+    if (room.images?.length > 0) {
+      await Promise.all(
+        room.images.map(image => {
+          const publicId = image.split('/').pop().split('.')[0];
+          return cloudinary.uploader.destroy(
+            `${process.env.FOLDER_NAME || 'web'}/${publicId}`
+          );
+        })
       );
     }
 
@@ -205,12 +231,13 @@ exports.deleteRoom = async (req, res) => {
       success: true,
       message: "Room deleted successfully"
     });
+
   } catch (error) {
     console.error("Error deleting room:", error);
     res.status(500).json({
       success: false,
       message: "Failed to delete room",
-      error: error.message
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };

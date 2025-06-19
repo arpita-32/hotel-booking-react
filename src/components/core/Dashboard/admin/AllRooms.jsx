@@ -4,10 +4,9 @@ import { fetchAllRooms, deleteRoomById } from '../../../../services/operations/r
 import AddRoomForm from './AddRoomForm';
 import { toast } from 'react-hot-toast';
 
-
 const AllRooms = () => {
   const dispatch = useDispatch();
-const { data: rooms = [], loading, error } = useSelector((state) => state.room);
+  const { rooms, loading, error } = useSelector((state) => state.room);
   const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
@@ -15,17 +14,19 @@ const { data: rooms = [], loading, error } = useSelector((state) => state.room);
   }, [dispatch]);
 
   const handleDelete = async (roomId) => {
-    if (window.confirm('Are you sure you want to delete this room?')) {
-      try {
-        await dispatch(deleteRoomById(roomId)).unwrap();
-        toast.success('Room deleted successfully');
-      } catch (error) {
-        toast.error(error.message || 'Failed to delete room');
-      }
+  if (window.confirm('Are you sure you want to delete this room?')) {
+    try {
+      await dispatch(deleteRoomById(roomId));
+      toast.success('Room deleted successfully');
+      dispatch(fetchAllRooms()); // Refresh the list
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete room');
     }
-  };
+  }
+};
 
   if (loading) return <div className="p-6">Loading...</div>;
+  
   if (error) return (
     <div className="p-6 text-red-500">
       Error: {error.message || 'Failed to load rooms'}
@@ -37,12 +38,11 @@ const { data: rooms = [], loading, error } = useSelector((state) => state.room);
       </button>
     </div>
   );
-  if (error) return <div className="p-6 text-red-500">Error: {error}</div>;
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">All Rooms ({rooms.length})</h2>
+        <h2 className="text-2xl font-bold">All Rooms ({rooms?.length || 0})</h2>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
           className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
@@ -70,7 +70,7 @@ const { data: rooms = [], loading, error } = useSelector((state) => state.room);
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {rooms.map((room) => (
+            {rooms?.map((room) => (
               <tr key={room._id} className="border-b border-gray-200 hover:bg-gray-50">
                 <td className="py-3 px-4">{room.roomNumber}</td>
                 <td className="py-3 px-4">{room.roomType}</td>

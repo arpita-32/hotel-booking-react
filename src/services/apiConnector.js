@@ -1,38 +1,31 @@
 import axios from "axios";
 
 // Create axios instance with default configuration
+// axiosInstance.js
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL, // http://localhost:4000/api/v1
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
-  timeout: 10000, // 10 seconds timeout
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
+  timeout: 10000,
 });
 
-// Request interceptor to add auth token to headers
+// Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Don't overwrite Content-Type for FormData
+    if (!(config.data instanceof FormData)) {
+      config.headers['Content-Type'] = 'application/json';
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle common errors
+// Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access (token expired/invalid)
-      localStorage.removeItem('token');
-      window.location.href = '/login?session=expired';
+      console.warn('Unauthorized access detected');
     }
     return Promise.reject(error);
   }
@@ -47,22 +40,29 @@ axiosInstance.interceptors.response.use(
  * @param {object} [params] - Query parameters
  * @returns {Promise} - Axios response
  */
+// apiConnector.js
 export const apiConnector = async (method, url, bodyData, headers = {}, params = {}) => {
   try {
+    const token = localStorage.getItem('token');
     const config = {
       method,
       url,
+      params,
       headers: {
         ...headers,
         'X-Request-ID': generateRequestId(),
       },
-      params,
     };
 
-    // Handle FormData differently from regular JSON
+    // Add authorization if token exists
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Handle FormData
     if (bodyData instanceof FormData) {
       config.data = bodyData;
-      // Don't set Content-Type header - browser will set it with boundary
+      // Let browser set Content-Type with boundary
       delete config.headers['Content-Type'];
     } else {
       config.data = bodyData;
@@ -71,30 +71,16 @@ export const apiConnector = async (method, url, bodyData, headers = {}, params =
 
     const response = await axiosInstance(config);
     return response;
+    
   } catch (error) {
     // Enhanced error handling
-    let errorMessage = 'Something went wrong';
+    const errorMessage = error.response?.data?.message || 
+                       error.message || 
+                       'Something went wrong';
     
-    if (error.response) {
-      // Server responded with error status
-      errorMessage = error.response.data?.message || 
-                    error.response.statusText || 
-                    `Request failed with status ${error.response.status}`;
-    } else if (error.request) {
-      // Request was made but no response received
-      errorMessage = 'No response from server - is the backend running?';
-    } else {
-      // Something happened in setting up the request
-      errorMessage = error.message || 'Request setup error';
-    }
-
-    // Create a new Error object with the proper message
     const apiError = new Error(errorMessage);
-    // Attach additional info
-    apiError.isAxiosError = true;
     apiError.response = error.response;
-    apiError.config = error.config;
-    
+    apiError.status = error.response?.status;
     throw apiError;
   }
 };

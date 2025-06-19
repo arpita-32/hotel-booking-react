@@ -1,121 +1,131 @@
-import { toast } from "react-hot-toast";
-import { apiConnector } from "../apiconnector";
-import { adminEndpoints } from "../apis";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { apiConnector } from '../apiconnector';
+import { adminEndpoints } from '../apis';
+import { toast } from 'react-hot-toast';
 
-const {
-  ADD_ROOM_API,
-  GET_ALL_ROOMS_API,
-  UPDATE_ROOM_API,
-  DELETE_ROOM_API,
-  GET_ROOM_DETAILS_API,
+const { 
+  ADD_ROOM_API, 
+  GET_ALL_ROOMS_API, 
+  UPDATE_ROOM_API, 
+  DELETE_ROOM_API, 
+  GET_ROOM_DETAILS_API 
 } = adminEndpoints;
 
-export const addNewRoom = (formData) => async () => {
-  const toastId = toast.loading("Adding room...");
-  try {
-    const response = await apiConnector(
-      "POST",
-      ADD_ROOM_API,
-      formData,
-      {
-        // Don't set Content-Type here - let browser set it with boundary
-      }
-    );
-
-    if (!response.data.success) {
-      throw new Error(response.data.message);
-    }
-    toast.success("Room added successfully");
-    return response.data;
-  } catch (error) {
-    console.error("ADD_ROOM_API ERROR:", error);
-    toast.error(error.message || "Failed to add room");
-    throw error;
-  } finally {
-    toast.dismiss(toastId);
-  }
-};
-
-export const fetchAllRooms = () => async () => {
-  const toastId = toast.loading("Loading rooms...");
-  try {
-    const response = await apiConnector("GET", GET_ALL_ROOMS_API);
-    if (!response.data.success) {
-      throw new Error(response.data.message);
-    }
-    return response.data.rooms;
-  } catch (error) {
-    console.error("GET_ALL_ROOMS_API ERROR:", error);
-    toast.error("Failed to fetch rooms");
-    throw error;
-  } finally {
-    toast.dismiss(toastId);
-  }
-};
-
-export const deleteRoomById = (roomId) => async () => {
-  const toastId = toast.loading("Deleting room...");
-  try {
-    const response = await apiConnector(
-      "DELETE",
-      `${DELETE_ROOM_API}/${roomId}`
-    );
-    if (!response.data.success) {
-      throw new Error(response.data.message);
-    }
-    toast.success("Room deleted successfully");
-    return roomId;
-  } catch (error) {
-    console.error("DELETE_ROOM_API ERROR:", error);
-    toast.error("Failed to delete room");
-    throw error;
-  } finally {
-    toast.dismiss(toastId);
-  }
-};
-
-// Add other API functions (updateRoomDetails, getRoomDetails) similarly
-export function updateRoomDetails(token, roomId, formData) {
-  return async () => {
-    const toastId = toast.loading("Updating room...")
+// Fetch all rooms
+export const fetchAllRooms = createAsyncThunk(
+  'room/fetchAllRooms',
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await apiConnector("PUT", `${UPDATE_ROOM_API}/${roomId}`, formData, {
-        Authorization: `Bearer ${token}`,
-      })
+      const response = await apiConnector("GET", GET_ALL_ROOMS_API);
+      if (!response.data.success) {
+        return rejectWithValue(response.data.message);
+      }
+      return response.data.rooms;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Add new room
+// Update the addNewRoom thunk to properly handle FormData
+// roomAPI.js
+export const addNewRoom = createAsyncThunk(
+  'room/addNewRoom',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await apiConnector(
+        "POST", 
+        adminEndpoints.ADD_ROOM_API, 
+        formData,
+        {
+          // No Content-Type header - handled by apiConnector
+        }
+      );
       
       if (!response.data.success) {
-        throw new Error(response.data.message)
+        throw new Error(response.data.message || 'Failed to add room');
       }
-      toast.success("Room updated successfully")
-      return response.data.room
+      
+      return response.data.room;
     } catch (error) {
-      console.log("UPDATE_ROOM_API ERROR............", error)
-      toast.error(error.response?.data?.message || "Failed to update room")
-      throw error
-    } finally {
-      toast.dismiss(toastId)
+      // The apiConnector already enhanced the error
+      return rejectWithValue(error);
     }
   }
-}
+);
 
-export function getRoomDetails(token, roomId) {
-  return async () => {
-    const toastId = toast.loading("Fetching room details...")
+// Delete room
+export const deleteRoomById = createAsyncThunk(
+  'room/deleteRoomById',
+  async (roomId, { rejectWithValue }) => {
     try {
-      const response = await apiConnector("GET", `${GET_ROOM_DETAILS_API}/${roomId}`, null, {
-        Authorization: `Bearer ${token}`,
-      })
+      const response = await apiConnector(
+        "DELETE",
+        `${DELETE_ROOM_API}/${roomId}`,
+        null, // No body needed for DELETE
+        {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      );
       
       if (!response.data.success) {
-        throw new Error(response.data.message)
+        throw new Error(response.data.message || 'Failed to delete room');
       }
-      return response.data.room
+      
+      toast.success("Room deleted successfully");
+      return roomId;
     } catch (error) {
-      console.log("GET_ROOM_DETAILS_API ERROR............", error)
-      toast.error("Failed to fetch room details")
-      throw error
-    } finally {
-      toast.dismiss(toastId)
+      toast.error(error.message || 'Failed to delete room');
+      return rejectWithValue(error.message);
     }
   }
-}
+);
+
+// Update room details
+export const updateRoomDetails = createAsyncThunk(
+  'room/updateRoomDetails',
+  async ({ roomId, formData }, { rejectWithValue }) => {
+    try {
+      const response = await apiConnector(
+        "PUT", 
+        `${UPDATE_ROOM_API}/${roomId}`, 
+        formData,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      );
+      if (!response.data.success) {
+        return rejectWithValue(response.data.message);
+      }
+      toast.success("Room updated successfully");
+      return response.data.room;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Get room details
+export const getRoomDetails = createAsyncThunk(
+  'room/getRoomDetails',
+  async (roomId, { rejectWithValue }) => {
+    try {
+      const response = await apiConnector(
+        "GET",
+        `${GET_ROOM_DETAILS_API}/${roomId}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      );
+      if (!response.data.success) {
+        return rejectWithValue(response.data.message);
+      }
+      return response.data.room;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

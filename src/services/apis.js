@@ -19,13 +19,13 @@ export const settingsEndpoints = {
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 }
 export const adminEndpoints = {
-  ADD_ROOM_API:BASE_URL + "/admin/rooms/add",
-  GET_ALL_ROOMS_API:BASE_URL + "/admin/rooms",
-  UPDATE_ROOM_API:BASE_URL + "/admin/rooms/update",
-  DELETE_ROOM_API:BASE_URL + "/admin/rooms/delete",
-  GET_ROOM_DETAILS_API:BASE_URL + "/admin/rooms/details",
-  GET_ALL_BOOKINGS_API:BASE_URL + "/admin/bookings",
-  UPDATE_BOOKING_STATUS_API:BASE_URL + "/admin/bookings/update-status",
-  GET_ALL_USERS_API:BASE_URL + "/admin/users",
-  UPDATE_USER_ROLE_API:BASE_URL + "/admin/users/update-role",
+  // Remove /api/v1 from these since it's already in BASE_URL
+  ADD_ROOM_API: BASE_URL + "/rooms/createRoom",
+  GET_ALL_ROOMS_API: BASE_URL + "/rooms/getAllRooms",
+  GET_ROOM_DETAILS_API: BASE_URL + "/rooms/getRoomDetails",
+  UPDATE_ROOM_API: BASE_URL + "/rooms/updateRoom",
+  DELETE_ROOM_API: BASE_URL + "/rooms/deleteRoom",
+  
+  PUBLIC_GET_ALL_ROOMS_API: BASE_URL + "/public/rooms",
+  PUBLIC_GET_ROOM_DETAILS_API: BASE_URL + "/public/rooms/:roomId",
 };

@@ -8,10 +8,19 @@ const {
   deleteRoom
 } = require('../controllers/roomController');
 
-router.post('/rooms/add', addRoom);
-router.get('/rooms', getAllRooms);
-router.get('/rooms/:id', getRoomDetails);
-router.put('/rooms/:id', updateRoom);
-router.delete('/rooms/:id', deleteRoom);
+// Admin room management routes
+router.post("/createRoom",addRoom)
+// Get all Rooms
+router.get("/getAllRooms", getAllRooms)
+// Get Details for a Specific Room
+router.get("/getRoomDetails/:roomId", getRoomDetails)
+// Edit Room details
+router.put("/updateRoom", updateRoom)
+// Delete a Room
+router.delete("/deleteRoom/:roomId", deleteRoom)
+// Public room endpoints (accessible to all users)
+router.get("/public/rooms", getAllRooms)
+router.get("/public/rooms/:roomId", getRoomDetails)
+
 
 module.exports = router;

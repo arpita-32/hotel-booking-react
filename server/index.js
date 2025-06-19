@@ -8,7 +8,7 @@ const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const Profile = require("./routes/Profile");
-const adminRoutes = require("./routes/adminRoutes");
+const roomRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -29,12 +29,11 @@ app.use(
     optionsSuccessStatus: 204
   })
 );
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/tmp",
-  })
-);
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}));
+
 
 // Cloudinary connection
 cloudinaryConnect();
@@ -42,7 +41,7 @@ cloudinaryConnect();
 // Route imports with error handling
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", Profile);
-app.use('api/v1/admin', adminRoutes);
+app.use('/api/v1/rooms', roomRoutes); // Changed from adminRoutes to roomRoutes
 
 
 // Default route
@@ -54,14 +53,14 @@ app.get("/", (req, res) => {
 });
 
 // Error handling middleware (fixed - added next parameter)
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({
+  res.status(500).json({ 
     success: false,
-    message: 'Internal Server Error',
-    error: err.message
+    message: 'Internal Server Error'
   });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`); 
