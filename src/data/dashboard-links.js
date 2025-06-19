@@ -2,7 +2,14 @@ export const ACCOUNT_TYPE = {
   ADMIN: "Admin",
   CUSTOMER: "Customer",
 };
-
+export const profileOnlyLinks = [
+  {
+    id: 1,
+    name: "My Profile",
+    path: "/dashboard/my-profile",
+    icon: "VscAccount",
+  }
+];
 export const normalUserSidebarLinks = [
   {
     id: 1,

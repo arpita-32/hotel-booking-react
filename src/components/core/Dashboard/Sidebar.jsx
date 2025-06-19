@@ -7,6 +7,8 @@ import { VscSignOut } from 'react-icons/vsc';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../common/ConfirmationModal';
 import { useState } from 'react';
+import { profileOnlyLinks } from "../../../data/dashboard-links";
+
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.profile);
@@ -18,7 +20,11 @@ const Sidebar = () => {
     <div className="hidden md:flex flex-col w-64 h-screen bg-gray-800 text-white">
       <div className="flex flex-col flex-grow pt-5 overflow-y-auto">
         <div className="flex flex-col space-y-1">
-          {normalUserSidebarLinks.map((link) => (
+          
+          {profileOnlyLinks.map((link) => (
+  <SidebarLink key={link.id} link={link} iconName={link.icon} />
+))}
+{normalUserSidebarLinks.map((link) => (
             <SidebarLink key={link.id} link={link} iconName={link.icon} />
           ))}
         </div>

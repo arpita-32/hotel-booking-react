@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllRooms, deleteRoomById } from '../../../../services/operations/roomAPI';
 import AddRoomForm from './AddRoomForm';
 import { toast } from 'react-hot-toast';
+import HighlightText from '../../../common/HighlightText';
 
 const AllRooms = () => {
   const dispatch = useDispatch();
@@ -40,12 +41,14 @@ const AllRooms = () => {
   );
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">All Rooms ({rooms?.length || 0})</h2>
+    <div className="p-4 sm:p-6 bg-richblack-800 rounded-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+        <h2 className="text-2xl font-bold text-richblack-5">
+          All <HighlightText text={`Rooms (${rooms?.length || 0})`} />
+        </h2>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+          className="bg-yellow-50 text-richblack-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-100 transition-colors"
         >
           {showAddForm ? 'Hide Form' : 'Add New Room'}
         </button>
@@ -57,9 +60,9 @@ const AllRooms = () => {
         </div>
       )}
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg overflow-hidden">
-          <thead className="bg-gray-800 text-white">
+      <div className="overflow-x-auto rounded-lg border border-richblack-700">
+        <table className="min-w-full bg-richblack-800">
+          <thead className="bg-richblack-700 text-richblack-5">
             <tr>
               <th className="py-3 px-4 text-left">Room Number</th>
               <th className="py-3 px-4 text-left">Type</th>
@@ -69,9 +72,9 @@ const AllRooms = () => {
               <th className="py-3 px-4 text-left">Actions</th>
             </tr>
           </thead>
-          <tbody className="text-gray-700">
+          <tbody className="text-richblack-100 divide-y divide-richblack-700">
             {rooms?.map((room) => (
-              <tr key={room._id} className="border-b border-gray-200 hover:bg-gray-50">
+              <tr key={room._id} className="hover:bg-richblack-700 transition-colors">
                 <td className="py-3 px-4">{room.roomNumber}</td>
                 <td className="py-3 px-4">{room.roomType}</td>
                 <td className="py-3 px-4">${room.price}</td>
@@ -86,7 +89,7 @@ const AllRooms = () => {
                 <td className="py-3 px-4">
                   <button
                     onClick={() => handleDelete(room._id)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-pink-400 hover:text-pink-300 transition-colors"
                   >
                     Delete
                   </button>
@@ -98,6 +101,7 @@ const AllRooms = () => {
       </div>
     </div>
   );
+
 };
 
 export default AllRooms;

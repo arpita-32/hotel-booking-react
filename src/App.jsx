@@ -15,6 +15,8 @@ import Settings from './components/core/Dashboard/Settings';
 import Profile from './components/core/Dashboard/customer/Profile';
 import AddRoomForm from './components/core/Dashboard/admin/AddRoomForm';
 import AllRooms from './components/core/Dashboard/admin/AllRooms';
+import ForgotPassword from './pages/ForgotPassword';
+import UpdatePassword from './pages/UpdatePassword';
 
 const App = () => {
   return (
@@ -32,7 +34,23 @@ const App = () => {
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-
+            <Route path="/my-profile" element={<Profile/>} />
+           <Route
+          path="/forgot-password"
+          element={
+            <OpenRoute>
+              <ForgotPassword />
+            </OpenRoute>
+          }
+        />
+      <Route
+          path="/update-password/:id"
+          element={
+            <OpenRoute>
+              <UpdatePassword />
+            </OpenRoute>
+          }
+        />
             
         <Route
           path="verify-email"

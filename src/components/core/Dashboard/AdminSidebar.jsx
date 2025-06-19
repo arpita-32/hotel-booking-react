@@ -7,6 +7,7 @@ import { VscSignOut } from 'react-icons/vsc';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../common/ConfirmationModal';
 import { useState } from 'react';
+import { profileOnlyLinks } from "../../../data/dashboard-links";
 
 const AdminSidebar = () => {
   const { user } = useSelector((state) => state.profile);
@@ -21,6 +22,9 @@ const AdminSidebar = () => {
           {adminSidebarLinks.map((link) => (
             <SidebarLink key={link.id} link={link} iconName={link.icon} />
           ))}
+          {profileOnlyLinks.map((link) => (
+  <SidebarLink key={link.id} link={link} iconName={link.icon} />
+))}
         </div>
 
         <div className="mt-auto p-4">

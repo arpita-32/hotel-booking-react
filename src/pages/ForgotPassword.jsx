@@ -1,37 +1,44 @@
-import { useState } from "react"
-import { BiArrowBack } from "react-icons/bi"
-import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { getPasswordResetToken } from "../services/operations/authAPI"
+import React,{ useState } from "react";
+import { BiArrowBack } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getPasswordResetToken } from "../services/operations/authAPI";
+import HighlightText from "../components/common/HighlightText";
 
 function ForgotPassword() {
-  const [email, setEmail] = useState("")
-  const [emailSent, setEmailSent] = useState(false)
-  const dispatch = useDispatch()
-  const { loading } = useSelector((state) => state.auth)
+  const [email, setEmail] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
 
   const handleOnSubmit = (e) => {
-    e.preventDefault()
-    dispatch(getPasswordResetToken(email, setEmailSent))
-  }
+    e.preventDefault();
+    dispatch(getPasswordResetToken(email, setEmailSent));
+  };
 
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center px-4">
+    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center px-4 sm:px-6 lg:px-8">
       {loading ? (
         <div className="spinner"></div>
       ) : (
-        <div className="w-full max-w-[500px] p-4 sm:p-6 lg:p-8">
-          <h1 className="text-xl sm:text-2xl md:text-[1.875rem] font-semibold leading-[1.5] sm:leading-[2.375rem] text-richblack-5">
-            {!emailSent ? "Reset your password" : "Check email"}
+        <div className="w-full max-w-[500px] p-4 sm:p-6 lg:p-8 bg-richblack-800 rounded-lg shadow-lg">
+          <h1 className="text-xl sm:text-2xl md:text-[1.875rem] font-semibold leading-[1.5] sm:leading-[2.375rem] text-richblack-5 mb-4">
+            {!emailSent ? (
+              <>
+                Reset your <HighlightText text="password" />
+              </>
+            ) : (
+              "Check your email"
+            )}
           </h1>
           <p className="my-3 sm:my-4 text-sm sm:text-base md:text-[1.125rem] leading-[1.5] sm:leading-[1.625rem] text-richblack-100">
             {!emailSent
               ? "Have no fear. We'll email you instructions to reset your password. If you don't have access to your email we can try account recovery"
               : `We have sent the reset email to ${email}`}
           </p>
-          <form onSubmit={handleOnSubmit}>
+          <form onSubmit={handleOnSubmit} className="mt-6">
             {!emailSent && (
-              <label className="w-full">
+              <label className="w-full block mb-4">
                 <p className="mb-1 text-xs sm:text-sm md:text-[0.875rem] leading-[1.375rem] text-richblack-5">
                   Email Address <sup className="text-pink-200">*</sup>
                 </p>
@@ -42,20 +49,20 @@ function ForgotPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter email address"
-                  className="form-style w-full text-sm sm:text-base"
+                  className="w-full rounded-lg bg-richblack-700 p-3 text-richblack-5 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-orange-500"
                 />
               </label>
             )}
             <button
               type="submit"
-              className="mt-4 sm:mt-6 w-full rounded-[8px] bg-yellow-50 py-2 sm:py-[12px] px-[12px] font-medium text-richblack-900 text-sm sm:text-base"
+              className="mt-4 sm:mt-6 w-full rounded-lg bg-orange-500 py-3 px-4 font-medium text-white hover:bg-orange-600 transition-colors duration-200"
             >
               {!emailSent ? "Submit" : "Resend Email"}
             </button>
           </form>
-          <div className="mt-4 sm:mt-6 flex items-center justify-between">
-            <Link to="/login">
-              <p className="flex items-center gap-x-2 text-richblack-5 text-sm sm:text-base">
+          <div className="mt-6 flex items-center justify-between">
+            <Link to="/login" className="group">
+              <p className="flex items-center gap-x-2 text-richblack-5 text-sm sm:text-base group-hover:text-orange-200 transition-colors">
                 <BiArrowBack /> Back To Login
               </p>
             </Link>
@@ -63,7 +70,7 @@ function ForgotPassword() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default ForgotPassword
+export default ForgotPassword;

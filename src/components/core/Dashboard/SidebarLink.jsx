@@ -11,14 +11,14 @@ const SidebarLink = ({ link, iconName }) => {
   return (
     <NavLink
       to={link.path}
-      className={`flex items-center px-4 py-3 text-sm font-medium ${
+      className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg mx-2 ${
         isActive 
-          ? 'bg-orange-600 text-white' 
-          : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-      }`}
+          ? 'bg-richblack-700 text-yellow-50' 
+          : 'text-richblack-200 hover:bg-richblack-700 hover:text-richblack-5'
+      } transition-colors`}
     >
-      <Icon className={`mr-3 flex-shrink-0 h-6 w-6 ${
-        isActive ? 'text-white' : 'text-gray-400'
+      <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${
+        isActive ? 'text-yellow-50' : 'text-richblack-300'
       }`} />
       {link.name}
     </NavLink>
