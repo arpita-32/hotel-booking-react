@@ -3,9 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   signupData: null,
   loading: false,
-  token: localStorage.getItem("token") 
-    ? JSON.parse(localStorage.getItem("token")) 
-    : null,
+  token: localStorage.getItem("token") || null,
   user: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : null,
@@ -23,11 +21,11 @@ const authSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload;
-      localStorage.setItem("token", JSON.stringify(action.payload));
+      localStorage.setItem("token", action.payload); // ✅ Don't stringify
     },
     setUser(state, action) {
       state.user = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.setItem("user", JSON.stringify(action.payload)); // ✅ OK
     },
     logout(state) {
       state.token = null;

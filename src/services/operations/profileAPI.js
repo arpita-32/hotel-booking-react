@@ -4,14 +4,14 @@ import { apiConnector } from "../apiConnector"
 import { profileEndpoints } from "../apis"
 import { logout } from "./authAPI"
 
-const { GET_USER_PROFILE_API } = profileEndpoints
+const { GET_USER_DETAILS_API, GET_USER_ENROLLED_COURSES_API, GET_INSTRUCTOR_DATA_API } = profileEndpoints
 
-export function getProfile(token, navigate) {
+export function getUserDetails(token, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-      const response = await apiConnector("GET", GET_USER_PROFILE_API, null, {
+      const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
         Authorization: `Bearer ${token}`,
       })
       console.log("GET_USER_DETAILS API RESPONSE............", response)

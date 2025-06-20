@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiLogIn } from 'react-icons/fi';
+import { FiStar , FiMenu, FiX, FiLogIn } from 'react-icons/fi';
 import { BsChevronDown } from 'react-icons/bs';
 import ProfileDropdown from './ProfileDropdown';
 import { useSelector, useDispatch } from 'react-redux';
@@ -55,8 +55,9 @@ const NavBar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-orange-500">LuxuryHaven</span>
-          </Link>
+  <FiStar className="text-orange-600 text-2xl mr-2" />
+  <span className="text-2xl font-bold text-orange-500">LuxuryHaven</span>
+</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">

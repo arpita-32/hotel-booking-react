@@ -1,103 +1,104 @@
 const Profile = require("../models/Profile")
+
 const User = require("../models/User")
-const uploadImageToCloudinary = require("../utils/imageUploader")
-
-
-// controllers/Profile.js
+const { uploadImageToCloudinary } = require("../utils/imageUploader")
+// Method for updating a profile
 exports.updateProfile = async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Add this line
-    console.log("Authenticated user:", req.user); // Add this line
+    const {
+      firstName = "",
+      lastName = "",
+      dateOfBirth = "",
+      about = "",
+      contactNumber = "",
+      gender = "",
+    } = req.body
+    const id = req.user.id
 
-    const { firstName, lastName, gender, dateOfBirth, about, contactNumber } = req.body;
-    const userId = req.user._id;
+    // Find the profile by id
+    const userDetails = await User.findById(id)
+    const profile = await Profile.findById(userDetails.additionalDetails)
 
-    // Update User document
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { firstName, lastName },
-      { new: true }
-    ).select("-password");
+    const user = await User.findByIdAndUpdate(id, {
+      firstName,
+      lastName,
+    })
+    await user.save()
 
-    // Update Profile document
-    const updatedProfile = await Profile.findOneAndUpdate(
-      { user: userId },
-      { gender, dateOfBirth, about, contactNumber },
-      { new: true, upsert: true }
-    );
+    // Update the profile fields
+    profile.dateOfBirth = dateOfBirth
+    profile.about = about
+    profile.contactNumber = contactNumber
+    profile.gender = gender
 
-    return res.status(200).json({
+    // Save the updated profile
+    await profile.save()
+
+    // Find the updated user details
+    const updatedUserDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec()
+
+    return res.json({
       success: true,
       message: "Profile updated successfully",
-      data: {
-        ...updatedUser.toObject(),
-        additionalDetails: updatedProfile.toObject()
-      }
-    });
+      updatedUserDetails,
+    })
   } catch (error) {
-    console.error("Profile update error:", error);
+    console.log(error)
     return res.status(500).json({
       success: false,
-      message: "Profile update failed",
-      error: error.message
-    });
+      error: error.message,
+    })
   }
-};
-// Get User Profile
-exports.getUserProfile = async (req, res) => {
+}
+
+exports.deleteAccount = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming you have user info in req.user
-
-    const profile = await Profile.findOne({ user: userId });
-
-    if (!profile) {
+    const id = req.user.id
+    console.log(id)
+    const user = await User.findById({ _id: id })
+    if (!user) {
       return res.status(404).json({
         success: false,
-        message: "Profile not found",
-      });
+        message: "User not found",
+      })
     }
-
+    // You may want to add actual delete logic here
+    // await User.findByIdAndDelete(id);
+    // await Profile.findByIdAndDelete(user.additionalDetails);
     res.status(200).json({
       success: true,
-      data: profile,
+      message: "User deleted successfully",
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Error fetching profile",
-      error: error.message,
-    });
+    console.log(error)
+    res
+      .status(500)
+      .json({ success: false, message: "User Cannot be deleted successfully" })
   }
-};
+}
 
-// Delete User Profile
-exports.deleteProfile = async (req, res) => {
+exports.getAllUserDetails = async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    const profile = await Profile.findOneAndDelete({ user: userId });
-
-    if (!profile) {
-      return res.status(404).json({
-        success: false,
-        message: "Profile not found",
-      });
-    }
-
+    const id = req.user.id
+    const userDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec()
+    console.log(userDetails)
     res.status(200).json({
       success: true,
-      message: "Profile deleted successfully",
-    });
+      message: "User Data fetched successfully",
+      data: userDetails,
+    })
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Error deleting profile",
-      error: error.message,
-    });
+      message: error.message,
+    })
   }
-};
+}
+
 exports.updateDisplayPicture = async (req, res) => {
   try {
     const displayPicture = req.files.displayPicture

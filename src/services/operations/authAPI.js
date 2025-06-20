@@ -101,8 +101,9 @@ export function login(email, password, navigate) {
         `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`;
       
       dispatch(setUser({ ...response.data.user, image: userImage }));
-      
-      localStorage.setItem("token", JSON.stringify(response.data.token));
+
+      // ✅ FIXED: Do NOT use JSON.stringify
+      localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify({ 
         ...response.data.user, 
         image: userImage 
@@ -122,6 +123,7 @@ export function login(email, password, navigate) {
     toast.dismiss(toastId);
   };
 }
+
 
 // In authAPI.js
 export function logout(navigate) {

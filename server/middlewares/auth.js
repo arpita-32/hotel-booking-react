@@ -1,18 +1,14 @@
-// middleware/auth.js
-
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const User = require("../models/User");
 
 dotenv.config();
 
-// Authentication middleware
 exports.auth = async (req, res, next) => {
   try {
-    // Extract token from Authorization header, cookies, or body
-    const token = req.header("Authorization")?.replace("Bearer ", "") ||
-                  req.cookies.token ||
-                  req.body.token;
+    // Get token from header or cookie
+    let token = req.cookies?.token || 
+                req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
       return res.status(401).json({
@@ -22,56 +18,58 @@ exports.auth = async (req, res, next) => {
     }
 
     try {
-      // Verify the token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Find the user by ID from the decoded token
-      const user = await User.findById(decoded.id);
-      if (!user) {
-        return res.status(401).json({
-          success: false,
-          message: "User not found"
-        });
-      }
-
-      req.user = user; // Attach user to the request
+      req.user = decoded;
       next();
-    } catch (err) {
-      const isTokenExpired = err.name === 'TokenExpiredError';
+    } catch {
       return res.status(401).json({
         success: false,
-        message: isTokenExpired ? "Token expired. Please log in again." : "Invalid token",
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        message: "Invalid or expired token"
       });
     }
-
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Authentication failed",
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: error.message
     });
   }
 };
 
-// Authorization middleware: Customer only
-exports.isCustomer = (req, res, next) => {
-  if (req.user?.role !== "Customer") {
-    return res.status(403).json({
+exports.isCustomer = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user?.role !== "Customer") {
+      return res.status(403).json({
+        success: false,
+        message: "Access restricted to customers"
+      });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      message: "This route is restricted to customers",
+      message: "Role verification failed",
+      error: error.message
     });
   }
-  next();
 };
 
-// Authorization middleware: Admin only
-exports.isAdmin = (req, res, next) => {
-  if (req.user?.role !== "Admin") {
-    return res.status(403).json({
+exports.isAdmin = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user?.role !== "Admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Access restricted to admins"
+      });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      message: "This route is restricted to admins",
+      message: "Role verification failed",
+      error: error.message
     });
   }
-  next();
 };

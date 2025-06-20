@@ -1,6 +1,4 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Footer from './components/common/Footer';
-import NavBar from './components/common/NavBar';
 import OpenRoute from './components/core/Auth/OpenRoute';
 import AboutUs from './pages/AboutUs';
 import BookingPage from './pages/BookingPage';
@@ -12,11 +10,12 @@ import Rooms from './pages/Rooms';
 import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
 import Settings from './components/core/Dashboard/Settings';
-import Profile from './components/core/Dashboard/customer/Profile';
+import Profile from './components/core/Dashboard/customer/MyProfile';
 import AddRoomForm from './components/core/Dashboard/admin/AddRoomForm';
 import AllRooms from './components/core/Dashboard/admin/AllRooms';
 import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
+import MyProfile from './components/core/Dashboard/customer/MyProfile';
 
 const App = () => {
   return (
@@ -34,7 +33,7 @@ const App = () => {
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/my-profile" element={<Profile/>} />
+            <Route path="/my-profile" element={<MyProfile/>} />
            <Route
           path="/forgot-password"
           element={
@@ -62,14 +61,14 @@ const App = () => {
         />
       
 <Route path="/admin/dashboard" element={<Dashboard />}>
-  <Route path="my-profile" element={<Profile />} />
+  <Route path="my-profile" element={<MyProfile />} />
   <Route path="settings" element={<Settings />} />
   <Route path="add-room" element={<AddRoomForm />} />
   <Route path="all-rooms" element={<AllRooms />} />
 </Route>
 
 <Route path="/dashboard" element={<Dashboard />}>
-  <Route path="my-profile" element={<Profile />} />
+  <Route path="my-profile" element={<MyProfile />} />
   <Route path="settings" element={<Settings />} />
 </Route>
           </Routes>

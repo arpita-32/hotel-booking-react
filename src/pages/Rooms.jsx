@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllRooms } from '../services/operations/roomAPI';
 import { FiCalendar, FiChevronRight, FiStar, FiUser, FiX } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navbar from '../components/common/NavBar';
 import HighlightText from '../components/common/HighlightText';
+import Loading from '../components/common/Loading';
 
 const Rooms = () => {
+  const dispatch = useDispatch();
+  const { rooms: backendRooms, loading, error } = useSelector((state) => state.room);
   const [activeFilter, setActiveFilter] = useState('all');
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -18,84 +22,31 @@ const Rooms = () => {
     children: 0
   });
 
-  const roomTypes = [
-    {
-      id: 'deluxe',
-      name: 'Deluxe Room',
-      price: 199,
-      size: '350 sq ft',
-      beds: '1 King Bed',
-      description: 'Spacious room with king-size bed, work desk, and luxurious bathroom amenities.',
-      longDescription: 'Our Deluxe Rooms offer a perfect blend of comfort and functionality. Featuring a plush king-size bed with premium linens, a spacious work desk, and a marble-appointed bathroom with rain shower. Enjoy high-speed WiFi, a 55-inch Smart TV, and stunning city views.',
-      amenities: ['WiFi', 'Breakfast', 'Smart TV', 'Air Conditioning', 'Work Desk', 'Marble Bathroom'],
-      image: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      type: 'room'
-    },
-    {
-      id: 'executive',
-      name: 'Executive Suite',
-      price: 299,
-      size: '550 sq ft',
-      beds: '1 King Bed + Sofa Bed',
-      description: 'Elegant suite with separate living area, premium furnishings, and enhanced workspace.',
-      longDescription: 'The Executive Suite provides a separate living area and bedroom for added privacy and comfort. Enjoy premium furnishings, a dedicated workspace, and a mini bar stocked with complimentary beverages. The luxurious bathroom features dual vanities and a deep soaking tub.',
-      amenities: ['WiFi', 'Breakfast', 'Mini Bar', 'Smart TV', 'Air Conditioning', 'Soaking Tub', 'Separate Living Area'],
-      image: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      type: 'suite'
-    },
-    {
-      id: 'presidential',
-      name: 'Presidential Suite',
-      price: 499,
-      size: '1200 sq ft',
-      beds: '1 King Bed + 1 Queen Bed',
-      description: 'The ultimate in luxury with multiple rooms, premium furnishings, and exclusive services.',
-      longDescription: 'Our Presidential Suite is the epitome of luxury, featuring a grand living room, formal dining area, master bedroom with walk-in closet, and a second bedroom. Enjoy personalized butler service, a private chef available upon request, and access to our exclusive executive lounge. The master bathroom boasts a steam shower and jacuzzi tub.',
-      amenities: ['WiFi', 'Breakfast', 'Mini Bar', 'Smart TV', '24/7 Butler', 'Private Chef', 'Jacuzzi', 'Executive Lounge Access'],
-      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      type: 'suite'
-    },
-    {
-      id: 'family',
-      name: 'Family Suite',
-      price: 349,
-      size: '700 sq ft',
-      beds: '1 King Bed + 2 Twin Beds',
-      description: 'Spacious suite perfect for families with children, featuring separate sleeping areas.',
-      longDescription: 'Designed with families in mind, this suite offers a separate bedroom with king bed and a living area with two twin beds. Includes child-friendly amenities, board games, and a PlayStation console. The bathroom features a tub/shower combo and child safety features.',
-      amenities: ['WiFi', 'Breakfast', 'Smart TV', 'Air Conditioning', 'PlayStation', 'Board Games', 'Child Safety Features'],
-      image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      type: 'suite'
-    },
-    {
-      id: 'oceanview',
-      name: 'Ocean View Room',
-      price: 249,
-      size: '400 sq ft',
-      beds: '1 King Bed or 2 Queen Beds',
-      description: 'Beautiful room with stunning ocean views and balcony access.',
-      longDescription: 'Wake up to breathtaking ocean views from your private balcony. These rooms feature your choice of king bed or two queen beds, a sitting area, and floor-to-ceiling windows. Enjoy the sound of waves from your room and direct access to our private beach.',
-      amenities: ['WiFi', 'Breakfast', 'Smart TV', 'Air Conditioning', 'Private Balcony', 'Ocean View', 'Beach Access'],
-      image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      type: 'room'
-    },
-    {
-      id: 'honeymoon',
-      name: 'Honeymoon Suite',
-      price: 399,
-      size: '650 sq ft',
-      beds: '1 King Bed',
-      description: 'Romantic suite with special amenities for couples, including champagne on arrival.',
-      longDescription: 'Celebrate your love in our romantic Honeymoon Suite, featuring a king-size canopy bed, in-room jacuzzi, and private balcony with sunset views. Includes champagne and chocolate-covered strawberries on arrival, rose petal turndown service, and couple\'s massage discount.',
-      amenities: ['WiFi', 'Breakfast', 'Smart TV', 'Jacuzzi', 'Champagne', 'Balcony', 'Turndown Service'],
-      image: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80',
-      type: 'suite'
-    }
-  ];
+  useEffect(() => {
+    dispatch(fetchAllRooms());
+  }, [dispatch]);
+
+  // Map backend rooms to frontend format
+  const allRooms = backendRooms?.map(room => ({
+    id: room._id,
+    name: `${room.roomType} Room ${room.roomNumber}`,
+    price: room.price,
+    size: `${Math.floor(Math.random() * 200) + 300} sq ft`, // Can be replaced with actual size if available
+    beds: room.capacity <= 2 ? '1 King Bed' : `${room.capacity} Queen Beds`,
+    description: room.description || 'Comfortable room with premium amenities',
+    longDescription: room.description || 'Our comfortable room features premium amenities and quality service.',
+    amenities: Array.isArray(room.amenities) ? room.amenities : ['WiFi', 'TV', 'Air Conditioning'],
+    image: room.thumbnail || 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    type: room.roomType.toLowerCase() === 'suite' ? 'suite' : 'room',
+    roomNumber: room.roomNumber,
+    capacity: room.capacity,
+    roomType: room.roomType,
+    images: room.images || []
+  })) || [];
 
   const filteredRooms = activeFilter === 'all' 
-    ? roomTypes 
-    : roomTypes.filter(room => room.type === activeFilter);
+    ? allRooms 
+    : allRooms.filter(room => room.type === activeFilter);
 
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
@@ -120,6 +71,27 @@ Check-out: ${bookingForm.checkOut}
 Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
     setShowBookingModal(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-richblack-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Error Loading Rooms</h2>
+          <p className="mb-4">{error.message || 'Failed to load rooms'}</p>
+          <button 
+            onClick={() => dispatch(fetchAllRooms())}
+            className="bg-yellow-50 text-richblack-900 px-4 py-2 rounded-lg hover:bg-yellow-100 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-richblack-900 text-black min-h-screen flex flex-col">
@@ -175,65 +147,79 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
 
       {/* Rooms Grid */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRooms.map((room) => (
-            <div 
-              key={room.id} 
-              className="bg-richblack-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
-            >
-              <img 
-                src={room.image} 
-                alt={room.name} 
-                className="w-full h-48 sm:h-56 object-cover"
-              />
-              <div className="p-4 sm:p-6 flex flex-col flex-grow">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg sm:text-xl font-bold text-black">{room.name}</h3>
-                  <div className="text-orange-500 font-bold text-lg">
-                    ${room.price}<span className="text-richblack-300 text-sm"> / night</span>
+        {filteredRooms.length === 0 ? (
+          <div className="text-center py-12 text-richblack-100">
+            No rooms found matching your criteria
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredRooms.map((room) => (
+              <div 
+                key={room.id} 
+                className="bg-richblack-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
+              >
+                <img 
+                  src={room.image} 
+                  alt={room.name} 
+                  className="w-full h-48 sm:h-56 object-cover"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80';
+                  }}
+                />
+                <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-lg sm:text-xl font-bold text-black">{room.name}</h3>
+                    <div className="text-orange-500 font-bold text-lg">
+<div className="text-orange-500 font-bold text-lg">
+  <div className="font-medium text-orange-600 text-sm sm:text-base">
+    ₹{(room.price * 83).toLocaleString('en-IN')}/night
+  </div>
+</div>
+
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center text-sm text-richblack-300 mb-2">
-                  <FiStar className="text-orange-500 mr-1" />
-                  <span>{room.size} • {room.beds}</span>
-                </div>
-                <p className="text-richblack-200 text-sm mb-4 flex-grow">{room.description}</p>
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-black mb-2">Amenities:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {room.amenities.slice(0, 4).map((amenity, index) => (
-                      <span 
-                        key={index} 
-                        className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black"
-                      >
-                        {amenity}
-                      </span>
-                    ))}
-                    {room.amenities.length > 4 && (
-                      <span className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black">
-                        +{room.amenities.length - 4} more
-                      </span>
-                    )}
+                  <div className="flex items-center text-sm text-richblack-300 mb-2">
+                    <FiStar className="text-orange-500 mr-1" />
+                    <span>{room.size} • {room.beds}</span>
                   </div>
-                </div>
-                <div className="flex gap-2 mt-auto">
-                  <button
-                    onClick={() => handleViewDetails(room)}
-                    className="flex-1 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
-                  >
-                    Details
-                  </button>
-                  <button
-                    onClick={() => handleBookNow(room)}
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
-                  >
-                    Book Now
-                  </button>
+                  <p className="text-richblack-200 text-sm mb-4 flex-grow">{room.description}</p>
+                  <div className="mb-4">
+                    <h4 className="text-sm font-semibold text-black mb-2">Amenities:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {room.amenities.slice(0, 4).map((amenity, index) => (
+                        <span 
+                          key={index} 
+                          className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black"
+                        >
+                          {amenity}
+                        </span>
+                      ))}
+                      {room.amenities.length > 4 && (
+                        <span className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black">
+                          +{room.amenities.length - 4} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-auto">
+                    <button
+                      onClick={() => handleViewDetails(room)}
+                      className="flex-1 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                    >
+                      Details
+                    </button>
+                    <button
+                      onClick={() => handleBookNow(room)}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                    >
+                      Book Now
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Room Details Modal */}
@@ -256,7 +242,30 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                   src={selectedRoom.image} 
                   alt={selectedRoom.name} 
                   className="w-full h-48 sm:h-64 md:h-80 object-cover rounded-lg shadow-md"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80';
+                  }}
                 />
+                {/* Additional images gallery */}
+                {selectedRoom.images?.length > 0 && (
+                  <div className="mt-4">
+                    <h3 className="text-md sm:text-lg font-semibold mb-2 text-gray-800">More Images</h3>
+                    <div className="grid grid-cols-3 gap-2">
+                      {selectedRoom.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`${selectedRoom.name} ${index + 1}`}
+                          className="h-24 object-cover rounded cursor-pointer hover:opacity-80"
+                          onClick={() => setSelectedRoom({
+                            ...selectedRoom,
+                            image: image
+                          })}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="mt-4">
                   <h3 className="text-md sm:text-lg font-semibold mb-2 text-gray-800">Room Features</h3>
                   <div className="grid grid-cols-2 gap-2">
@@ -270,7 +279,14 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     </div>
                     <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
                       <div className="text-xs sm:text-sm text-gray-500">Price</div>
-                      <div className="font-medium text-orange-600 text-sm sm:text-base">${selectedRoom.price}/night</div>
+                      <div className="text-orange-500 font-bold text-lg">
+  ₹{selectedRoom.price * 83}<span className="text-richblack-300 text-sm"> / night</span>
+</div>
+
+                    </div>
+                    <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-500">Capacity</div>
+                      <div className="font-medium text-gray-900 text-sm sm:text-base">{selectedRoom.capacity} people</div>
                     </div>
                   </div>
                 </div>
@@ -290,21 +306,15 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                   ))}
                 </div>
                 
-                <Link
-                  to="/book"
-                  state={{ 
-                    room: selectedRoom,
-                    bookingDetails: {
-                      checkIn: '',
-                      checkOut: '',
-                      adults: 1,
-                      children: 0
-                    }
+                <button
+                  onClick={() => {
+                    setShowDetailsModal(false);
+                    setShowBookingModal(true);
                   }}
-                  className="inline-block w-full sm:w-auto bg-orange-500 hover:bg-orange-500 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                  className="inline-block w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
                 >
                   Book Now
-                </Link>
+                </button>
               </div>
             </div>
           </div>

@@ -15,19 +15,19 @@ const AllRooms = () => {
   }, [dispatch]);
 
   const handleDelete = async (roomId) => {
-  if (window.confirm('Are you sure you want to delete this room?')) {
-    try {
-      await dispatch(deleteRoomById(roomId));
-      toast.success('Room deleted successfully');
-      dispatch(fetchAllRooms()); // Refresh the list
-    } catch (error) {
-      toast.error(error.message || 'Failed to delete room');
+    if (window.confirm('Are you sure you want to delete this room?')) {
+      try {
+        await dispatch(deleteRoomById(roomId));
+        toast.success('Room deleted successfully');
+        dispatch(fetchAllRooms()); // Refresh the list
+      } catch (error) {
+        toast.error(error.message || 'Failed to delete room');
+      }
     }
-  }
-};
+  };
 
   if (loading) return <div className="p-6">Loading...</div>;
-  
+
   if (error) return (
     <div className="p-6 text-red-500">
       Error: {error.message || 'Failed to load rooms'}
@@ -77,7 +77,7 @@ const AllRooms = () => {
               <tr key={room._id} className="hover:bg-richblack-700 transition-colors">
                 <td className="py-3 px-4">{room.roomNumber}</td>
                 <td className="py-3 px-4">{room.roomType}</td>
-                <td className="py-3 px-4">${room.price}</td>
+                <td className="py-3 px-4">₹{(room.price * 83).toLocaleString('en-IN')}</td>
                 <td className="py-3 px-4">{room.capacity}</td>
                 <td className="py-3 px-4">
                   <span className={`px-2 py-1 rounded-full text-xs ${
@@ -101,7 +101,6 @@ const AllRooms = () => {
       </div>
     </div>
   );
-
 };
 
 export default AllRooms;

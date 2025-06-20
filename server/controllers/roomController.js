@@ -37,8 +37,14 @@ exports.addRoom = async (req, res) => {
       process.env.FOLDER_NAME
     );
 
-    // Process additional images
-    const images = req.files.images || [];
+    // Process additional images - handle both single file and array cases
+    let images = [];
+    if (req.files.images) {
+      images = Array.isArray(req.files.images) 
+        ? req.files.images 
+        : [req.files.images];
+    }
+
     const uploadedImages = await Promise.all(
       images.map(image => 
         uploadImageToCloudinary(image, process.env.FOLDER_NAME)
