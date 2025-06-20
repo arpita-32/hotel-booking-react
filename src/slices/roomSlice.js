@@ -9,7 +9,7 @@ import {
 } from "../services/operations/roomAPI";
 
 const initialState = {
-  rooms: [],
+  rooms: [],           // ✅ always initialize as array
   currentRoom: null,
   loading: false,
   error: null,
@@ -38,7 +38,10 @@ const roomSlice = createSlice({
       })
       .addCase(fetchAllRooms.fulfilled, (state, action) => {
         state.loading = false;
-        state.rooms = action.payload;
+        // ✅ Safely extract rooms array from payload
+        state.rooms = Array.isArray(action.payload.rooms)
+          ? action.payload.rooms
+          : [];
       })
       .addCase(fetchAllRooms.rejected, (state, action) => {
         state.loading = false;

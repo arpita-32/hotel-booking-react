@@ -2,63 +2,47 @@ const Profile = require("../models/Profile")
 const User = require("../models/User")
 const uploadImageToCloudinary = require("../utils/imageUploader")
 
-exports.createOrUpdateProfile = async (req, res) => {
-  try {
-      if (!req.user || !req.user._id) {
-      return res.status(401).json({
-        success: false,
-        message: "User authentication required",
-      });
-    }
 
-    const { gender, dateOfBirth, about, contactNumber } = req.body;
+// controllers/Profile.js
+exports.updateProfile = async (req, res) => {
+  try {
+    console.log("Request body:", req.body); // Add this line
+    console.log("Authenticated user:", req.user); // Add this line
+
+    const { firstName, lastName, gender, dateOfBirth, about, contactNumber } = req.body;
     const userId = req.user._id;
 
-    let profile = await Profile.findOne({ user: userId });
+    // Update User document
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { firstName, lastName },
+      { new: true }
+    ).select("-password");
 
-    if (profile) {
-      // Update existing profile
-      profile = await Profile.findByIdAndUpdate(
-        profile._id,
-        {
-          gender,
-          dateOfBirth,
-          about,
-          contactNumber,
-        },
-        { new: true }
-      );
-      return res.status(200).json({
-        success: true,
-        message: "Profile updated successfully",
-        data: profile,
-      });
-    }
+    // Update Profile document
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: userId },
+      { gender, dateOfBirth, about, contactNumber },
+      { new: true, upsert: true }
+    );
 
-    // Create new profile
-    profile = await Profile.create({
-      user: userId,
-      gender,
-      dateOfBirth,
-      about,
-      contactNumber,
-    });
-
-    res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: "Profile created successfully",
-      data: profile,
+      message: "Profile updated successfully",
+      data: {
+        ...updatedUser.toObject(),
+        additionalDetails: updatedProfile.toObject()
+      }
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
+    console.error("Profile update error:", error);
+    return res.status(500).json({
       success: false,
-      message: "Error creating/updating profile",
-      error: error.message,
+      message: "Profile update failed",
+      error: error.message
     });
   }
 };
-
 // Get User Profile
 exports.getUserProfile = async (req, res) => {
   try {

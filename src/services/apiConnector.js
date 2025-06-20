@@ -41,7 +41,6 @@ axiosInstance.interceptors.response.use(
 // apiConnector.js
 export const apiConnector = async (method, url, bodyData, headers = {}, params = {}) => {
   try {
-    const token = localStorage.getItem('token');
     const config = {
       method,
       url,
@@ -52,19 +51,21 @@ export const apiConnector = async (method, url, bodyData, headers = {}, params =
       },
     };
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // In your apiConnector.js
+const token = localStorage.getItem('token');
+if (token) {
+  config.headers.Authorization = `Bearer ${token}`;
+}
 
-    // Handle FormData
-    if (bodyData instanceof FormData) {
-      config.data = bodyData;
-      // Let browser set Content-Type with boundary
-      delete config.headers['Content-Type'];
-    } else {
-      config.data = bodyData;
-      config.headers['Content-Type'] = 'application/json';
-    }
+
+if (bodyData instanceof FormData) {
+  config.data = bodyData;
+  delete config.headers['Content-Type'];
+} else if (bodyData !== null && bodyData !== undefined) {
+  config.data = bodyData;
+  config.headers['Content-Type'] = 'application/json';
+}
+
 
     const response = await axiosInstance(config);
     return response;

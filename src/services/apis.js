@@ -18,7 +18,6 @@ export const settingsEndpoints = {
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 }
 export const adminEndpoints = {
-  // Remove /api/v1 from these since it's already in BASE_URL
   ADD_ROOM_API: BASE_URL + "/rooms/createRoom",
   GET_ALL_ROOMS_API: BASE_URL + "/rooms/getAllRooms",
   GET_ROOM_DETAILS_API: BASE_URL + "/rooms/getRoomDetails",

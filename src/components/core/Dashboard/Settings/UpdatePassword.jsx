@@ -40,12 +40,13 @@ export default function UpdatePassword() {
               Current Password
             </label>
             <input
-              type={showOldPassword ? "text" : "password"}
-              id="oldPassword"
-              placeholder="Enter Current Password"
-              className="form-style w-full !pr-10"
-              {...register("oldPassword", { required: true })}
-            />
+  type={showOldPassword ? "text" : "password"}
+  id="oldPassword"
+  placeholder="Enter Current Password"
+  className="form-style w-full !pr-10"
+  {...register("oldPassword", { required: true })}
+  autoComplete="current-password"
+/>
             <span
               onClick={() => setShowOldPassword((prev) => !prev)}
               className="absolute right-3 top-[38px] z-[10] cursor-pointer"
@@ -67,13 +68,15 @@ export default function UpdatePassword() {
             <label htmlFor="newPassword" className="lable-style">
               New Password
             </label>
-            <input
-              type={showNewPassword ? "text" : "password"}
-              id="newPassword"
-              placeholder="Enter New Password"
-              className="form-style w-full !pr-10"
-              {...register("newPassword", { required: true })}
-            />
+           <input
+  type={showNewPassword ? "text" : "password"}
+  id="newPassword"
+  placeholder="Enter New Password"
+  className="form-style w-full !pr-10"
+  {...register("newPassword", { required: true })}
+  autoComplete="new-password"
+/>
+
             <span
               onClick={() => setShowNewPassword((prev) => !prev)}
               className="absolute right-3 top-[38px] z-[10] cursor-pointer"

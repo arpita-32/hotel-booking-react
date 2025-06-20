@@ -1,60 +1,51 @@
-// Importing required modules
+// middleware/auth.js
+
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const User = require("../models/User");
-// Configuring dotenv to load environment variables from .env file
+
 dotenv.config();
 
-// auth middleware
+// Authentication middleware
 exports.auth = async (req, res, next) => {
   try {
-    // Check multiple possible token locations
-    let token = req.header("Authorization")?.replace("Bearer ", "") || 
-               req.cookies.token || 
-               req.body.token ||
-               req.headers['x-access-token'];
+    // Extract token from Authorization header, cookies, or body
+    const token = req.header("Authorization")?.replace("Bearer ", "") ||
+                  req.cookies.token ||
+                  req.body.token;
 
     if (!token) {
-      return res.status(401).json({ 
-        success: false, 
-        message: "Authorization token required",
-        code: "TOKEN_MISSING"
+      return res.status(401).json({
+        success: false,
+        message: "Authorization token missing"
       });
     }
 
-    // Verify token
     try {
+      // Verify the token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      
-      // Check if user still exists
+
+      // Find the user by ID from the decoded token
       const user = await User.findById(decoded.id);
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: "User not found",
-          code: "USER_NOT_FOUND"
+          message: "User not found"
         });
       }
 
-      // Attach user to request
-      req.user = user;
+      req.user = user; // Attach user to the request
       next();
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return res.status(401).json({ 
-          success: false, 
-          message: "Token expired",
-          code: "TOKEN_EXPIRED"
-        });
-      }
-      return res.status(401).json({ 
-        success: false, 
-        message: "Invalid token",
-        code: "INVALID_TOKEN"
+    } catch (err) {
+      const isTokenExpired = err.name === 'TokenExpiredError';
+      return res.status(401).json({
+        success: false,
+        message: isTokenExpired ? "Token expired. Please log in again." : "Invalid token",
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
       });
     }
+
   } catch (error) {
-    console.error("Auth middleware error:", error);
     return res.status(500).json({
       success: false,
       message: "Authentication failed",
@@ -63,55 +54,24 @@ exports.auth = async (req, res, next) => {
   }
 };
 
-exports.isCustomer = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id);
-    
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    if (user.role !== "Customer") {
-      return res.status(403).json({
-        success: false,
-        message: "This route is restricted to customers",
-      });
-    }
-    next();
-  } catch  {
-    return res.status(500).json({
+// Authorization middleware: Customer only
+exports.isCustomer = (req, res, next) => {
+  if (req.user?.role !== "Customer") {
+    return res.status(403).json({
       success: false,
-      message: "Role verification failed",
+      message: "This route is restricted to customers",
     });
   }
+  next();
 };
 
-exports.isAdmin = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id);
-    
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    if (user.role !== "Admin") {
-      return res.status(403).json({
-        success: false,
-        message: "This route is restricted to admins",
-      });
-    }
-    next();
-  } catch {
-    return res.status(500).json({
+// Authorization middleware: Admin only
+exports.isAdmin = (req, res, next) => {
+  if (req.user?.role !== "Admin") {
+    return res.status(403).json({
       success: false,
-      message: "Role verification failed",
+      message: "This route is restricted to admins",
     });
   }
+  next();
 };
-

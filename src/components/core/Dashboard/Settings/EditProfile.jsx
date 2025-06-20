@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../../../../services/operations/SettingsAPI";
 import IconBtn from "../../../common/IconBtn";
 import HighlightText from "../../../common/HighlightText";
+import { toast } from "react-hot-toast"; // Changed from react-toastify to react-hot-toast
+
 
 const GENDERS = ["Male", "Female", "Non-Binary", "Prefer not to say", "Other"];
 
@@ -19,13 +21,26 @@ export default function EditProfile() {
     formState: { errors },
   } = useForm();
 
-  const submitProfileForm = async (data) => {
-    try {
-      dispatch(updateProfile(token, data));
-    } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message);
-    }
-  };
+const submitProfileForm = async (data) => {
+  try {
+    // Format the data properly
+    const formData = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      gender: data.gender,
+      dateOfBirth: data.dateOfBirth,
+      about: data.about || "", // Handle empty about
+      contactNumber: data.contactNumber || null // Handle empty contact
+    };
+
+    console.log("Submitting profile data:", formData); // Add this line
+    
+    dispatch(updateProfile(token, formData));
+  } catch (error) {
+    console.error("Form submission error:", error);
+    toast.error(error.message || "Failed to submit form");
+  }
+};
 
   return (
     <form onSubmit={handleSubmit(submitProfileForm)}>
