@@ -2,7 +2,6 @@
 export const getTokenFromStorage = () => {
   try {
     const token = localStorage.getItem("token")
-    // JWT tokens are stored as plain strings, not JSON
     return token || null
   } catch (error) {
     console.error("Error getting token from localStorage:", error)
@@ -14,7 +13,14 @@ export const getTokenFromStorage = () => {
 export const getUserFromStorage = () => {
   try {
     const user = localStorage.getItem("user")
-    return user ? JSON.parse(user) : null
+    if (!user) return null
+    
+    const parsedUser = JSON.parse(user)
+    // Ensure consistent structure
+    return {
+      ...parsedUser,
+      additionalDetails: parsedUser.additionalDetails || {}
+    }
   } catch (error) {
     console.error("Error parsing user from localStorage:", error)
     localStorage.removeItem("user")
@@ -37,5 +43,20 @@ export const isTokenExpired = (token) => {
   } catch (error) {
     console.error("Error checking token expiration:", error)
     return true
+  }
+}
+
+export const verifyAuthOnLoad = () => {
+  const token = getTokenFromStorage()
+  const isExpired = isTokenExpired(token)
+  
+  if (isExpired) {
+    clearAuthStorage()
+  }
+  
+  return {
+    isAuthenticated: !!token && !isExpired,
+    token: isExpired ? null : token,
+    user: isExpired ? null : getUserFromStorage()
   }
 }

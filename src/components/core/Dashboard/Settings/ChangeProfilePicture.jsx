@@ -47,36 +47,38 @@ export default function ChangeProfilePicture() {
   useEffect(() => {
     if (imageFile) previewFile(imageFile);
   }, [imageFile]);
-
-  return (
-    <div className="rounded-lg border border-richblack-700 bg-richblack-800 p-6 md:p-8">
-      <div className="flex flex-col md:flex-row items-center gap-6">
+ return (
+    <div className="rounded-lg border border-richblack-700 bg-richblack-800 p-4 md:p-6 lg:p-8">
+      <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
         <div className="relative">
           <img
             src={previewSource || user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-20 md:w-[78px] rounded-full object-cover border-2 border-richblack-500"
+            className="aspect-square w-16 md:w-20 lg:w-[78px] rounded-full object-cover border-2 border-richblack-500"
           />
         </div>
-        <div className="space-y-4 w-full">
-          <p className="text-lg font-medium text-richblack-5">
+        <div className="space-y-3 md:space-y-4 w-full">
+          <p className="text-base md:text-lg font-medium text-richblack-5">
             Change <HighlightText text="Profile Picture" />
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 md:gap-3">
+            {/* ... (rest of the component remains the same, just adjust button sizes) */}
             <input
               type="file"
+              accept="image/*"
               ref={fileInputRef}
+              style={{ display: "none" }}
               onChange={handleFileChange}
-              className="hidden"
-              accept="image/png, image/gif, image/jpeg"
+              disabled={loading}
             />
             <button
               onClick={handleClick}
               disabled={loading}
-              className="cursor-pointer rounded-lg bg-richblack-700 py-2 px-5 font-medium text-richblack-50 hover:bg-richblack-600 transition-all duration-200"
+              className="cursor-pointer rounded-lg bg-richblack-700 py-2 px-4 md:px-5 font-medium text-richblack-50 hover:bg-richblack-600 transition-all duration-200"
             >
               Select
             </button>
+           
             <IconBtn
               text={loading ? "Uploading..." : "Upload"}
               onclick={handleFileUpload}

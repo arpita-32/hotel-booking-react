@@ -3,6 +3,7 @@ import { setLoading, setToken, setUser as setAuthUser, logout as authLogout } fr
 import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiConnector"
 import { endpoints } from "../apis"
+import { getUserDetails } from "./profileAPI"
 
 const { SENDOTP_API, SIGNUP_API, LOGIN_API, RESETPASSTOKEN_API, RESETPASSWORD_API } = endpoints
 
@@ -69,40 +70,38 @@ export function signUp(firstName, lastName, email, password, confirmPassword, ro
 
 export function login(email, password, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Logging in...")
     dispatch(setLoading(true))
     try {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
-      })
-
-      console.log("LOGIN API RESPONSE............", response)
+      });
 
       if (!response.data.success) {
-        throw new Error(response.data.message)
+        toast.error(response.data.message || "Login failed");
+        return;
       }
 
-      toast.success("Login Successful")
+      const token = response.data.token;
+      const user = response.data.user;
 
-      // Store token and user data in both slices
-      const token = response.data.token
-      const user = response.data.user
+      dispatch(setToken(token));
+      dispatch(setAuthUser(user)); // basic auth slice
 
-      dispatch(setToken(token))
-      dispatch(setAuthUser(user))
-      dispatch(setUser(user)) // Also update profile slice
+      // ✅ Fetch full user profile (with additionalDetails)
+      await dispatch(getUserDetails(token, navigate)); // 👈 This is essential!
 
-      console.log("✅ Login successful, token and user stored")
-
-      navigate("/dashboard/my-profile")
+      toast.success("Login Successful");
+      navigate("/dashboard/my-profile");
     } catch (error) {
-      console.log("LOGIN API ERROR............", error)
-      toast.error("Login Failed")
+      console.error("❌ LOGIN API ERROR:", error);
+      toast.error(error?.response?.data?.message || "Login failed");
+    } finally {
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
-  }
+  };
 }
 
 export function logout(navigate) {

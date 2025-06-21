@@ -5,108 +5,74 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader")
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
   try {
-    const { firstName = "", lastName = "", dateOfBirth = "", about = "", contactNumber = "", gender = "" } = req.body
+    const {
+      firstName = "",
+      lastName = "",
+      dateOfBirth = "",
+      about = "",
+      contactNumber = "",
+      gender = "",
+    } = req.body;
 
-    console.log("📝 Profile update request received:", {
-      userId: req.user?.id,
-      data: { firstName, lastName, dateOfBirth, about, contactNumber, gender },
-    })
-
-    if (!req.user || !req.user.id) {
-      return res.status(401).json({
-        success: false,
-        message: "User not authenticated",
-      })
-    }
-
-    const id = req.user.id
+    const id = req.user.id;
 
     // Find the user
-    const userDetails = await User.findById(id)
+    const userDetails = await User.findById(id).populate("additionalDetails");
+
     if (!userDetails) {
       return res.status(404).json({
         success: false,
         message: "User not found",
-      })
+      });
     }
 
-    let profile
+    // Update basic user fields
+    userDetails.firstName = firstName;
+    userDetails.lastName = lastName;
 
-    // Check if profile exists, if not create one
-    if (!userDetails.additionalDetails) {
-      console.log("Creating new profile for user")
-      // Create a new profile
+    // Handle additionalDetails
+    let profile = userDetails.additionalDetails;
+
+    if (!profile) {
+      // Create a new profile document if not present
       profile = await Profile.create({
-        gender: gender || null,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-        about: about || null,
-        contactNumber: contactNumber || null,
-      })
+        dateOfBirth,
+        about,
+        contactNumber,
+        gender,
+      });
 
-      // Update user with profile reference
-      await User.findByIdAndUpdate(id, { additionalDetails: profile._id })
+      userDetails.additionalDetails = profile._id;
     } else {
-      // Get existing profile
-      profile = await Profile.findById(userDetails.additionalDetails)
-      if (!profile) {
-        console.log("Profile reference exists but document missing, creating new one")
-        // Profile reference exists but profile document is missing, create new one
-        profile = await Profile.create({
-          gender: gender || null,
-          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-          about: about || null,
-          contactNumber: contactNumber || null,
-        })
-
-        // Update user with new profile reference
-        await User.findByIdAndUpdate(id, { additionalDetails: profile._id })
-      } else {
-        console.log("Updating existing profile")
-        // Update existing profile
-        profile.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : profile.dateOfBirth
-        profile.about = about !== undefined ? about : profile.about
-        profile.contactNumber = contactNumber !== undefined ? contactNumber : profile.contactNumber
-        profile.gender = gender !== undefined ? gender : profile.gender
-        await profile.save()
-      }
+      // Update existing profile
+      profile.dateOfBirth = dateOfBirth;
+      profile.about = about;
+      profile.contactNumber = contactNumber;
+      profile.gender = gender;
+      await profile.save();
     }
 
-    // Update user details
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      {
-        firstName: firstName || userDetails.firstName,
-        lastName: lastName || userDetails.lastName,
-      },
-      { new: true },
-    )
+    // Save updated user
+    await userDetails.save();
 
-    if (!updatedUser) {
-      return res.status(404).json({
-        success: false,
-        message: "Failed to update user details",
-      })
-    }
+    // Fetch updated user with populated details
+    const updatedUserDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec();
 
-    // Find the updated user details with populated profile
-    const updatedUserDetails = await User.findById(id).populate("additionalDetails").exec()
-
-    console.log("✅ Profile updated successfully")
-
-    return res.status(200).json({
+    return res.json({
       success: true,
       message: "Profile updated successfully",
       updatedUserDetails,
-    })
+    });
   } catch (error) {
-    console.log("❌ Error in updateProfile:", error)
+    console.log("❌ UPDATE PROFILE ERROR:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to update profile",
       error: error.message,
-    })
+    });
   }
-}
+};
 
 exports.updateDisplayPicture = async (req, res) => {
   try {

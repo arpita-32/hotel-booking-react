@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getTokenFromStorage, getUserFromStorage } from "../utils/authUtils"
+import { getTokenFromStorage, getUserFromStorage, isTokenExpired, clearAuthStorage } from "../utils/authUtils"
 
 const initialState = {
   signupData: null,
   loading: false,
   token: getTokenFromStorage(),
   user: getUserFromStorage(),
+  isAuthenticated: !isTokenExpired(getTokenFromStorage()),
 }
 
 const authSlice = createSlice({
@@ -20,17 +21,24 @@ const authSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload
+      state.isAuthenticated = !isTokenExpired(action.payload)
       if (action.payload) {
-        // Store JWT token as plain string, not JSON
         localStorage.setItem("token", action.payload)
       } else {
         localStorage.removeItem("token")
       }
     },
     setUser(state, action) {
-      state.user = action.payload
-      if (action.payload) {
-        localStorage.setItem("user", JSON.stringify(action.payload))
+      const user = action.payload
+      state.user = user
+      
+      if (user) {
+        // Ensure additionalDetails exists
+        const userWithDetails = {
+          ...user,
+          additionalDetails: user.additionalDetails || {}
+        }
+        localStorage.setItem("user", JSON.stringify(userWithDetails))
       } else {
         localStorage.removeItem("user")
       }
@@ -39,12 +47,29 @@ const authSlice = createSlice({
       state.token = null
       state.user = null
       state.signupData = null
-      localStorage.removeItem("token")
-      localStorage.removeItem("user")
+      state.isAuthenticated = false
+      clearAuthStorage()
     },
+    checkAuth(state) {
+      const token = getTokenFromStorage()
+      const isExpired = isTokenExpired(token)
+      state.isAuthenticated = !!token && !isExpired
+      if (isExpired) {
+        state.token = null
+        state.user = null
+        clearAuthStorage()
+      }
+    }
   },
 })
 
-export const { setSignupData, setLoading, setToken, setUser, logout } = authSlice.actions
+export const { 
+  setSignupData, 
+  setLoading, 
+  setToken, 
+  setUser, 
+  logout,
+  checkAuth
+} = authSlice.actions
 
 export default authSlice.reducer

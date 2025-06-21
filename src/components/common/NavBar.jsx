@@ -161,7 +161,7 @@ const NavBar = () => {
                       </Link>
                       <button
                         onClick={() => {
-                          dispatch(logoutUser(navigate));
+                          dispatch(logout(navigate));
                           closeMenu();
                         }}
                         className="w-full text-left text-gray-800 hover:text-orange-500 font-medium py-2 px-2 transition-colors"

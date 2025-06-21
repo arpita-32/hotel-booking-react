@@ -17,12 +17,13 @@ const {
   resetPasswordToken,
   resetPassword
 } = resetPasswordController;
+const { auth } = require("../middlewares/auth");
 
 // Authentication routes
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/sendotp", sendotp);
-router.post("/changepassword",  changePassword);
+router.post("/changepassword", auth, changePassword); // ✅ Add `auth` here
 
 // Reset Password routes
 router.post("/reset-password-token", resetPasswordToken);

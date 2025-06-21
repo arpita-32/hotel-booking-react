@@ -63,90 +63,51 @@ export function updateDisplayPicture(token, formData) {
   }
 }
 
+
 export function updateProfile(token, formData) {
   return async (dispatch) => {
-    const toastId = toast.loading("Updating profile...")
+    const toastId = toast.loading("Loading...")
     try {
-      if (!token) {
-        throw new Error("Authentication token is missing")
-      }
-
-      console.log("Sending profile update request with data:", formData)
-
       const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
         Authorization: `Bearer ${token}`,
       })
-
       console.log("UPDATE_PROFILE_API API RESPONSE............", response)
 
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
-
-      // Get the updated user data from response
-      const updatedUser = response.data.updatedUserDetails
-
-      console.log("Updated user data:", updatedUser)
-
-      // Update both Redux slices with the new user data
-      dispatch(setUser(updatedUser))
-      dispatch(setAuthUser(updatedUser))
-
+      const userImage = response.data.updatedUserDetails.image
+        ? response.data.updatedUserDetails.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.updatedUserDetails.firstName} ${response.data.updatedUserDetails.lastName}`
+      dispatch(
+        setUser({ ...response.data.updatedUserDetails, image: userImage })
+      )
       toast.success("Profile Updated Successfully")
-      console.log("Profile update completed successfully")
-
-      return response.data
     } catch (error) {
       console.log("UPDATE_PROFILE_API API ERROR............", error)
-
-      if (error.message.includes("not authenticated")) {
-        toast.error("Please login again")
-      } else {
-        toast.error(error.response?.data?.message || "Could Not Update Profile")
-      }
-
-      throw error
-    } finally {
-      toast.dismiss(toastId)
+      toast.error("Could Not Update Profile")
     }
+    toast.dismiss(toastId)
   }
 }
 
 export async function changePassword(token, formData) {
-  const toastId = toast.loading("Changing password...")
+  const toastId = toast.loading("Loading...")
   try {
-    if (!token) {
-      throw new Error("Authentication token is missing")
-    }
-
-    console.log("🔐 Sending password change request...")
-    console.log("Token:", token ? "Present" : "Missing")
-
     const response = await apiConnector("POST", CHANGE_PASSWORD_API, formData, {
       Authorization: `Bearer ${token}`,
     })
-
     console.log("CHANGE_PASSWORD_API API RESPONSE............", response)
 
     if (!response.data.success) {
       throw new Error(response.data.message)
     }
-
     toast.success("Password Changed Successfully")
-    return response.data
   } catch (error) {
     console.log("CHANGE_PASSWORD_API API ERROR............", error)
-
-    if (error.message.includes("not authenticated")) {
-      toast.error("Please login again")
-    } else {
-      toast.error(error.response?.data?.message || "Could Not Change Password")
-    }
-
-    throw error
-  } finally {
-    toast.dismiss(toastId)
+    toast.error(error.response.data.message)
   }
+  toast.dismiss(toastId)
 }
 
 export function deleteProfile(token, navigate) {

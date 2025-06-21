@@ -1,29 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+// Read from localStorage
+const storedProfileUser = localStorage.getItem("profileUser")
+
 const initialState = {
-  user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
+  user: storedProfileUser ? JSON.parse(storedProfileUser) : null,
   loading: false,
 }
 
 const profileSlice = createSlice({
   name: "profile",
-  initialState: initialState,
+  initialState,
   reducers: {
-    setUser(state, action) {
+    setUser: (state, action) => {
       state.user = action.payload
-      // Sync with localStorage
+      // Persist to localStorage
       if (action.payload) {
-        localStorage.setItem("user", JSON.stringify(action.payload))
+        localStorage.setItem("profileUser", JSON.stringify(action.payload))
       } else {
-        localStorage.removeItem("user")
+        localStorage.removeItem("profileUser")
       }
     },
-    setLoading(state, action) {
+    setLoading: (state, action) => {
       state.loading = action.payload
     },
   },
 })
 
 export const { setUser, setLoading } = profileSlice.actions
-
 export default profileSlice.reducer
