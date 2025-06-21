@@ -52,13 +52,15 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use((err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
     success: false,
     message: 'Internal Server Error'
   });
 });
+
 
 
 app.listen(PORT, () => {
