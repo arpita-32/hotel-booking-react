@@ -205,10 +205,8 @@ exports.sendotp = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    // Get user data from req.user
     const userDetails = await User.findById(req.user.id)
 
-    // Get old password, new password, and confirm new password from req.body
     const { oldPassword, newPassword } = req.body
 
     // Validate old password
@@ -217,7 +215,6 @@ exports.changePassword = async (req, res) => {
       userDetails.password
     )
     if (!isPasswordMatch) {
-      // If old password does not match, return a 401 (Unauthorized) error
       return res
         .status(401)
         .json({ success: false, message: "The password is incorrect" })
