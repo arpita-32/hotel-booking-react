@@ -1,5 +1,5 @@
 // Import the Mongoose library
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 // Define the user schema using the Mongoose Schema constructor
 const userSchema = new mongoose.Schema(
@@ -37,12 +37,19 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: function() {
+      default: function () {
         return `https://api.dicebear.com/5.x/initials/svg?seed=${this.firstName} ${this.lastName}`
-      }
+      },
+    },
+    // THIS WAS MISSING - Add the reference to Profile
+    additionalDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
+      required: false, // Make it optional initially
     },
   },
-  { timestamps: true }
-);
+  { timestamps: true },
+)
+
 // Export the Mongoose model for the user schema, using the name "user"
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("user", userSchema)
