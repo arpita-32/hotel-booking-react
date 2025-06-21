@@ -60,7 +60,6 @@ const AddRoomForm = ({ onRoomAdded }) => {
 
     const formDataToSend = new FormData();
     
-    // Append basic fields
     formDataToSend.append('roomNumber', formData.roomNumber);
     formDataToSend.append('roomType', formData.roomType);
     formDataToSend.append('price', formData.price);
