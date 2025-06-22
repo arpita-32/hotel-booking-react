@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiStar , FiMenu, FiX, FiLogIn } from 'react-icons/fi';
+import { FiStar , FiMenu, FiX } from 'react-icons/fi';
 import { BsChevronDown } from 'react-icons/bs';
 import ProfileDropdown from './ProfileDropdown';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,7 +11,6 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user } = useSelector((state) => state.profile);
-  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -81,7 +80,7 @@ const NavBar = () => {
                 <>
                   <Link 
                     to="/book" 
-                    className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300"
+                    className="bg-orange-500 hover:bg-orange-500 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300"
                   >
                     Book Now
                   </Link>
@@ -93,7 +92,7 @@ const NavBar = () => {
                     to="/login" 
                     className="flex items-center text-gray-700 hover:text-orange-500 font-medium transition-colors"
                   >
-                    <FiLogIn className="mr-1" /> Login
+                     Login
                   </Link>
                   <Link 
                     to="/signup" 

@@ -31,18 +31,21 @@ export default function ChangeProfilePicture() {
     reader.onloadend = () => setPreviewSource(reader.result);
   };
 
-  const handleFileUpload = () => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("displayPicture", imageFile);
-      dispatch(updateDisplayPicture(token, formData)).then(() => {
-        setLoading(false);
-      });
-    } catch (error) {
-      console.error("ERROR MESSAGE - ", error.message);
-    }
-  };
+const handleFileUpload = () => {
+  try {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("displayPicture", imageFile);
+    dispatch(updateDisplayPicture(token, formData)).then(() => {
+      // ✅ Removed toast here
+      setLoading(false);
+    });
+  } catch (error) {
+    console.error("ERROR MESSAGE - ", error.message);
+  }
+};
+
+
 
   useEffect(() => {
     if (imageFile) previewFile(imageFile);

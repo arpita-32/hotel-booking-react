@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-hot-toast';
 
 const ConfirmationModal = ({ modalData }) => {
   const dispatch = useDispatch();
@@ -18,7 +17,7 @@ const ConfirmationModal = ({ modalData }) => {
             onClick={() => {
               if (modalData.btn2Handler) {
                 dispatch(modalData.btn2Handler());
-              } else {
+              } else if (modalData.close) {
                 dispatch(modalData.close());
               }
             }}
@@ -29,7 +28,6 @@ const ConfirmationModal = ({ modalData }) => {
           <button
             onClick={() => {
               dispatch(modalData.btn1Handler());
-              toast.success(modalData.successMessage || "Operation successful");
             }}
             className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
           >

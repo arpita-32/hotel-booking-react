@@ -33,18 +33,20 @@ function VerifyEmail() {
       confirmPassword,
     } = signupData;
 
-    dispatch(
-      signUp(
-        role,
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword,
-        otp,
-        navigate
-      )
-    );
+  dispatch(
+    signUp(
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      role,
+      otp,
+      navigate
+    )
+  );
+
+
   };
 
   return (

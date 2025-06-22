@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 import OpenRoute from "./components/core/Auth/OpenRoute"
+import { Toaster } from "react-hot-toast"
 import AboutUs from "./pages/AboutUs"
 import BookingPage from "./pages/BookingPage"
 import ContactUs from "./pages/ContactUs"
@@ -24,6 +25,8 @@ const App = () => {
   return (
     <Router>
       <div className="font-sans text-gray-800 min-h-screen flex flex-col">
+        <Toaster position="top-center" reverseOrder={false} /> {/* ✅ Add this line */}
+
         <main className="flex-grow">
           <Routes>
             {/* Public Routes */}

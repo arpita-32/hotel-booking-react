@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateRoomDetails } from '../../../../services/operations/roomAPI';
 import { toast } from 'react-hot-toast';
+import HighlightText from '../../../common/HighlightText';
 
 const UpdateRoomForm = ({ room, onClose, onRoomUpdated }) => {
   const dispatch = useDispatch();
@@ -135,7 +136,7 @@ const handleSubmit = async (e) => {
       <div className="max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-xl border border-gray-200 p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-serif font-bold text-gray-800">
-            Update <span className="text-amber-600">Room</span>
+            Update <HighlightText text="Room" />
           </h2>
           <button 
             onClick={onClose}
@@ -328,7 +329,7 @@ const handleSubmit = async (e) => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-amber-600 text-white rounded-md font-medium hover:bg-amber-700 transition-colors disabled:opacity-70"
+              className="px-6 py-2 bg-orange-500 text-white rounded-md font-medium hover:bg-orange-500 transition-colors disabled:opacity-70"
               disabled={isUploading}
             >
               {isUploading ? (

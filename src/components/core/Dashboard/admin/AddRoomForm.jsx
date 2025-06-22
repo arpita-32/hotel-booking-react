@@ -96,8 +96,8 @@ const AddRoomForm = ({ onRoomAdded }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-xl border border-gray-200">
-      <h2 className="text-3xl font-serif font-bold mb-6 text-gray-800 text-center">
-        Add New <span className="text-amber-600">Room</span>
+      <h2 className="text-3xl font-serif font-bold py-7 mb-10 text-gray-800 text-center">
+        Add New <HighlightText text="Room" />
       </h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">

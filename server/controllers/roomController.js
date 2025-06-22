@@ -154,7 +154,7 @@ exports.updateRoom = async (req, res) => {
         if (field === 'amenities') {
           try {
             room[field] = JSON.parse(req.body[field]);
-          } catch (e) {
+          } catch  {
             room[field] = req.body[field];
           }
         } else {
