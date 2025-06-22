@@ -1,31 +1,31 @@
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api/v1";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 export const endpoints = {
-  SENDOTP_API: BASE_URL + "/auth/sendotp",
-  SIGNUP_API: BASE_URL + "/auth/signup",
-  LOGIN_API: BASE_URL + "/auth/login",
-  RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
-  RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
+  SENDOTP_API: BASE_URL + "/api/v1/auth/sendotp",
+  SIGNUP_API: BASE_URL + "/api/v1/auth/signup",
+  LOGIN_API: BASE_URL + "/api/v1/auth/login",
+  RESETPASSTOKEN_API: BASE_URL + "/api/v1/auth/reset-password-token",
+  RESETPASSWORD_API: BASE_URL + "/api/v1/auth/reset-password",
 }
 
 export const profileEndpoints = {
-  GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
-  
+  GET_USER_DETAILS_API: BASE_URL + "/api/v1/profile/getUserDetails",
+
 }
 
 export const settingsEndpoints = {
-  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profile/updateDisplayPicture",
-  UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
-  CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
-  DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
+  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/api/v1/profile/updateDisplayPicture",
+  UPDATE_PROFILE_API: BASE_URL + "/api/v1/profile/updateProfile",
+  CHANGE_PASSWORD_API: BASE_URL + "/api/v1/auth/changepassword",
+  DELETE_PROFILE_API: BASE_URL + "/api/v1/profile/deleteProfile",
 }
 export const adminEndpoints = {
-  ADD_ROOM_API: BASE_URL + "/rooms/createRoom",
-  GET_ALL_ROOMS_API: BASE_URL + "/rooms/getAllRooms",
-  GET_ROOM_DETAILS_API: BASE_URL + "/rooms/getRoomDetails",
-  UPDATE_ROOM_API: BASE_URL + "/rooms/updateRoom",
-  DELETE_ROOM_API: BASE_URL + "/rooms/deleteRoom",
-  
-  PUBLIC_GET_ALL_ROOMS_API: BASE_URL + "/public/rooms",
-  PUBLIC_GET_ROOM_DETAILS_API: BASE_URL + "/public/rooms/:roomId",
+  ADD_ROOM_API: BASE_URL + "/api/v1/rooms/createRoom",
+  GET_ALL_ROOMS_API: BASE_URL + "/api/v1/rooms/getAllRooms",
+  GET_ROOM_DETAILS_API: BASE_URL + "/api/v1/rooms/getRoomDetails",
+  UPDATE_ROOM_API: BASE_URL + "/api/v1/rooms/updateRoom",
+  DELETE_ROOM_API: BASE_URL + "/api/v1/rooms/deleteRoom",
+
+  PUBLIC_GET_ALL_ROOMS_API: BASE_URL + "/api/v1/public/rooms",
+  PUBLIC_GET_ROOM_DETAILS_API: BASE_URL + "/api/v1/public/rooms/:roomId",
 };

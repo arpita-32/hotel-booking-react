@@ -5,13 +5,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
-    proxy: {
-      '/api/v1': {  // Match your backend route prefix
-        target: 'http://localhost:4000',
-        changeOrigin: true,
-        secure: false,
-        // No rewrite needed since we want to keep /api/v1
-      }
-    }
+   
+    
   }
 });
