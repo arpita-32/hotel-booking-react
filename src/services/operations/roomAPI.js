@@ -78,29 +78,57 @@ export const deleteRoomById = createAsyncThunk(
 // ✅ Update room
 export const updateRoomDetails = createAsyncThunk(
   'room/updateRoomDetails',
-  async ({ roomId, formData }, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
+      const { roomId, formData } = data;
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('Authentication required. Please login again.');
+      }
+
+      // Ensure roomId is included in the formData
+      const formDataWithId = new FormData();
+      formDataWithId.append('roomId', roomId);
+      
+      // Copy all entries from original formData
+      for (let [key, value] of formData.entries()) {
+        formDataWithId.append(key, value);
+      }
+
       const response = await apiConnector(
         "PUT",
-        `${UPDATE_ROOM_API}/${roomId}`,
-        formData,
+        UPDATE_ROOM_API,
+        formDataWithId,
         {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
-      if (!response.data.success) {
-        return rejectWithValue(response.data.message);
+      // Ensure the response includes the full updated room object
+      if (!response.data.room || !response.data.room._id) {
+        throw new Error('Invalid room data received from server');
       }
 
+
       toast.success("Room updated successfully");
-      return response.data.room; // ✅ one updated room
+      return response.data.room;
     } catch (error) {
+      console.error('Update room error:', error);
       toast.error(error.message || 'Failed to update room');
+      
+      if (error.response?.status === 401) {
+        // Optional: Handle logout here if needed
+      }
+      
       return rejectWithValue(error.message);
     }
   }
 );
+
 
 // ✅ Get room details
 export const getRoomDetails = createAsyncThunk(

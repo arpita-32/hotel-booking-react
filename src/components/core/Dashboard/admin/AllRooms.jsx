@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllRooms, deleteRoomById } from '../../../../services/operations/roomAPI';
 import AddRoomForm from './AddRoomForm';
+import UpdateRoomForm from './UpdateRoomForm'; // Add this import
 import { toast } from 'react-hot-toast';
 import HighlightText from '../../../common/HighlightText';
+
 
 const AllRooms = () => {
   const dispatch = useDispatch();
   const { rooms, loading, error } = useSelector((state) => state.room);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingRoom, setEditingRoom] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAllRooms());
@@ -19,11 +22,20 @@ const AllRooms = () => {
       try {
         await dispatch(deleteRoomById(roomId));
         toast.success('Room deleted successfully');
-        dispatch(fetchAllRooms()); // Refresh the list
+        dispatch(fetchAllRooms()); // Refresh the list after deletion
       } catch (error) {
         toast.error(error.message || 'Failed to delete room');
       }
     }
+  };
+
+  const handleUpdate = (room) => {
+    setEditingRoom(room);
+  };
+
+  const handleRoomUpdated = () => {
+    setEditingRoom(null);
+    dispatch(fetchAllRooms()); // Explicitly refresh the room list
   };
 
   if (loading) return <div className="p-6">Loading...</div>;
@@ -56,9 +68,21 @@ const AllRooms = () => {
 
       {showAddForm && (
         <div className="mb-8">
-          <AddRoomForm onRoomAdded={() => dispatch(fetchAllRooms())} />
+          <AddRoomForm onRoomAdded={() => {
+            setShowAddForm(false);
+            dispatch(fetchAllRooms());
+          }} />
         </div>
       )}
+
+      {editingRoom && (
+        <UpdateRoomForm 
+          room={editingRoom}  // Fixed: using editingRoom instead of currentRoom
+          onClose={() => setEditingRoom(null)}
+          onRoomUpdated={handleRoomUpdated}
+        />
+      )}
+
 
       <div className="overflow-x-auto rounded-lg border border-richblack-700">
         <table className="min-w-full bg-richblack-800">
@@ -86,7 +110,13 @@ const AllRooms = () => {
                     {room.isAvailable ? 'Available' : 'Occupied'}
                   </span>
                 </td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 flex gap-3">
+                  <button
+                    onClick={() => handleUpdate(room)}
+                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Edit
+                  </button>
                   <button
                     onClick={() => handleDelete(room._id)}
                     className="text-pink-400 hover:text-pink-300 transition-colors"

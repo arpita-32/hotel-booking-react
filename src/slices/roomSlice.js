@@ -1,4 +1,3 @@
-// slices/roomSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addNewRoom,
@@ -9,10 +8,11 @@ import {
 } from "../services/operations/roomAPI";
 
 const initialState = {
-  rooms: [],           // ✅ always initialize as array
+  rooms: [],
   currentRoom: null,
   loading: false,
   error: null,
+  updateLoading: false, // Separate loading state for updates
 };
 
 const roomSlice = createSlice({
@@ -38,10 +38,7 @@ const roomSlice = createSlice({
       })
       .addCase(fetchAllRooms.fulfilled, (state, action) => {
         state.loading = false;
-        // ✅ Safely extract rooms array from payload
-        state.rooms = Array.isArray(action.payload.rooms)
-          ? action.payload.rooms
-          : [];
+        state.rooms = Array.isArray(action.payload?.rooms) ? action.payload.rooms : [];
       })
       .addCase(fetchAllRooms.rejected, (state, action) => {
         state.loading = false;
@@ -55,29 +52,33 @@ const roomSlice = createSlice({
       })
       .addCase(addNewRoom.fulfilled, (state, action) => {
         state.loading = false;
-        state.rooms.push(action.payload);
+        if (action.payload?._id) {
+          state.rooms.push(action.payload);
+        }
       })
       .addCase(addNewRoom.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Update Room
+      // Update Room - Modified to handle payload safely
       .addCase(updateRoomDetails.pending, (state) => {
-        state.loading = true;
+        state.updateLoading = true;
         state.error = null;
       })
       .addCase(updateRoomDetails.fulfilled, (state, action) => {
-        state.loading = false;
-        state.rooms = state.rooms.map(room =>
-          room._id === action.payload._id ? action.payload : room
-        );
-        if (state.currentRoom?._id === action.payload._id) {
-          state.currentRoom = action.payload;
+        state.updateLoading = false;
+        if (action.payload?._id) {
+          state.rooms = state.rooms.map(room => 
+            room._id === action.payload._id ? action.payload : room
+          );
+          if (state.currentRoom?._id === action.payload._id) {
+            state.currentRoom = action.payload;
+          }
         }
       })
       .addCase(updateRoomDetails.rejected, (state, action) => {
-        state.loading = false;
+        state.updateLoading = false;
         state.error = action.payload;
       })
 

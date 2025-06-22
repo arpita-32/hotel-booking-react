@@ -87,14 +87,18 @@ exports.addRoom = async (req, res) => {
     });
   }
 };
-
-
 exports.updateRoom = async (req, res) => {
   try {
     const { roomId } = req.body;
-    const updates = req.body;
-    const room = await Room.findById(roomId);
+    if (!roomId) {
+      return res.status(400).json({
+        success: false,
+        message: "Room ID is required"
+      });
+    }
 
+    // Find the room first
+    let room = await Room.findById(roomId);
     if (!room) {
       return res.status(404).json({ 
         success: false,
@@ -102,36 +106,73 @@ exports.updateRoom = async (req, res) => {
       });
     }
 
-    // Update thumbnail if provided
+    // Handle image updates first
     if (req.files?.thumbnailImage) {
-      const thumbnail = req.files.thumbnailImage;
+      // Delete old thumbnail
+      if (room.thumbnail) {
+        const publicId = room.thumbnail.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(
+          `${process.env.FOLDER_NAME || 'hotel_rooms'}/${publicId}`
+        );
+      }
+      // Upload new thumbnail
       const thumbnailImage = await uploadImageToCloudinary(
-        thumbnail,
+        req.files.thumbnailImage,
         process.env.FOLDER_NAME || 'hotel_rooms'
       );
       room.thumbnail = thumbnailImage.secure_url;
     }
 
-    // Update other fields
-    for (const key in updates) {
-      if (Object.prototype.hasOwnProperty.call(updates, key)) {
-        if (key === "amenities") {
-          room[key] = JSON.parse(updates[key]);
-        } else if (key !== "thumbnailImage" && key !== "roomId") {
-          room[key] = updates[key];
-        }
+    if (req.files?.images) {
+      // Delete old images
+      if (room.images?.length > 0) {
+        await Promise.all(
+          room.images.map(image => {
+            const publicId = image.split('/').pop().split('.')[0];
+            return cloudinary.uploader.destroy(
+              `${process.env.FOLDER_NAME || 'hotel_rooms'}/${publicId}`
+            );
+          })
+        );
       }
+      // Upload new images
+      const images = Array.isArray(req.files.images) 
+        ? req.files.images 
+        : [req.files.images];
+      const uploadedImages = await Promise.all(
+        images.map(image => 
+          uploadImageToCloudinary(image, process.env.FOLDER_NAME || 'hotel_rooms')
+        )
+      );
+      room.images = uploadedImages.map(img => img.secure_url);
     }
 
-    await room.save();
+    // Update other fields
+    const allowedUpdates = ['roomNumber', 'roomType', 'price', 'capacity', 'description', 'amenities', 'isAvailable'];
+    allowedUpdates.forEach(field => {
+      if (req.body[field] !== undefined) {
+        if (field === 'amenities') {
+          try {
+            room[field] = JSON.parse(req.body[field]);
+          } catch (e) {
+            room[field] = req.body[field];
+          }
+        } else {
+          room[field] = req.body[field];
+        }
+      }
+    });
+
+    // Save the updated room
+    const updatedRoom = await room.save();
 
     res.json({
       success: true,
       message: "Room updated successfully",
-      data: room
+      room: updatedRoom
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error updating room:", error);
     res.status(500).json({
       success: false,
       message: "Failed to update room",
@@ -139,7 +180,6 @@ exports.updateRoom = async (req, res) => {
     });
   }
 };
-
 // Get all rooms with filtering options
 exports.getAllRooms = async (req, res) => {
   try {
