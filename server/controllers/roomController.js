@@ -83,7 +83,7 @@ exports.addRoom = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to add room',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === 'production' ? error.message : undefined
     });
   }
 };
@@ -283,7 +283,7 @@ exports.deleteRoom = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to delete room",
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === 'production' ? error.message : undefined
     });
   }
 };

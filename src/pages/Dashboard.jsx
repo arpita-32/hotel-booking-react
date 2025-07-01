@@ -4,7 +4,7 @@ import AdminSidebar from "../components/core/Dashboard/AdminSidebar";
 import Sidebar from "../components/core/Dashboard/Sidebar";
 import { USER_ROLE } from "../services/operations/authAPI";
 import NavBar from "../components/common/NavBar"; // Import NavBar component
-import Footer from "../components/common/Footer"; // Import Footer component
+import Footer from "../components/common/Footer"; 
 
 function Dashboard() {
   const { loading: profileLoading, user } = useSelector((state) => state.profile);
