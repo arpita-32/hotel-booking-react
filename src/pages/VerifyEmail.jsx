@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { sendOtp, signUp } from "../../../my-react-app/src/services/operations/authAPI";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../../my-react-app/src/components/common/NavBar";
-import Footer from "../../../my-react-app/src/components/common/Footer";
+import NavBar from "../components/common/NavBar";
+import Footer from "../components/common/Footer";
+import { sendOtp, signUp  } from "../services/operations/authAPI";
 
 
 function VerifyEmail() {

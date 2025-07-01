@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://hotel-management-system-be.onrender.com";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://hotel-booking-react-2926.onrender.com";
 
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/api/v1/auth/sendotp",
