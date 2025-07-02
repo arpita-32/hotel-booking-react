@@ -20,13 +20,23 @@ database.connect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowed = [
+  'http://localhost:5173',                 // local dev
+  'https://hotel-booking-react-7dbd-9f55npqez.vercel.app' // production
+];
+const vercelPreview = /^https:\/\/hotel-booking-react-[\w-]+\.vercel\.app$/;
+ // any preview
+
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);               
+      if (allowed.includes(origin) || vercelPreview.test(origin))
+        return cb(null, true);
+      cb(new Error('Not allowed by CORS'));
+    },
     credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   })
 );
 app.use(fileUpload({
