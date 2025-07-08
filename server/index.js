@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const allowed = [
   'http://localhost:5173',                 // local dev
-  'hotel-booking-react-7dbd-beoabnfe1.vercel.app' // production
+  'https://hotel-booking-react-7dbd.vercel.app/' // production
 ];
 const vercelPreview = /^https:\/\/hotel-booking-react-[\w-]+\.vercel\.app$/;
  // any preview
