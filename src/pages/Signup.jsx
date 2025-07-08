@@ -89,7 +89,7 @@ function Signup() {
                 onClick={() => setRole(USER_ROLE.CUSTOMER)}
                 className={`${
                   role === USER_ROLE.CUSTOMER
-                    ? "bg-orange-500 text-white"
+                    ? "bg-yellow-500 text-white"
                     : "bg-transparent text-gray-700"
                 } py-1 sm:py-2 px-4 sm:px-5 rounded-full transition-all duration-200 text-xs sm:text-sm font-medium`}
               >
@@ -100,7 +100,7 @@ function Signup() {
                 onClick={() => setRole(USER_ROLE.ADMIN)}
                 className={`${
                   role === USER_ROLE.ADMIN
-                    ? "bg-orange-500 text-white"
+                    ? "bg-yellow-500 text-white"
                     : "bg-transparent text-gray-700"
                 } py-1 sm:py-2 px-4 sm:px-5 rounded-full transition-all duration-200 text-xs sm:text-sm font-medium`}
               >
@@ -112,7 +112,7 @@ function Signup() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-x-4">
                 <label className="w-full">
                   <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                    First Name <sup className="text-orange-500">*</sup>
+                    First Name <sup className="text-yellow-500">*</sup>
                   </p>
                   <input
                     required
@@ -126,7 +126,7 @@ function Signup() {
                 </label>
                 <label className="w-full">
                   <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                    Last Name <sup className="text-orange-500">*</sup>
+                    Last Name <sup className="text-yellow-500">*</sup>
                   </p>
                   <input
                     required
@@ -142,7 +142,7 @@ function Signup() {
               
               <label className="w-full">
                 <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                  Email Address <sup className="text-orange-500">*</sup>
+                  Email Address <sup className="text-yellow-500">*</sup>
                 </p>
                 <input
                   required
@@ -158,7 +158,7 @@ function Signup() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-x-4">
                 <label className="relative w-full">
                   <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                    Password <sup className="text-orange-500">*</sup>
+                    Password <sup className="text-yellow-500">*</sup>
                   </p>
                   <input
                     required
@@ -184,7 +184,7 @@ function Signup() {
                 
                 <label className="relative w-full">
                   <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                    Confirm Password <sup className="text-orange-500">*</sup>
+                    Confirm Password <sup className="text-yellow-500">*</sup>
                   </p>
                   <input
                     required
@@ -212,8 +212,8 @@ function Signup() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`mt-4 sm:mt-6 rounded-[8px] bg-orange-500 py-2 sm:py-[8px] px-4 sm:px-[12px] font-medium text-white text-sm sm:text-base ${
-                  isLoading ? "opacity-75" : "hover:bg-orange-600"
+                className={`mt-4 sm:mt-6 rounded-[8px] bg-yellow-500 py-2 sm:py-[8px] px-4 sm:px-[12px] font-medium text-white text-sm sm:text-base ${
+                  isLoading ? "opacity-75" : "hover:bg-yellow-600"
                 } transition-colors`}
               >
                 {isLoading ? "Sending OTP..." : "Create Account"}
@@ -223,7 +223,7 @@ function Signup() {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="font-medium text-orange-500 hover:text-orange-600"
+                  className="font-medium text-yellow-500 hover:text-yellow-600"
                 >
                   Sign in
                 </Link>

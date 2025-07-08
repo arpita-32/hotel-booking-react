@@ -39,16 +39,16 @@ function UpdatePassword() {
       {loading ? (
         <div className="spinner"></div>
       ) : (
-        <div className="w-full max-w-[500px] p-4 sm:p-6 lg:p-8 bg-richblack-800 rounded-lg shadow-lg">
-          <h1 className="text-xl sm:text-2xl md:text-[1.875rem] font-semibold leading-[1.5] sm:leading-[2.375rem] text-richblack-5 mb-4">
+        <div className="w-full max-w-[500px] p-4 sm:p-6 lg:p-8 bg-gray-900 rounded-lg shadow-lg">
+          <h1 className="text-xl sm:text-2xl md:text-[1.875rem] font-semibold leading-[1.5] sm:leading-[2.375rem] text-yellow-50 mb-4">
             Choose new <HighlightText text="password" />
           </h1>
-          <p className="my-3 sm:my-4 text-sm sm:text-base md:text-[1.125rem] leading-[1.5] sm:leading-[1.625rem] text-richblack-100">
+          <p className="my-3 sm:my-4 text-sm sm:text-base md:text-[1.125rem] leading-[1.5] sm:leading-[1.625rem] text-gray-300">
             Almost done. Enter your new password and you're all set.
           </p>
           <form onSubmit={handleOnSubmit} className="mt-6">
             <label className="relative block mb-4">
-              <p className="mb-1 text-xs sm:text-sm md:text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              <p className="mb-1 text-xs sm:text-sm md:text-[0.875rem] leading-[1.375rem] text-yellow-50">
                 New Password <sup className="text-pink-200">*</sup>
               </p>
               <input
@@ -58,7 +58,7 @@ function UpdatePassword() {
                 value={password}
                 onChange={handleOnChange}
                 placeholder="Enter Password"
-                className="w-full rounded-lg bg-richblack-700 p-3 text-richblack-5 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-orange-500 pr-10"
+                className="w-full rounded-lg bg-gray-800 p-3 text-yellow-50 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 pr-10"
               />
               <span
                 onClick={() => setShowPassword((prev) => !prev)}
@@ -72,7 +72,7 @@ function UpdatePassword() {
               </span>
             </label>
             <label className="relative block mb-6">
-              <p className="mb-1 text-xs sm:text-sm md:text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              <p className="mb-1 text-xs sm:text-sm md:text-[0.875rem] leading-[1.375rem] text-yellow-50">
                 Confirm New Password <sup className="text-pink-200">*</sup>
               </p>
               <input
@@ -82,7 +82,7 @@ function UpdatePassword() {
                 value={confirmPassword}
                 onChange={handleOnChange}
                 placeholder="Confirm Password"
-                className="w-full rounded-lg bg-richblack-700 p-3 text-richblack-5 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-orange-500 pr-10"
+                className="w-full rounded-lg bg-gray-800 p-3 text-yellow-50 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 pr-10"
               />
               <span
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
@@ -98,14 +98,14 @@ function UpdatePassword() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-orange-500 py-3 px-4 font-medium text-white hover:bg-orange-600 transition-colors duration-200"
+              className="w-full rounded-lg bg-yellow-500 py-3 px-4 font-medium text-white hover:bg-yellow-600 transition-colors duration-200"
             >
               Reset Password
             </button>
           </form>
           <div className="mt-6 flex items-center justify-between">
             <Link to="/login" className="group">
-              <p className="flex items-center gap-x-2 text-richblack-5 text-sm sm:text-base group-hover:text-orange-200 transition-colors">
+              <p className="flex items-center gap-x-2 text-yellow-50 text-sm sm:text-base group-hover:text-yellow-200 transition-colors">
                 <BiArrowBack /> Back To Login
               </p>
             </Link>

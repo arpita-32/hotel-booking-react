@@ -70,7 +70,7 @@ function VerifyEmail() {
                 <input
                   {...props}
                   placeholder="-"
-                  className="w-12 h-12 border-2 border-gray-300 rounded-md text-center text-lg focus:outline-none focus:border-orange-500 mx-1"
+                  className="w-12 h-12 border-2 border-gray-300 rounded-md text-center text-lg focus:outline-none focus:border-yellow-500 mx-1"
                 />
               )}
               containerStyle="flex justify-center my-6"
@@ -80,8 +80,8 @@ function VerifyEmail() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-orange-500 text-white py-3 rounded-md font-medium ${
-                loading ? "opacity-75" : "hover:bg-orange-600"
+              className={`w-full bg-yellow-500 text-white py-3 rounded-md font-medium ${
+                loading ? "opacity-75" : "hover:bg-yellow-600"
               } transition-colors`}
             >
               {loading ? "Verifying..." : "Verify Email"}
@@ -91,7 +91,7 @@ function VerifyEmail() {
           <div className="flex justify-between items-center text-sm">
             <Link 
               to="/signup" 
-              className="text-gray-600 hover:text-orange-500 flex items-center"
+              className="text-gray-600 hover:text-yellow-500 flex items-center"
             >
               <BiArrowBack className="mr-1" />
               Back to Signup
@@ -99,7 +99,7 @@ function VerifyEmail() {
             
             <button
               onClick={() => dispatch(sendOtp(signupData.email, navigate))}
-              className="text-orange-500 hover:text-orange-600 flex items-center"
+              className="text-yellow-500 hover:text-yellow-600 flex items-center"
             >
               <RxCountdownTimer className="mr-1" />
               Resend OTP

@@ -51,7 +51,7 @@ const handleFileUpload = () => {
     if (imageFile) previewFile(imageFile);
   }, [imageFile]);
  return (
-    <div className="rounded-lg border border-richblack-700 bg-richblack-800 p-4 md:p-6 lg:p-8">
+    <div className="rounded-lg border border-richblack-700 bg-gray-900 p-4 md:p-6 lg:p-8">
       <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
         <div className="relative">
           <img
@@ -61,7 +61,7 @@ const handleFileUpload = () => {
           />
         </div>
         <div className="space-y-3 md:space-y-4 w-full">
-          <p className="text-base md:text-lg font-medium text-richblack-5">
+          <p className="text-base md:text-lg font-medium text-yellow-50">
             Change <HighlightText text="Profile Picture" />
           </p>
           <div className="flex flex-col sm:flex-row gap-2 md:gap-3">
@@ -77,7 +77,7 @@ const handleFileUpload = () => {
             <button
               onClick={handleClick}
               disabled={loading}
-              className="cursor-pointer rounded-lg bg-richblack-700 py-2 px-4 md:px-5 font-medium text-richblack-50 hover:bg-richblack-600 transition-all duration-200"
+              className="cursor-pointer rounded-lg bg-gray-800 py-2 px-4 md:px-5 font-medium text-yellow-500 hover:bg-richblack-600 transition-all duration-200"
             >
               Select
             </button>

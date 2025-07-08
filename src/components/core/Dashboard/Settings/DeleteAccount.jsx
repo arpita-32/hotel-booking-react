@@ -27,7 +27,7 @@ return (
             <FiTrash2 className="text-xl md:text-2xl text-pink-200" />
           </div>
           <div className="space-y-2 md:space-y-3">
-            <h2 className="text-lg font-semibold text-richblack-5">
+            <h2 className="text-lg font-semibold text-yellow-50">
               Delete <HighlightText text="Account" />
             </h2>
             <div className="text-pink-25 space-y-1 md:space-y-2">

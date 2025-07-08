@@ -33,8 +33,8 @@ export default function EditProfile() {
     <>
       <form onSubmit={handleSubmit(submitProfileForm)}>
         {/* Profile Information */}
- <div className="my-6 md:my-10 flex flex-col gap-y-4 md:gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 md:p-8 px-4 md:px-12">
-          <h2 className="text-lg font-semibold text-richblack-5">
+ <div className="my-6 md:my-10 flex flex-col gap-y-4 md:gap-y-6 rounded-md border-[1px] border-richblack-700 bg-gray-900 p-4 md:p-8 px-4 md:px-12">
+          <h2 className="text-lg font-semibold text-yellow-50">
             Profile Information
           </h2>
           <div className="flex flex-col gap-4 md:gap-5 lg:flex-row">
@@ -188,7 +188,7 @@ export default function EditProfile() {
               onClick={() => {
                 navigate("/dashboard/my-profile")
               }}
-              className="cursor-pointer rounded-md bg-richblack-700 py-2 px-4 md:px-5 font-semibold text-richblack-50"
+              className="cursor-pointer rounded-md bg-gray-800 py-2 px-4 md:px-5 font-semibold text-yellow-500"
             >
               Cancel
             </button>

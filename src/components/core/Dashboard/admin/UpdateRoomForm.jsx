@@ -329,7 +329,7 @@ const handleSubmit = async (e) => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-orange-500 text-white rounded-md font-medium hover:bg-orange-500 transition-colors disabled:opacity-70"
+              className="px-6 py-2 bg-yellow-500 text-white rounded-md font-medium hover:bg-yellow-500 transition-colors disabled:opacity-70"
               disabled={isUploading}
             >
               {isUploading ? (

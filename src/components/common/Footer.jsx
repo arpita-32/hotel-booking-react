@@ -1,5 +1,6 @@
 import React from 'react';
-import { FiStar } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/images/hotelogo.png';
 
 const Footer = () => {
   return (
@@ -9,8 +10,13 @@ const Footer = () => {
           {/* Brand & Social */}
           <div>
             <div className="flex items-center mb-4">
-              <FiStar className="text-orange-600 text-2xl mr-2" />
-              <span className="text-xl font-bold">Luxury Haven</span>
+              <Link to="/" className="flex items-center">
+            <img 
+              src={logo} 
+              alt="B.S.H Residency Logo" 
+              className="h-26 w-5l object-contain"
+            />
+          </Link>
             </div>
             <p className="text-gray-400 mb-4">
               Redefining luxury hospitality with exceptional service and unforgettable experiences.

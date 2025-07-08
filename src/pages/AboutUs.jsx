@@ -18,17 +18,17 @@ const AboutUs = () => {
   ];
 
   return (
-    <div className="overflow-x-hidden bg-richblack-900 text-richblack-100">
-      <Navbar />
+<div className="overflow-x-hidden bg-black text-yellow-50">
+        <Navbar />
       
       {/* Hero Section */}
-      <section className="relative w-full bg-richblack-700 pt-22 pb-12 md:pt-24 md:pb-16 lg:pt-32 lg:pb-24">
+      <section className="relative w-full bg-gray-900 pt-22 pb-12 md:pt-24 md:pb-16 lg:pt-32 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Redefining Luxury Hospitality for a <br className="hidden sm:block" />
             <HighlightText text="Memorable Stay" />
           </h1>
-          <p className="text-richblack-200 max-w-3xl mx-auto text-sm sm:text-base md:text-lg">
+          <p className="text-gray-400 max-w-3xl mx-auto text-sm sm:text-base md:text-lg">
             Luxury Haven is at the forefront of hospitality excellence. We're passionate about creating unforgettable experiences through impeccable service, world-class amenities, and attention to every detail.
           </p>
         </div>
@@ -50,7 +50,7 @@ const AboutUs = () => {
       </div>
 
       {/* Quote Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12 md:mt-16">
+      <div className="container text-yellow-400 mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12 md:mt-16">
         <Quote 
           text="True luxury is not about being served, but about being remembered." 
           author="— Giovanni Rana, General Manager"
@@ -66,10 +66,10 @@ const AboutUs = () => {
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 md:mt-20">
         <div className="flex flex-col lg:flex-row gap-8 md:gap-10 lg:gap-12 items-center">
           <div className="w-full lg:w-1/2">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCB045] bg-clip-text text-transparent mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-br from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-4 sm:mb-6">
               Our Heritage
             </h2>
-            <div className="space-y-4 text-richblack-200 text-sm sm:text-base">
+            <div className="space-y-4 text-gray-400 text-sm sm:text-base">
               <p>
                 Luxury Haven was born from a vision to redefine hospitality. Established in 1995 by hotelier James Wilson, we began as a small boutique property with just 20 rooms. Our founder believed luxury wasn't about opulence, but about creating personalized experiences that guests would cherish forever.
               </p>
@@ -95,18 +95,18 @@ const AboutUs = () => {
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20 md:mt-24">
         <div className="flex flex-col lg:flex-row gap-8 md:gap-10 lg:gap-12">
           <div className="w-full lg:w-1/2">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-b from-[#FF512F] to-[#F09819] bg-clip-text text-transparent mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-b from-yellow-400 to-yellow-500 bg-clip-text text-transparent mb-4 sm:mb-6">
               Our Promise
             </h2>
-            <p className="text-richblack-200 text-sm sm:text-base">
+            <p className="text-gray-400 text-sm sm:text-base">
               We promise more than just a place to stay. Every detail - from our signature scent in the lobby to the thread count of your sheets - is carefully curated to create a sense of belonging. Our staff are trained not just to serve, but to anticipate your needs before you express them.
             </p>
           </div>
           <div className="w-full lg:w-1/2">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-orange-400 mb-4 sm:mb-6">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-yellow-400 mb-4 sm:mb-6">
               Sustainability Commitment
             </h3>
-            <p className="text-richblack-200 text-sm sm:text-base">
+            <p className="text-gray-400 text-sm sm:text-base">
               Luxury and responsibility go hand in hand. We've reduced our carbon footprint by 40% through initiatives like solar power, zero-waste kitchens, and partnerships with local artisans. Our green roof gardens supply our restaurants, and we've eliminated single-use plastics across all properties.
             </p>
           </div>
@@ -114,7 +114,7 @@ const AboutUs = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20 md:mt-24">
+      <section className="container bg-gray-900 mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20 md:mt-24">
         <Stats 
           stats={[
             { number: "25+", label: "Years in Hospitality" },
@@ -126,7 +126,7 @@ const AboutUs = () => {
       </section>
 
       {/* Amenities Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20 md:mt-24">
+      <section className="container bg-gray-900 mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20 md:mt-24">
         <AmenitiesGrid 
           amenities={[
             { icon: "🏊", title: "Infinity Pool", desc: "With panoramic city views" },
@@ -148,7 +148,7 @@ const AboutUs = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-richblack-800 py-12 sm:py-16 md:py-20 mt-16 sm:mt-20 md:mt-24">
+      <section className="bg-gray-900 py-12 sm:py-16 md:py-20 mt-16 sm:mt-20 md:mt-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12">
             What Our Guests Say

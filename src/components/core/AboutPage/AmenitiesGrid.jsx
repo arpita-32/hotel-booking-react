@@ -8,10 +8,10 @@ const AmenitiesGrid = ({ amenities }) => {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {amenities.map((amenity, index) => (
-          <div key={index} className="bg-richblack-800 p-6 rounded-lg hover:shadow-lg transition duration-300">
+          <div key={index} className="bg-gray-900 p-6 rounded-lg hover:shadow-lg transition duration-300">
             <div className="text-3xl mb-4">{amenity.icon}</div>
             <h3 className="text-xl font-semibold mb-2">{amenity.title}</h3>
-            <p className="text-richblack-200 text-sm">{amenity.desc}</p>
+            <p className="text-gray-400 text-sm">{amenity.desc}</p>
           </div>
         ))}
       </div>

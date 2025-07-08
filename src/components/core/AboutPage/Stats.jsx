@@ -9,7 +9,7 @@ const Stats = ({ stats }) => {
             <div className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-[#FF512F] to-[#F09819] bg-clip-text text-transparent">
               {stat.number}
             </div>
-            <div className="text-richblack-200 mt-2 text-sm sm:text-base">
+            <div className="text-gray-400 mt-2 text-sm sm:text-base">
               {stat.label}
             </div>
           </div>

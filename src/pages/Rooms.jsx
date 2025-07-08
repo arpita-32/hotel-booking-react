@@ -78,7 +78,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
 
   if (error) {
     return (
-      <div className="min-h-screen bg-richblack-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Error Loading Rooms</h2>
           <p className="mb-4">{error.message || 'Failed to load rooms'}</p>
@@ -94,16 +94,16 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
   }
 
   return (
-    <div className="bg-richblack-900 text-black min-h-screen flex flex-col">
+    <div className="bg-black text-yellow-50  min-h-screen flex flex-col">
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-richblack-800 w-full py-12 sm:py-16">
+        <div className="bg-gray-900 w-full py-12 sm:py-16">
         <div className="mx-auto pt-22 max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-black">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-yellow-50">
             Our <HighlightText text="Rooms" /> & Suites
           </h1>
-          <p className="text-richblack-200 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-gray-300 max-w-2xl mx-auto text-sm sm:text-base">
             Experience unparalleled comfort in our exquisite accommodations
           </p>
         </div>
@@ -116,8 +116,8 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             onClick={() => setActiveFilter('all')}
             className={`px-4 py-2 sm:rounded-l-lg font-medium text-sm sm:text-base ${
               activeFilter === 'all' 
-                ? 'bg-orange-600 text-black' 
-                : 'bg-richblack-700 text-black'
+                ? 'bg-yellow-500 text-black' 
+                : 'bg-gray-800 text-yellow-50'
             }`}
           >
             All Rooms
@@ -126,8 +126,8 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             onClick={() => setActiveFilter('room')}
             className={`px-4 py-2 font-medium text-sm sm:text-base ${
               activeFilter === 'room' 
-                ? 'bg-orange-600 text-black' 
-                : 'bg-richblack-700 text-black'
+                ? 'bg-yellow-500 text-black' 
+                : 'bg-gray-800 text-yellow-50'
             }`}
           >
             Standard Rooms
@@ -136,8 +136,8 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             onClick={() => setActiveFilter('suite')}
             className={`px-4 py-2 sm:rounded-r-lg font-medium text-sm sm:text-base ${
               activeFilter === 'suite' 
-                ? 'bg-orange-600 text-black' 
-                : 'bg-richblack-700 text-black'
+                ? 'bg-yellow-500 text-black' 
+                : 'bg-gray-800 text-yellow-50'
             }`}
           >
             Suites
@@ -148,7 +148,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
       {/* Rooms Grid */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {filteredRooms.length === 0 ? (
-          <div className="text-center py-12 text-richblack-100">
+          <div className="text-center py-12 text-gray-300">
             No rooms found matching your criteria
           </div>
         ) : (
@@ -156,7 +156,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
             {filteredRooms.map((room) => (
               <div 
                 key={room.id} 
-                className="bg-richblack-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
+                className="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 flex flex-col"
               >
                 <img 
                   src={room.image} 
@@ -168,10 +168,10 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                 />
                 <div className="p-4 sm:p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-lg sm:text-xl font-bold text-black">{room.name}</h3>
-                    <div className="text-orange-500 font-bold text-lg">
-<div className="text-orange-500 font-bold text-lg">
-  <div className="font-medium text-orange-600 text-sm sm:text-base">
+                    <h3 className="text-lg sm:text-xl font-bold text-yellow-50">{room.name}</h3>
+                    <div className="text-yellow-500 font-bold text-lg">
+<div className="text-yellow-500 font-bold text-lg">
+  <div className="font-medium text-yellow-600 text-sm sm:text-base">
     ₹{(room.price * 83).toLocaleString('en-IN')}/night
   </div>
 </div>
@@ -179,23 +179,23 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     </div>
                   </div>
                   <div className="flex items-center text-sm text-richblack-300 mb-2">
-                    <FiStar className="text-orange-500 mr-1" />
+                    <FiStar className="text-yellow-500 mr-1" />
                     <span>{room.size} • {room.beds}</span>
                   </div>
-                  <p className="text-richblack-200 text-sm mb-4 flex-grow">{room.description}</p>
+                  <p className="text-gray-400 text-sm mb-4 flex-grow">{room.description}</p>
                   <div className="mb-4">
                     <h4 className="text-sm font-semibold text-black mb-2">Amenities:</h4>
                     <div className="flex flex-wrap gap-2">
                       {room.amenities.slice(0, 4).map((amenity, index) => (
                         <span 
                           key={index} 
-                          className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black"
+                          className="bg-gray-800 px-2 py-1 rounded-full text-xs text-black"
                         >
                           {amenity}
                         </span>
                       ))}
                       {room.amenities.length > 4 && (
-                        <span className="bg-richblack-700 px-2 py-1 rounded-full text-xs text-black">
+                        <span className="bg-gray-800 px-2 py-1 rounded-full text-xs text-black">
                           +{room.amenities.length - 4} more
                         </span>
                       )}
@@ -204,13 +204,13 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                   <div className="flex gap-2 mt-auto">
                     <button
                       onClick={() => handleViewDetails(room)}
-                      className="flex-1 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                      className="flex-1 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
                     >
                       Details
                     </button>
                     <button
                       onClick={() => handleBookNow(room)}
-                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                      className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
                     >
                       Book Now
                     </button>
@@ -279,7 +279,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     </div>
                     <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
                       <div className="text-xs sm:text-sm text-gray-500">Price</div>
-                      <div className="text-orange-500 font-bold text-lg">
+                      <div className="text-yellow-500 font-bold text-lg">
   ₹{selectedRoom.price * 83}<span className="text-richblack-300 text-sm"> / night</span>
 </div>
 
@@ -300,7 +300,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                   {selectedRoom.amenities.map((amenity, index) => (
                     <div key={index} className="flex items-center">
-                      <FiChevronRight className="text-orange-500 mr-2" />
+                      <FiChevronRight className="text-yellow-500 mr-2" />
                       <span className="text-gray-700 text-sm sm:text-base">{amenity}</span>
                     </div>
                   ))}
@@ -311,7 +311,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     setShowDetailsModal(false);
                     setShowBookingModal(true);
                   }}
-                  className="inline-block w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                  className="inline-block w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
                 >
                   Book Now
                 </button>
@@ -346,7 +346,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="checkIn"
                       value={bookingForm.checkIn}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
                       required
                     />
                   </div>
@@ -360,7 +360,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="checkOut"
                       value={bookingForm.checkOut}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
                       required
                     />
                   </div>
@@ -376,7 +376,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="adults"
                       value={bookingForm.adults}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none text-sm sm:text-base"
                     >
                       {[1, 2, 3, 4, 5].map(num => (
                         <option key={num} value={num}>{num}</option>
@@ -392,7 +392,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       name="children"
                       value={bookingForm.children}
                       onChange={handleBookingChange}
-                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none text-sm sm:text-base"
+                      className="w-full bg-gray-50 rounded-lg pl-10 pr-3 py-2 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none text-sm sm:text-base"
                     >
                       {[0, 1, 2, 3, 4].map(num => (
                         <option key={num} value={num}>{num}</option>
@@ -416,7 +416,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     room: selectedRoom,
                     bookingDetails: bookingForm
                   }}
-                  className="px-4 sm:px-6 py-2 bg-orange-400 hover:bg-orange-500 text-black rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                  className="px-4 sm:px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
                 >
                   Continue to Booking
                 </Link>

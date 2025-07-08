@@ -42,23 +42,23 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-black">
       <NavBar />
-      <div className="flex-grow flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-xl rounded-lg overflow-hidden">
-          {/* Form Section - Order changes on mobile */}
+      <div className="flex-grow flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl w-full flex flex-col md:flex-row bg-gray-900 shadow-xl rounded-lg overflow-hidden">
+          {/* Form Section */}
           <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-12 order-2 md:order-1">
             <div className="text-center mb-6 md:mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Welcome Back</h2>
-              <p className="mt-2 text-sm sm:text-base text-gray-600">
+              <h2 className="text-2xl sm:text-3xl font-bold text-yellow-50">Welcome Back</h2>
+              <p className="mt-2 text-sm sm:text-base text-gray-300">
                 Sign in to your Luxury Haven account
               </p>
             </div>
             
             <form onSubmit={handleOnSubmit} className="mt-4 sm:mt-6 flex flex-col gap-y-3 sm:gap-y-4">
               <label className="w-full">
-                <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                  Email Address <sup className="text-orange-500">*</sup>
+                <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-300">
+                  Email Address <sup className="text-yellow-400">*</sup>
                 </p>
                 <input
                   required
@@ -67,14 +67,13 @@ function Login() {
                   value={formData.email}
                   onChange={handleOnChange}
                   placeholder="Enter email address"
-                  className="w-full rounded-[0.5rem] bg-gray-100 p-2 sm:p-[12px] text-gray-800 text-sm sm:text-base"
-                  autoComplete="username"
+                  className="w-full rounded-[0.5rem] bg-gray-800 p-2 sm:p-[12px] text-yellow-50 text-sm sm:text-base"
                 />
               </label>
               
               <label className="relative">
-                <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-700">
-                  Password <sup className="text-orange-500">*</sup>
+                <p className="mb-1 text-xs sm:text-[0.875rem] leading-[1.375rem] text-gray-300">
+                  Password <sup className="text-yellow-400">*</sup>
                 </p>
                 <input
                   required
@@ -83,21 +82,16 @@ function Login() {
                   value={formData.password}
                   onChange={handleOnChange}
                   placeholder="Enter Password"
-                  className="w-full rounded-[0.5rem] bg-gray-100 p-2 sm:p-[12px] pr-8 sm:pr-10 text-gray-800 text-sm sm:text-base"
-                  autoComplete="current-password"
+                  className="w-full rounded-[0.5rem] bg-gray-800 p-2 sm:p-[12px] pr-8 sm:pr-10 text-yellow-50 text-sm sm:text-base"
                 />
                 <span
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-2 sm:right-3 top-[30px] sm:top-[38px] z-[10] cursor-pointer text-gray-500"
+                  className="absolute right-2 sm:right-3 top-[30px] sm:top-[38px] z-[10] cursor-pointer text-gray-400"
                 >
-                  {showPassword ? (
-                    <AiOutlineEyeInvisible fontSize={20} className="sm:w-6 sm:h-6 w-5 h-5" />
-                  ) : (
-                    <AiOutlineEye fontSize={20} className="sm:w-6 sm:h-6 w-5 h-5" />
-                  )}
+                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </span>
                 <Link to="/forgot-password">
-                  <p className="mt-1 ml-auto max-w-max text-xs text-orange-500">
+                  <p className="mt-1 ml-auto max-w-max text-xs text-yellow-400">
                     Forgot Password?
                   </p>
                 </Link>
@@ -106,18 +100,18 @@ function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`mt-4 sm:mt-6 rounded-[8px] bg-orange-500 py-2 sm:py-[8px] px-4 sm:px-[12px] font-medium text-white text-sm sm:text-base ${
-                  isLoading ? "opacity-75" : "hover:bg-orange-600"
+                className={`mt-4 sm:mt-6 rounded-[8px] bg-yellow-500 py-2 sm:py-[8px] px-4 sm:px-[12px] font-medium text-black text-sm sm:text-base ${
+                  isLoading ? "opacity-75" : "hover:bg-yellow-400"
                 } transition-colors`}
               >
                 {isLoading ? "Logging in..." : "Sign In"}
               </button>
               
-              <div className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-gray-600">
+              <div className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-gray-400">
                 Don't have an account?{" "}
                 <Link
                   to="/signup"
-                  className="font-medium text-orange-500 hover:text-orange-600"
+                  className="font-medium text-yellow-400 hover:text-yellow-300"
                 >
                   Sign up
                 </Link>
@@ -125,8 +119,8 @@ function Login() {
             </form>
           </div>
           
-          {/* Image Section - Order changes on mobile */}
-          <div className="w-full md:w-1/2 bg-gray-100 order-1 md:order-2">
+          {/* Image Section */}
+          <div className="w-full md:w-1/2 order-1 md:order-2">
             <img
               src={hotelImage}
               alt="Luxury hotel lobby"

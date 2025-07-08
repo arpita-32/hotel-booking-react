@@ -204,7 +204,7 @@ const BookingPage = () => {
   const totalPrice = selectedRoom ? selectedRoom.price * nights : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
       {/* NavBar at the very top */}
       <NavBar />
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 pt-22 px-4 sm:px-6 lg:px-8">
@@ -224,7 +224,7 @@ const BookingPage = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-xl text-gray-600"
           >
-            Experience luxury redefined at <span className="font-semibold text-orange-500">Luxury Haven</span>
+            Experience luxury redefined at <span className="font-semibold text-yellow-500">Luxury Haven</span>
           </motion.p>
         </div>
 
@@ -237,7 +237,7 @@ const BookingPage = () => {
         >
           <div className="absolute top-6 left-0 right-0 h-1 bg-gray-200 -z-10 mx-12">
             <div 
-              className="h-full bg-orange-500 transition-all duration-500" 
+              className="h-full bg-yellow-500 transition-all duration-500" 
               style={{ width: `${(step - 1) * 50}%` }}
             ></div>
           </div>
@@ -245,7 +245,7 @@ const BookingPage = () => {
           {[1, 2, 3].map((stepNumber) => (
             <div key={stepNumber} className="flex flex-col items-center relative z-10">
               <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 
-                ${step >= stepNumber ? 'bg-orange-500 text-white shadow-md' : 'bg-gray-200 text-gray-600'}`}>
+                ${step >= stepNumber ? 'bg-yellow-500 text-black' : 'bg-gray-700 text-gray-300'}`}>
                 {stepNumber === 1 && <FiCalendar size={20} />}
                 {stepNumber === 2 && <FiUser size={20} />}
                 {stepNumber === 3 && <FiCreditCard size={20} />}
@@ -266,7 +266,7 @@ const BookingPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-white shadow-xl rounded-xl overflow-hidden"
+          className="bg-gray-800 shadow-xl rounded-xl overflow-hidden"
         >
           <AnimatePresence mode="wait">
             {/* Step 1: Dates & Room Selection */}
@@ -291,7 +291,7 @@ const BookingPage = () => {
                         value={formData.checkIn}
                         onChange={handleChange}
                         min={new Date().toISOString().split('T')[0]}
-                        className={`w-full px-4 py-3 border ${errors.checkIn ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                        className={`w-full px-4 py-3 border ${errors.checkIn ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 bg-gray-700 text-white border-gray-600 focus:border-transparent transition`}
                         required
                       />
                       {errors.checkIn && <p className="mt-1 text-sm text-red-500">{errors.checkIn}</p>}
@@ -306,7 +306,7 @@ const BookingPage = () => {
                         value={formData.checkOut}
                         onChange={handleChange}
                         min={formData.checkIn || new Date().toISOString().split('T')[0]}
-                        className={`w-full px-4 py-3 border ${errors.checkOut ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                        className={`w-full px-4 py-3 border ${errors.checkOut ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 bg-gray-700 text-white border-gray-600 focus:border-transparent transition`}
                         required
                       />
                       {errors.checkOut && <p className="mt-1 text-sm text-red-500">{errors.checkOut}</p>}
@@ -321,7 +321,7 @@ const BookingPage = () => {
                       name="adults"
                       value={formData.adults}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 bg-gray-700 text-white border-gray-600 focus:border-transparent transition"
                     >
                       {[1, 2, 3, 4, 5].map(num => (
                         <option key={num} value={num}>{num} {num === 1 ? 'Adult' : 'Adults'}</option>
@@ -334,7 +334,7 @@ const BookingPage = () => {
                       name="children"
                       value={formData.children}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 bg-gray-700 text-white border-gray-600 focus:border-transparent transition"
                     >
                       {[0, 1, 2, 3, 4].map(num => (
                         <option key={num} value={num}>{num} {num === 1 ? 'Child' : 'Children'}</option>
@@ -350,7 +350,7 @@ const BookingPage = () => {
                       <div 
                         key={room.id} 
                         onClick={() => setFormData(prev => ({ ...prev, roomType: room.id }))}
-                        className={`border rounded-xl p-4 transition-all cursor-pointer ${formData.roomType === room.id ? 'border-orange-500 bg-orange-50 shadow-md' : 'border-gray-200 hover:border-orange-300'}`}
+                        className={`border rounded-xl p-4 transition-all cursor-pointer ${formData.roomType === room.id ? 'border-yellow-500 bg-yellow-50 shadow-md' : 'border-gray-200 hover:border-yellow-300'}`}
                       >
                         <input
                           type="radio"
@@ -363,7 +363,7 @@ const BookingPage = () => {
                         />
                         <label htmlFor={room.id} className="block cursor-pointer">
                           <div className="font-bold text-gray-900 mb-1">{room.name}</div>
-                          <div className="text-orange-500 font-semibold mb-2">${room.price}/night</div>
+                          <div className="text-yellow-500 font-semibold mb-2">${room.price}/night</div>
                           <div className="text-sm text-gray-600">{room.description}</div>
                         </label>
                       </div>
@@ -392,7 +392,7 @@ const BookingPage = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="flex items-center justify-center bg-orange-500 hover:bg-orange-500 text-black px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
+                    className="flex items-center justify-center bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
                   >
                     Next: Guest Information <FiArrowRight className="ml-2" />
                   </button>
@@ -419,7 +419,7 @@ const BookingPage = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                    className={`w-full px-4 py-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition`}
                     required
                   />
                   {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
@@ -433,7 +433,7 @@ const BookingPage = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                      className={`w-full px-4 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition`}
                       required
                     />
                     {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
@@ -445,7 +445,7 @@ const BookingPage = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                      className={`w-full px-4 py-3 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition`}
                       required
                     />
                     {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
@@ -463,7 +463,7 @@ const BookingPage = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="flex items-center justify-center bg-orange-500 hover:bg-orange-500 text-black px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
+                    className="flex items-center justify-center bg-yellow-500 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg"
                   >
                     Next: Payment <FiArrowRight className="ml-2" />
                   </button>
@@ -496,7 +496,7 @@ const BookingPage = () => {
                       onChange={handleCardNumberChange}
                       placeholder="1234 5678 9012 3456"
                       maxLength="19"
-                      className={`w-full pl-10 px-4 py-3 border ${errors.cardNumber ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                      className={`w-full pl-10 px-4 py-3 border ${errors.cardNumber ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition`}
                       required
                     />
                   </div>
@@ -513,7 +513,7 @@ const BookingPage = () => {
                       onChange={handleExpiryChange}
                       placeholder="MM/YY"
                       maxLength="5"
-                      className={`w-full px-4 py-3 border ${errors.expiry ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                      className={`w-full px-4 py-3 border ${errors.expiry ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition`}
                       required
                     />
                     {errors.expiry && <p className="mt-1 text-sm text-red-500">{errors.expiry}</p>}
@@ -527,7 +527,7 @@ const BookingPage = () => {
                       onChange={handleChange}
                       placeholder="123"
                       maxLength="4"
-                      className={`w-full px-4 py-3 border ${errors.cvv ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
+                      className={`w-full px-4 py-3 border ${errors.cvv ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition`}
                       required
                     />
                     {errors.cvv && <p className="mt-1 text-sm text-red-500">{errors.cvv}</p>}
@@ -579,7 +579,7 @@ const BookingPage = () => {
                     
                     <div className="border-t border-gray-200 mt-3 pt-3 flex justify-between">
                       <span className="text-lg font-bold text-gray-800">Total:</span>
-                      <span className="text-lg font-bold text-orange-500">${totalPrice}</span>
+                      <span className="text-lg font-bold text-yellow-500">${totalPrice}</span>
                     </div>
                   </div>
                 </div>
@@ -595,7 +595,7 @@ const BookingPage = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`flex items-center justify-center bg-orange-500 hover:bg-orange-500 text-black px-8 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                    className={`flex items-center justify-center bg-yellow-500 hover:bg-yellow-500 text-black px-8 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                   >
                     {isSubmitting ? (
                       <>

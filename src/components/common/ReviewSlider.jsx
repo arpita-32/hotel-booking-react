@@ -23,7 +23,7 @@ const ReviewSlider = ({ reviews }) => {
           {[...Array(5)].map((_, i) => (
             <svg 
               key={i}
-              className={`w-6 h-6 ${i < 4 ? 'text-orange-500' : 'text-gray-600'}`}
+              className={`w-6 h-6 ${i < 4 ? 'text-yellow-500' : 'text-gray-600'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -34,7 +34,7 @@ const ReviewSlider = ({ reviews }) => {
         <p className="text-gray-200 text-lg md:text-xl italic mb-6 text-center">
           "{reviews[currentIndex].text}"
         </p>
-        <p className="text-orange-500 font-medium text-right">
+        <p className="text-yellow-500 font-medium text-right">
           — {reviews[currentIndex].author}
         </p>
       </div>
@@ -56,7 +56,7 @@ const ReviewSlider = ({ reviews }) => {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-colors duration-200 ${currentIndex === index ? 'bg-orange-500 w-6' : 'bg-gray-600 hover:bg-gray-500'}`}
+              className={`w-3 h-3 rounded-full transition-colors duration-200 ${currentIndex === index ? 'bg-yellow-500 w-6' : 'bg-gray-600 hover:bg-gray-500'}`}
               aria-label={`Go to review ${index + 1}`}
             />
           ))}

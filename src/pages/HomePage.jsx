@@ -47,7 +47,7 @@ const RoomCard = ({ title, price, image, description, amenities }) => {
       <div className="p-4 md:p-6 flex-grow">
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg md:text-xl font-bold text-gray-800">{title}</h3>
-          <span className="text-orange-500 font-bold whitespace-nowrap">${price}<span className="text-gray-600 text-sm"> / night</span></span>
+          <span className="text-yellow-500 font-bold whitespace-nowrap">${price}<span className="text-gray-600 text-sm"> / night</span></span>
         </div>
         <p className="text-gray-600 text-sm md:text-base mb-4">{description}</p>
         <div className="border-t border-gray-200 pt-4">
@@ -62,7 +62,7 @@ const RoomCard = ({ title, price, image, description, amenities }) => {
         </div>
         <Link 
           to="/rooms" 
-          className="mt-4 md:mt-6 w-full bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-3 rounded-md font-medium transition duration-300 text-sm md:text-base flex items-center justify-center shadow-md hover:shadow-lg"
+          className="mt-4 md:mt-6 w-full bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-white py-3 rounded-md font-medium transition duration-300 text-sm md:text-base flex items-center justify-center shadow-md hover:shadow-lg"
         >
           View Details <FiArrowRight className="ml-2" />
         </Link>
@@ -83,7 +83,7 @@ const AmenityCard = ({ icon, title, description }) => {
       className="bg-white p-4 md:p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-full transform hover:-translate-y-2"
     >
       <div className="text-center">
-        {React.cloneElement(icon, { className: "text-3xl md:text-4xl text-orange-500 mb-3 md:mb-4 mx-auto" })}
+        {React.cloneElement(icon, { className: "text-3xl md:text-4xl text-yellow-500 mb-3 md:mb-4 mx-auto" })}
         <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">{title}</h3>
         <p className="text-gray-600 text-sm md:text-base">{description}</p>
       </div>
@@ -126,7 +126,7 @@ const TestimonialCard = ({ quote, author, rating }) => {
         {[...Array(5)].map((_, i) => (
           <FiStar 
             key={i} 
-            className={`inline ${i < rating ? 'text-orange-500 fill-orange-500' : 'text-gray-300'} text-sm md:text-base`} 
+            className={`inline ${i < rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'} text-sm md:text-base`} 
           />
         ))}
       </div>
@@ -153,8 +153,8 @@ const HomePage = () => {
       <section id="home" className="pt-22 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32 bg-gradient-to-b from-gray-50 to-gray-100 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-orange-500 filter blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-orange-500 filter blur-3xl"></div>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-yellow-500 filter blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-yellow-500 filter blur-3xl"></div>
         </div>
         
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10">
@@ -184,7 +184,7 @@ const HomePage = () => {
             >
               <Link 
                 to="/book" 
-                className="bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-400 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-medium transition duration-300 text-lg flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-400 hover:to-yellow-400 text-white px-8 py-4 rounded-lg font-medium transition duration-300 text-lg flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Book Your Stay <FiArrowRight className="ml-3" />
               </Link>
@@ -234,7 +234,7 @@ const HomePage = () => {
             </div>
             <Link 
               to="/book"
-              className="bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-500 hover:to-orange-300 text-white px-8 py-3 md:px-10 md:py-4 rounded-lg font-medium transition duration-300 whitespace-nowrap text-lg flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-500 hover:to-yellow-300 text-white px-8 py-3 md:px-10 md:py-4 rounded-lg font-medium transition duration-300 whitespace-nowrap text-lg flex items-center shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Check Availability <FiArrowRight className="ml-3" />
             </Link>
@@ -270,19 +270,19 @@ const HomePage = () => {
             <div className="inline-flex rounded-lg shadow-sm bg-gray-100 p-1">
               <button
                 onClick={() => setActiveTab('rooms')}
-                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'rooms' ? 'bg-white text-orange-500 shadow-md' : 'text-gray-800 hover:text-orange-500'}`}
+                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'rooms' ? 'bg-white text-yellow-500 shadow-md' : 'text-gray-800 hover:text-yellow-500'}`}
               >
                 Rooms
               </button>
               <button
                 onClick={() => setActiveTab('suites')}
-                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'suites' ? 'bg-white text-orange-500 shadow-md' : 'text-gray-800 hover:text-orange-500'}`}
+                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'suites' ? 'bg-white text-yellow-500 shadow-md' : 'text-gray-800 hover:text-yellow-500'}`}
               >
                 Suites
               </button>
               <button
                 onClick={() => setActiveTab('villas')}
-                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'villas' ? 'bg-white text-orange-500 shadow-md' : 'text-gray-800 hover:text-orange-500'}`}
+                className={`px-6 py-3 rounded-lg font-medium text-base ${activeTab === 'villas' ? 'bg-white text-yellow-500 shadow-md' : 'text-gray-800 hover:text-yellow-500'}`}
               >
                 Villas
               </button>
@@ -384,7 +384,7 @@ const HomePage = () => {
           >
             <Link 
               to="/rooms" 
-              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-gradient-to-r from-orange-500 to-orange-500 hover:from-orange-500 hover:to-orange-400 shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
+              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
             >
               View All Accommodations <FiArrowRight className="ml-3" />
             </Link>
@@ -556,7 +556,7 @@ const HomePage = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="py-16 md:py-20 bg-gradient-to-r from-orange-400 to-orange-400 text-white"
+        className="py-16 md:py-20 bg-gradient-to-r from-yellow-400 to-yellow-400 text-white"
       >
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
@@ -568,7 +568,7 @@ const HomePage = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link 
               to="/book" 
-              className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-white text-yellow-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Book Now
             </Link>

@@ -13,8 +13,8 @@ const SidebarLink = ({ link, iconName }) => {
       to={link.path}
       className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg mx-2 ${
         isActive 
-          ? 'bg-richblack-700 text-yellow-50' 
-          : 'text-richblack-200 hover:bg-richblack-700 hover:text-richblack-5'
+          ? 'bg-gray-800 text-yellow-50' 
+          : 'text-gray-400 hover:bg-gray-800 hover:text-yellow-50'
       } transition-colors`}
     >
       <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${
