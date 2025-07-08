@@ -5,7 +5,7 @@ import { BsChevronDown } from 'react-icons/bs';
 import ProfileDropdown from './ProfileDropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../services/operations/authAPI';
-import logo from '../../assets/images/hotelogo.png';
+import logo from '../../assets/Images/hotelogo.png';
 
 const navLinks = [
   { title: "Home", path: "/" },
