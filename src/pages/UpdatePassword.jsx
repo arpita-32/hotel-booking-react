@@ -58,16 +58,16 @@ function UpdatePassword() {
                 value={password}
                 onChange={handleOnChange}
                 placeholder="Enter Password"
-                className="w-full rounded-lg bg-gray-800 p-3 text-yellow-50 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 pr-10"
+                className="w-full rounded-lg bg-gray-800 p-3 text-yellow-50 border-b border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 pr-10"
               />
               <span
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
               >
                 {showPassword ? (
-                  <AiOutlineEyeInvisible fontSize={20} className="text-richblack-300" />
+                  <AiOutlineEyeInvisible fontSize={20} className="text-gray-300" />
                 ) : (
-                  <AiOutlineEye fontSize={20} className="text-richblack-300" />
+                  <AiOutlineEye fontSize={20} className="text-gray-300" />
                 )}
               </span>
             </label>
@@ -82,16 +82,16 @@ function UpdatePassword() {
                 value={confirmPassword}
                 onChange={handleOnChange}
                 placeholder="Confirm Password"
-                className="w-full rounded-lg bg-gray-800 p-3 text-yellow-50 border-b border-richblack-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 pr-10"
+                className="w-full rounded-lg bg-gray-800 p-3 text-yellow-50 border-b border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 pr-10"
               />
               <span
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
               >
                 {showConfirmPassword ? (
-                  <AiOutlineEyeInvisible fontSize={20} className="text-richblack-300" />
+                  <AiOutlineEyeInvisible fontSize={20} className="text-gray-300" />
                 ) : (
-                  <AiOutlineEye fontSize={20} className="text-richblack-300" />
+                  <AiOutlineEye fontSize={20} className="text-gray-300" />
                 )}
               </span>
             </label>

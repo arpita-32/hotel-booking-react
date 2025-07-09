@@ -51,7 +51,7 @@ function Login() {
             <div className="text-center mb-6 md:mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-yellow-50">Welcome Back</h2>
               <p className="mt-2 text-sm sm:text-base text-gray-300">
-                Sign in to your Luxury Haven account
+                Sign in to your B.S.H RESIDENCY account
               </p>
             </div>
             

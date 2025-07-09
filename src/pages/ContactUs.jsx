@@ -70,7 +70,7 @@ const ContactUs = () => {
                     <FiMail className="text-yellow-500 text-xl flex-shrink-0" />
                     <div>
                       <h3 className="font-semibold text-lg mb-1">Email</h3>
-                      <a href="mailto:info@luxuryhaven.com" className="text-gray-400 hover:text-yellow-500 transition">info@luxuryhaven.com</a>
+                      <a href="mailto:info@B.S.H RESIDENCY.com" className="text-gray-400 hover:text-yellow-500 transition">info@luxuryhaven.com</a>
                     </div>
                   </div>
                   

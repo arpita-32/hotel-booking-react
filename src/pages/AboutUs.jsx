@@ -59,7 +59,7 @@ const AboutUs = () => {
 
       {/* Divider */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-8 sm:my-10 md:my-12">
-        <div className="h-px bg-richblack-400 opacity-30 w-full"></div>
+        <div className="h-px bg-gray-400 opacity-30 w-full"></div>
       </div>
 
       {/* Founding Story Section */}

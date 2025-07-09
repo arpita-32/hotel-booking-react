@@ -156,7 +156,7 @@ const BookingPage = () => {
       setTimeout(() => {
         console.log('Booking submitted:', formData);
         setIsSubmitting(false);
-        alert('Booking confirmed! Thank you for choosing Luxury Haven.');
+        alert('Booking confirmed! Thank you for choosing B.S.H RESIDENCY.');
       }, 1500);
     }
   };
@@ -224,7 +224,7 @@ const BookingPage = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-xl text-gray-600"
           >
-            Experience luxury redefined at <span className="font-semibold text-yellow-500">Luxury Haven</span>
+            Experience luxury redefined at <span className="font-semibold text-yellow-500">B.S.H RESIDENCY</span>
           </motion.p>
         </div>
 

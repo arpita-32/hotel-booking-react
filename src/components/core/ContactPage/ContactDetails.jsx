@@ -13,7 +13,7 @@ const ContactDetails = ({ address, phone, email, hours }) => {
         <div>
           <h3 className='font-semibold mb-2'>Phone</h3>
           <p className='text-gray-400'>{phone}</p>
-          <p className='text-sm text-richblack-900 mt-1'>24/7 Reception</p>
+          <p className='text-sm text-gray-900 mt-1'>24/7 Reception</p>
         </div>
         
         <div>

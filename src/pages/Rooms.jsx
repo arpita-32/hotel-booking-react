@@ -84,7 +84,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
           <p className="mb-4">{error.message || 'Failed to load rooms'}</p>
           <button 
             onClick={() => dispatch(fetchAllRooms())}
-            className="bg-yellow-50 text-richblack-900 px-4 py-2 rounded-lg hover:bg-yellow-100 transition-colors"
+            className="bg-yellow-50 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-100 transition-colors"
           >
             Retry
           </button>
@@ -178,7 +178,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
 
                     </div>
                   </div>
-                  <div className="flex items-center text-sm text-richblack-300 mb-2">
+                  <div className="flex items-center text-sm text-gray-300 mb-2">
                     <FiStar className="text-yellow-500 mr-1" />
                     <span>{room.size} • {room.beds}</span>
                   </div>
@@ -280,7 +280,7 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
                       <div className="text-xs sm:text-sm text-gray-500">Price</div>
                       <div className="text-yellow-500 font-bold text-lg">
-  ₹{selectedRoom.price * 83}<span className="text-richblack-300 text-sm"> / night</span>
+  ₹{selectedRoom.price * 83}<span className="text-gray-300 text-sm"> / night</span>
 </div>
 
                     </div>

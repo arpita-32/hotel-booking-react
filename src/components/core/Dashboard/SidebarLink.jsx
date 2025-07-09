@@ -18,7 +18,7 @@ const SidebarLink = ({ link, iconName }) => {
       } transition-colors`}
     >
       <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${
-        isActive ? 'text-yellow-50' : 'text-richblack-300'
+        isActive ? 'text-yellow-50' : 'text-gray-300'
       }`} />
       {link.name}
     </NavLink>

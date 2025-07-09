@@ -6,7 +6,7 @@ const Stats = ({ stats }) => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         {stats.map((stat, index) => (
           <div key={index} className="text-center">
-            <div className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-[#FF512F] to-[#F09819] bg-clip-text text-transparent">
+            <div className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-[#ffbd2f] to-[#F09819] bg-clip-text text-transparent">
               {stat.number}
             </div>
             <div className="text-gray-400 mt-2 text-sm sm:text-base">

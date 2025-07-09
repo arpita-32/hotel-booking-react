@@ -1,7 +1,7 @@
 import React from 'react';
 const ContactForm = ({ title, subtitle }) => {
   return (
-    <div className='w-full lg:w-[60%] bg-gray-900 p-6 sm:p-8 rounded-xl border border-richblack-700'>
+    <div className='w-full lg:w-[60%] bg-gray-900 p-6 sm:p-8 rounded-xl border border-gray-700'>
       <h2 className='text-2xl font-bold mb-2 text-black'>{title}</h2>
       <p className='text-gray-400 mb-6'>{subtitle}</p>
       
@@ -11,7 +11,7 @@ const ContactForm = ({ title, subtitle }) => {
             <label className='block text-gray-400 mb-2'>Full Name</label>
             <input 
               type='text' 
-              className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-yellow-500 focus:outline-none'
+              className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black border border-gray-600 focus:border-yellow-500 focus:outline-none'
               placeholder='Your Name'
             />
           </div>
@@ -19,7 +19,7 @@ const ContactForm = ({ title, subtitle }) => {
             <label className='block text-gray-400 mb-2'>Email</label>
             <input 
               type='email' 
-              className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-yellow-500 focus:outline-none'
+              className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black border border-gray-600 focus:border-yellow-500 focus:outline-none'
               placeholder='Your Email'
             />
           </div>
@@ -27,7 +27,7 @@ const ContactForm = ({ title, subtitle }) => {
         
         <div>
           <label className='block text-gray-400 mb-2'>Subject</label>
-          <select className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black border border-richblack-600 focus:border-yellow-500 focus:outline-none'>
+          <select className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black border border-gray-600 focus:border-yellow-500 focus:outline-none'>
             <option>General Inquiry</option>
             <option>Reservation Question</option>
             <option>Special Request</option>
@@ -39,7 +39,7 @@ const ContactForm = ({ title, subtitle }) => {
         <div>
           <label className='block text-gray-400 mb-2'>Message</label>
           <textarea 
-            className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black h-32 border border-richblack-600 focus:border-yellow-500 focus:outline-none'
+            className='w-full bg-gray-800 rounded-lg px-4 py-3 text-black h-32 border border-gray-600 focus:border-yellow-500 focus:outline-none'
             placeholder='How can we assist you?'
           ></textarea>
         </div>

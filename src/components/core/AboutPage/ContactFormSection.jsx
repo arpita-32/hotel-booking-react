@@ -37,7 +37,7 @@ const ContactFormSection = ({ title, subtitle }) => {
           
           <button 
             type="submit"
-            className="w-full bg-gradient-to-r from-[#FF512F] to-[#F09819] text-white py-3 rounded-lg font-medium mt-4"
+            className="w-full bg-gradient-to-r from-[#ffcb2f] to-[#F09819] text-white py-3 rounded-lg font-medium mt-4"
           >
             Contact Concierge
           </button>

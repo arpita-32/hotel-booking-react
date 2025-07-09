@@ -51,13 +51,13 @@ const handleFileUpload = () => {
     if (imageFile) previewFile(imageFile);
   }, [imageFile]);
  return (
-    <div className="rounded-lg border border-richblack-700 bg-gray-900 p-4 md:p-6 lg:p-8">
+    <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 md:p-6 lg:p-8">
       <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
         <div className="relative">
           <img
             src={previewSource || user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-16 md:w-20 lg:w-[78px] rounded-full object-cover border-2 border-richblack-500"
+            className="aspect-square w-16 md:w-20 lg:w-[78px] rounded-full object-cover border-2 border-gray-500"
           />
         </div>
         <div className="space-y-3 md:space-y-4 w-full">
@@ -77,7 +77,7 @@ const handleFileUpload = () => {
             <button
               onClick={handleClick}
               disabled={loading}
-              className="cursor-pointer rounded-lg bg-gray-800 py-2 px-4 md:px-5 font-medium text-yellow-500 hover:bg-richblack-600 transition-all duration-200"
+              className="cursor-pointer rounded-lg bg-gray-800 py-2 px-4 md:px-5 font-medium text-yellow-500 hover:bg-gray-600 transition-all duration-200"
             >
               Select
             </button>
@@ -85,7 +85,7 @@ const handleFileUpload = () => {
             <IconBtn
               text={loading ? "Uploading..." : "Upload"}
               onclick={handleFileUpload}
-              customClasses="bg-yellow-50 text-richblack-900 hover:bg-yellow-100"
+              customClasses="bg-yellow-50 text-gray-900 hover:bg-yellow-100"
             >
               {!loading && <FiUpload className="text-lg" />}
             </IconBtn>

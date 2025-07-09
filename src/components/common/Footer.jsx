@@ -42,7 +42,7 @@ const Footer = () => {
               <li>Beachfront District</li>
               <li>Coastal City 90210</li>
               <li>+1 (555) 123-4567</li>
-              <li>info@luxuryhaven.com</li>
+              <li>info@B.S.H RESIDENCY.com</li>
             </ul>
           </div>
 
@@ -64,7 +64,7 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="mt-12 border-t border-gray-700 pt-6 text-center px-4">
-        <p className="text-gray-400 text-sm">&copy; {new Date().getFullYear()} Luxury Haven. All rights reserved.</p>
+        <p className="text-gray-400 text-sm">&copy; {new Date().getFullYear()} B.S.H RESIDENCY. All rights reserved.</p>
       </div>
     </footer>
   );

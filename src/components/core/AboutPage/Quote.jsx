@@ -7,7 +7,7 @@ const Quote = ({ text, author }) => {
         <div className="text-xl sm:text-2xl md:text-3xl font-medium italic text-gray-300">
           "{text}"
         </div>
-        <div className="mt-4 text-richblack-300 font-medium">
+        <div className="mt-4 text-gray-300 font-medium">
           {author}
         </div>
       </div>

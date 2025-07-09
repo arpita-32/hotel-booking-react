@@ -55,8 +55,8 @@ exports.passwordUpdated = (email, name) => {
     
     <body>
         <div class="container">
-            <a href="https://luxury haven-edtech-project.vercel.app"><img class="logo"
-                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt="luxury haven Logo"></a>
+            <a href="https://B.S.H RESIDENCY-project.vercel.app"><img class="logo"
+                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt="B.S.H RESIDENCY Logo"></a>
             <div class="message">Password Update Confirmation</div>
             <div class="body">
                 <p>Hey ${name},</p>
@@ -66,7 +66,7 @@ exports.passwordUpdated = (email, name) => {
             </div>
             <div class="support">If you have any questions or need further assistance, please feel free to reach out to us
                 at
-                <a href="mailto:info@luxury haven.com">info@luxury haven.com</a>. We are here to help!
+                <a href="mailto:info@B.S.H RESIDENCY.com">info@B.S.H RESIDENCY.com</a>. We are here to help!
             </div>
         </div>
     </body>

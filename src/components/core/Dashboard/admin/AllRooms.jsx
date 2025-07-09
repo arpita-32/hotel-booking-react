@@ -60,7 +60,7 @@ const AllRooms = () => {
         </h2>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-yellow-50 text-richblack-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-100 transition-colors"
+          className="bg-yellow-50 text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-100 transition-colors"
         >
           {showAddForm ? 'Hide Form' : 'Add New Room'}
         </button>
@@ -84,7 +84,7 @@ const AllRooms = () => {
       )}
 
 
-      <div className="overflow-x-auto rounded-lg border border-richblack-700">
+      <div className="overflow-x-auto rounded-lg border border-gray-700">
         <table className="min-w-full bg-gray-900">
           <thead className="bg-gray-800 text-yellow-50">
             <tr>
@@ -96,7 +96,7 @@ const AllRooms = () => {
               <th className="py-3 px-4 text-left">Actions</th>
             </tr>
           </thead>
-          <tbody className="text-gray-300 divide-y divide-richblack-700">
+          <tbody className="text-gray-300 divide-y divide-gray-700">
             {rooms?.map((room) => (
               <tr key={room._id} className="hover:bg-gray-800 transition-colors">
                 <td className="py-3 px-4">{room.roomNumber}</td>
