@@ -144,64 +144,80 @@ exports.login = async (req, res) => {
 
 exports.sendotp = async (req, res) => {
   try {
+    console.log("📨 Send OTP request received:", req.body);
+
     if (!req.body || !req.body.email) {
       return res.status(400).json({
         success: false,
         message: "Email is required in the request body",
-      })
+      });
     }
 
-    const { email } = req.body
+    const { email } = req.body;
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
         message: "Please provide a valid email address",
-      })
+      });
     }
 
-    const checkUserPresent = await User.findOne({ email })
-
+    // Check if user already exists
+    const checkUserPresent = await User.findOne({ email });
     if (checkUserPresent) {
       return res.status(400).json({
         success: false,
         message: "User is already registered",
-      })
+      });
     }
 
+    // Generate OTP
     let otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
-    })
+    });
 
-    let result = await OTP.findOne({ otp })
+    console.log(`🔑 Generated OTP: ${otp} for email: ${email}`);
+
+    // Ensure OTP is unique
+    let result = await OTP.findOne({ otp });
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
-      })
-      result = await OTP.findOne({ otp })
+      });
+      result = await OTP.findOne({ otp });
     }
 
-    const otpPayload = { email, otp }
-    const otpBody = await OTP.create(otpPayload)
+    // Create OTP in database
+    const otpPayload = { email, otp };
+    const otpBody = await OTP.create(otpPayload);
 
+    console.log(`✅ OTP saved to database for: ${email}`);
+    console.log(`📝 OTP document ID: ${otpBody._id}`);
+
+    // Return success response immediately
+    // Email will be sent via the post-save hook
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully",
-      otp: otp,
-      otpId: otpBody._id,
-    })
+      otp: process.env.NODE_ENV === 'development' ? otp : undefined, // Return OTP only in development for testing
+    });
+
   } catch (error) {
-    console.error("Error in sendotp:", error)
+    console.error("❌ Error in sendotp controller:");
+    console.error("Error message:", error.message);
+    console.error("Stack trace:", error.stack);
+    
     return res.status(500).json({
       success: false,
       message: "Failed to send OTP",
       error: error.message,
-    })
+    });
   }
-}
+};
 
 exports.changePassword = async (req, res) => {
   try {

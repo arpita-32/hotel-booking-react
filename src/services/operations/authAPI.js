@@ -12,30 +12,37 @@ export { USER_ROLE, USER_ROLES } from "../../utils/constants"
 
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Sending OTP...")
     dispatch(setLoading(true))
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
-        checkUserPresent: true,
       })
-      console.log("SENDOTP API RESPONSE............", response)
+      console.log("✅ SENDOTP API RESPONSE:", response)
 
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
 
-      toast.success("OTP Sent Successfully")
+      toast.success("OTP Sent Successfully! Check your email.")
       navigate("/verify-email")
     } catch (error) {
-      console.log("SENDOTP API ERROR............", error)
-      toast.error("Could Not Send OTP")
+      console.log("❌ SENDOTP API ERROR:", error)
+      
+      let errorMessage = "Could Not Send OTP"
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
+      toast.error(errorMessage)
+    } finally {
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
-
 export function signUp(firstName, lastName, email, password, confirmPassword, role, otp, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")

@@ -14,45 +14,37 @@ const OTPSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 60 * 5, // auto-delete after 5 minutes
+    expires: 60 * 5, // The document will be automatically deleted after 5 minutes of its creation time
   },
 });
 
-// ---- Helper: Send Verification Email ----
-async function sendVerificationEmail(email, otp) {
+// Define a post-save hook to send email after the document has been saved
+OTPSchema.post("save", async function (doc) {
+  console.log("🆕 New OTP saved to database:", {
+    email: doc.email,
+    otp: doc.otp,
+    id: doc._id
+  });
+
+  // Send the email
   try {
+    console.log(`📧 Attempting to send email to: ${doc.email}`);
     const mailResponse = await mailSender(
-      email,
-      "Verification Email",
-      emailTemplate(otp)
+      doc.email,
+      "B.S.H RESIDENCY - Verification Code",
+      emailTemplate(doc.otp)
     );
-
-    // Log safely — only if property exists
-    console.log(
-      "✅ Email sent successfully:",
-      mailResponse?.response || mailResponse?.message || "Mail sent (no response field)"
-    );
+    
+    console.log(`✅ Email sent successfully to: ${doc.email}`);
+    console.log(`📨 Message ID: ${mailResponse.messageId}`);
   } catch (error) {
-    console.error("❌ Error occurred while sending email:", error.message || error);
-    if (error.response) {
-      console.error("Mail server response:", error.response);
-    }
-
-    // Don’t crash the app — just continue
-    return null;
+    console.error(`❌ Failed to send verification email:`);
+    console.error("Error message:", error.message);
+    console.error("Error code:", error.code);
+    console.error("Email:", doc.email);
+    
+    // Don't throw the error - we don't want to break the OTP saving process
   }
-}
-
-// ---- Schema Middleware: Pre-save ----
-OTPSchema.pre("save", async function (next) {
-  console.log("🆕 New document saved to database");
-
-  if (this.isNew) {
-    await sendVerificationEmail(this.email, this.otp);
-  }
-
-  next();
 });
 
-const OTP = mongoose.model("OTP", OTPSchema);
-module.exports = OTP;
+module.exports = mongoose.model("OTP", OTPSchema);
