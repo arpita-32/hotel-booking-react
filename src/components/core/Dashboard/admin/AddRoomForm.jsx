@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { addNewRoom } from '../../../../services/operations/roomAPI';
-import { toast } from 'react-hot-toast';
 import HighlightText from '../../../common/HighlightText';
 
 const initialFormState = {
@@ -133,7 +133,7 @@ const AddRoomForm = ({ onRoomAdded }) => {
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">Price*</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">¥</span>
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">₹</span>
               <input
                 type="number"
                 value={formData.price}
