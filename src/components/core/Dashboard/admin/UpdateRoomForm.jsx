@@ -25,7 +25,7 @@ const UpdateRoomForm = ({ room, onClose, onRoomUpdated }) => {
       setFormData({
         roomNumber: room.roomNumber,
         roomType: room.roomType,
-        price: room.price,
+        price: room.price, // Direct price without any conversion
         capacity: room.capacity,
         description: room.description,
         amenities: room.amenities.join(', '),
@@ -60,66 +60,60 @@ const UpdateRoomForm = ({ room, onClose, onRoomUpdated }) => {
       });
     }
   };
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsUploading(true);
-  
-  try {
-    const formDataToSend = new FormData();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsUploading(true);
     
-    // Append roomId to the form data
-    formDataToSend.append('roomId', room._id);
-    formDataToSend.append('roomNumber', formData.roomNumber);
-    formDataToSend.append('roomType', formData.roomType);
-    formDataToSend.append('price', formData.price);
-    formDataToSend.append('capacity', formData.capacity);
-    formDataToSend.append('description', formData.description || '');
-    
-    // Handle amenities array
-    const amenitiesArray = formData.amenities 
-      ? formData.amenities.split(',').map(item => item.trim())
-      : [];
-    formDataToSend.append('amenities', JSON.stringify(amenitiesArray));
+    try {
+      const formDataToSend = new FormData();
+      
+      // Append roomId to the form data
+      formDataToSend.append('roomId', room._id);
+      formDataToSend.append('roomNumber', formData.roomNumber);
+      formDataToSend.append('roomType', formData.roomType);
+      formDataToSend.append('price', formData.price);
+      formDataToSend.append('capacity', formData.capacity);
+      formDataToSend.append('description', formData.description || '');
+      
+      // Handle amenities array
+      const amenitiesArray = formData.amenities 
+        ? formData.amenities.split(',').map(item => item.trim())
+        : [];
+      formDataToSend.append('amenities', JSON.stringify(amenitiesArray));
 
-    // Append thumbnail if changed
-    if (formData.thumbnailImage) {
-      formDataToSend.append('thumbnailImage', formData.thumbnailImage);
+      // Append thumbnail if changed
+      if (formData.thumbnailImage) {
+        formDataToSend.append('thumbnailImage', formData.thumbnailImage);
+      }
+
+      // Append additional images
+      if (formData.images && Array.isArray(formData.images)) {
+        formData.images.forEach((image) => {
+          formDataToSend.append('images', image);
+        });
+      }
+
+      const result = await dispatch(updateRoomDetails({
+        roomId: room._id,
+        formData: formDataToSend
+      }));
+
+      if (updateRoomDetails.fulfilled.match(result)) {
+        toast.success('Room updated successfully');
+        onRoomUpdated();  // This should trigger parent component refresh
+        onClose();
+      } else {
+        throw result.error;
+      }
+      
+    } catch (error) {
+      console.error('Update room error:', error);
+      toast.error(error.message || 'Failed to update room');
+    } finally {
+      setIsUploading(false);
     }
-
-    // Append additional images
-    if (formData.images && Array.isArray(formData.images)) {
-      formData.images.forEach((image) => {
-        formDataToSend.append('images', image);
-      });
-    }
-
-    // Debug: Log form data before sending
-    console.log('FormData contents:');
-    for (let [key, value] of formDataToSend.entries()) {
-      console.log(key, value);
-    }
-
-    const result = await dispatch(updateRoomDetails({
-      roomId: room._id,
-      formData: formDataToSend
-    }));
-
-
-       if (updateRoomDetails.fulfilled.match(result)) {
-      toast.success('Room updated successfully');
-      onRoomUpdated();  // This should trigger parent component refresh
-      onClose();
-    } else {
-      throw result.error;
-    }
-    
-  } catch (error) {
-    console.error('Update room error:', error);
-    toast.error(error.message || 'Failed to update room');
-  } finally {
-    setIsUploading(false);
-  }
-};
+  };
 
   const removeImage = (index) => {
     const newPreviewImages = [...previewImages];
@@ -179,13 +173,15 @@ const handleSubmit = async (e) => {
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Price*</label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">¥</span>
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">₹</span>
                 <input
                   type="number"
                   value={formData.price}
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
                   className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                   required
+                  min="0"
+                  step="0.01"
                 />
               </div>
             </div>
@@ -199,6 +195,7 @@ const handleSubmit = async (e) => {
                 onChange={(e) => setFormData({...formData, capacity: e.target.value})}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                 required
+                min="1"
               />
             </div>
           </div>
@@ -329,7 +326,7 @@ const handleSubmit = async (e) => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-yellow-500 text-white rounded-md font-medium hover:bg-yellow-500 transition-colors disabled:opacity-70"
+              className="px-6 py-2 bg-amber-600 text-white rounded-md font-medium hover:bg-amber-700 transition-colors disabled:opacity-70"
               disabled={isUploading}
             >
               {isUploading ? (

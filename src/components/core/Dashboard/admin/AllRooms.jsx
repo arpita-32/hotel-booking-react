@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllRooms, deleteRoomById } from '../../../../services/operations/roomAPI';
 import AddRoomForm from './AddRoomForm';
-import UpdateRoomForm from './UpdateRoomForm'; // Add this import
+import UpdateRoomForm from './UpdateRoomForm';
 import { toast } from 'react-hot-toast';
 import HighlightText from '../../../common/HighlightText';
-
 
 const AllRooms = () => {
   const dispatch = useDispatch();
@@ -77,12 +76,11 @@ const AllRooms = () => {
 
       {editingRoom && (
         <UpdateRoomForm 
-          room={editingRoom}  // Fixed: using editingRoom instead of currentRoom
+          room={editingRoom}
           onClose={() => setEditingRoom(null)}
           onRoomUpdated={handleRoomUpdated}
         />
       )}
-
 
       <div className="overflow-x-auto rounded-lg border border-gray-700">
         <table className="min-w-full bg-gray-900">
@@ -101,7 +99,7 @@ const AllRooms = () => {
               <tr key={room._id} className="hover:bg-gray-800 transition-colors">
                 <td className="py-3 px-4">{room.roomNumber}</td>
                 <td className="py-3 px-4">{room.roomType}</td>
-                <td className="py-3 px-4">₹{(room.price * 83).toLocaleString('en-IN')}</td>
+                <td className="py-3 px-4">₹{room.price.toLocaleString('en-IN')}</td>
                 <td className="py-3 px-4">{room.capacity}</td>
                 <td className="py-3 px-4">
                   <span className={`px-2 py-1 rounded-full text-xs ${

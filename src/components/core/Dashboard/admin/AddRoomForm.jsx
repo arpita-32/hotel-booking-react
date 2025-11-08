@@ -140,6 +140,8 @@ const AddRoomForm = ({ onRoomAdded }) => {
                 onChange={(e) => setFormData({...formData, price: e.target.value})}
                 className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                 required
+                min="0"
+                step="0.01"
               />
             </div>
           </div>
@@ -153,6 +155,7 @@ const AddRoomForm = ({ onRoomAdded }) => {
               onChange={(e) => setFormData({...formData, capacity: e.target.value})}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
+              min="1"
             />
           </div>
         </div>
