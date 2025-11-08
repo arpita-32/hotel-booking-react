@@ -30,7 +30,7 @@ const Rooms = () => {
   const allRooms = backendRooms?.map(room => ({
     id: room._id,
     name: `${room.roomType} Room ${room.roomNumber}`,
-    price: room.price,
+    price: room.price, // Use the actual price from database (no multiplication)
     size: `${Math.floor(Math.random() * 200) + 300} sq ft`, // Can be replaced with actual size if available
     beds: room.capacity <= 2 ? '1 King Bed' : `${room.capacity} Queen Beds`,
     description: room.description || 'Comfortable room with premium amenities',
@@ -41,7 +41,8 @@ const Rooms = () => {
     roomNumber: room.roomNumber,
     capacity: room.capacity,
     roomType: room.roomType,
-    images: room.images || []
+    images: room.images || [],
+    isAvailable: room.isAvailable // Include availability status
   })) || [];
 
   const filteredRooms = activeFilter === 'all' 
@@ -170,12 +171,9 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-lg sm:text-xl font-bold text-yellow-50">{room.name}</h3>
                     <div className="text-yellow-500 font-bold text-lg">
-<div className="text-yellow-500 font-bold text-lg">
-  <div className="font-medium text-yellow-600 text-sm sm:text-base">
-    ₹{(room.price * 83).toLocaleString('en-IN')}/night
-  </div>
-</div>
-
+                      <div className="font-medium text-yellow-600 text-sm sm:text-base">
+                        ₹{room.price.toLocaleString('en-IN')}/night
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center text-sm text-gray-300 mb-2">
@@ -210,9 +208,14 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     </button>
                     <button
                       onClick={() => handleBookNow(room)}
-                      className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base"
+                      disabled={!room.isAvailable}
+                      className={`flex-1 py-2 rounded-lg font-medium transition duration-300 text-sm sm:text-base ${
+                        room.isAvailable 
+                          ? 'bg-yellow-500 hover:bg-yellow-600 text-black' 
+                          : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      }`}
                     >
-                      Book Now
+                      {room.isAvailable ? 'Book Now' : 'Not Available'}
                     </button>
                   </div>
                 </div>
@@ -280,13 +283,20 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
                       <div className="text-xs sm:text-sm text-gray-500">Price</div>
                       <div className="text-yellow-500 font-bold text-lg">
-  ₹{selectedRoom.price * 83}<span className="text-gray-300 text-sm"> / night</span>
-</div>
-
+                        ₹{selectedRoom.price.toLocaleString('en-IN')}<span className="text-gray-300 text-sm"> / night</span>
+                      </div>
                     </div>
                     <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
                       <div className="text-xs sm:text-sm text-gray-500">Capacity</div>
                       <div className="font-medium text-gray-900 text-sm sm:text-base">{selectedRoom.capacity} people</div>
+                    </div>
+                    <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-500">Status</div>
+                      <div className={`font-medium text-sm sm:text-base ${
+                        selectedRoom.isAvailable ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {selectedRoom.isAvailable ? 'Available' : 'Not Available'}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -311,9 +321,14 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                     setShowDetailsModal(false);
                     setShowBookingModal(true);
                   }}
-                  className="inline-block w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base"
+                  disabled={!selectedRoom.isAvailable}
+                  className={`inline-block w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition duration-300 text-center text-sm sm:text-base ${
+                    selectedRoom.isAvailable
+                      ? 'bg-yellow-500 hover:bg-yellow-600 text-black'
+                      : 'bg-gray-400 text-gray-700 cursor-not-allowed'
+                  }`}
                 >
-                  Book Now
+                  {selectedRoom.isAvailable ? 'Book Now' : 'Room Not Available'}
                 </button>
               </div>
             </div>
@@ -399,6 +414,17 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                       ))}
                     </select>
                   </div>
+                </div>
+              </div>
+              
+              {/* Price Summary */}
+              <div className="bg-gray-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-gray-700 font-medium">Price per night:</span>
+                  <span className="text-yellow-600 font-bold">₹{selectedRoom.price.toLocaleString('en-IN')}</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                  *Total cost will be calculated based on your stay duration
                 </div>
               </div>
               
