@@ -68,6 +68,7 @@ function Login() {
                   onChange={handleOnChange}
                   placeholder="Enter email address"
                   className="w-full rounded-[0.5rem] bg-gray-800 p-2 sm:p-[12px] text-yellow-50 text-sm sm:text-base"
+                  autoComplete="email"
                 />
               </label>
               
@@ -83,6 +84,7 @@ function Login() {
                   onChange={handleOnChange}
                   placeholder="Enter Password"
                   className="w-full rounded-[0.5rem] bg-gray-800 p-2 sm:p-[12px] pr-8 sm:pr-10 text-yellow-50 text-sm sm:text-base"
+                  autoComplete="current-password"
                 />
                 <span
                   onClick={() => setShowPassword((prev) => !prev)}

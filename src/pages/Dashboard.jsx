@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import { Outlet, Navigate } from "react-router-dom";
 import AdminSidebar from "../components/core/Dashboard/AdminSidebar";
 import Sidebar from "../components/core/Dashboard/Sidebar";
-import { USER_ROLE } from "../services/operations/authAPI";
-import NavBar from "../components/common/NavBar"; // Import NavBar component
+import { USER_ROLE } from "../utils/constants"; // ✅ Import from constants file
+import NavBar from "../components/common/NavBar";
 import Footer from "../components/common/Footer"; 
 
 function Dashboard() {

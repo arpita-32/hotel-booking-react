@@ -20,30 +20,37 @@ database.connect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const allowed = [
-  'http://localhost:5173',                 // local dev
-  'https://hotel-booking-react-7dbd.vercel.app/' // production
+
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://hotel-booking-react-7dbd.vercel.app",
 ];
-const vercelPreview = /^https:\/\/hotel-booking-react-[\w-]+\.vercel\.app$/;
- // any preview
 
 app.use(
   cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);               
-      if (allowed.includes(origin) || vercelPreview.test(origin))
-        return cb(null, true);
-      cb(new Error('Not allowed by CORS'));
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("🚫 CORS blocked:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
     },
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
+
+
+
 app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: '/tmp/'
 }));
-
 
 // Cloudinary connection
 cloudinaryConnect();
@@ -51,8 +58,7 @@ cloudinaryConnect();
 // Route imports with error handling
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", Profile);
-app.use('/api/v1/rooms', roomRoutes); // Changed from adminRoutes to roomRoutes
-
+app.use('/api/v1/rooms', roomRoutes);
 
 // Default route
 app.get("/", (req, res) => {
@@ -62,17 +68,24 @@ app.get("/", (req, res) => {
   });
 });
 
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
+  console.error("❌ Error:", err.message);
+
+  if (err.message === "Not allowed by CORS") {
+    return res.status(403).json({
+      success: false,
+      message: "CORS Error: Origin not allowed",
+    });
+  }
+
+  res.status(500).json({
     success: false,
-    message: 'Internal Server Error'
+    message: "Internal Server Error",
   });
 });
 
 
-
 const _server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  console.log('✅ Allowed CORS origins:', allowedOrigins);
 });

@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-// Import controllers with proper error handling
+// Import controllers
 const authController = require("../controllers/authController");
 const resetPasswordController = require("../controllers/ResetPassword");
+const { auth } = require("../middlewares/auth");
 
-// Verify all imported functions exist
 const {
   login,
   signup,
-  sendotp,
   changePassword
 } = authController;
 
@@ -17,13 +16,11 @@ const {
   resetPasswordToken,
   resetPassword
 } = resetPasswordController;
-const { auth } = require("../middlewares/auth");
 
 // Authentication routes
 router.post("/login", login);
 router.post("/signup", signup);
-router.post("/sendotp", sendotp);
-router.post("/changepassword", auth, changePassword); // ✅ Add `auth` here
+router.post("/changepassword", auth, changePassword);
 
 // Reset Password routes
 router.post("/reset-password-token", resetPasswordToken);

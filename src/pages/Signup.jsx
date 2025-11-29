@@ -1,4 +1,4 @@
-import React ,{ useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import hotelImage from "../assets/Images/signuppage.png";
@@ -6,8 +6,7 @@ import NavBar from "../components/common/NavBar";
 import Footer from "../components/common/Footer";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { sendOtp } from "../services/operations/authAPI";
-import { setSignupData } from "../slices/authSlice";
+import { signUp } from "../services/operations/authAPI";
 
 const USER_ROLE = {
   CUSTOMER: "Customer",
@@ -55,11 +54,15 @@ function Signup() {
     setIsLoading(true);
 
     try {
-      await dispatch(sendOtp(formData.email, navigate));
-      dispatch(setSignupData({
-        ...formData,
+      await dispatch(signUp(
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.password,
+        formData.confirmPassword,
         role,
-      }));
+        navigate
+      ));
     } catch (error) {
       console.error("Signup error:", error);
       toast.error(error.message || "Signup failed");
@@ -73,7 +76,7 @@ function Signup() {
       <NavBar />
       <div className="flex-grow flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-xl rounded-lg overflow-hidden">
-          {/* Form Section - Order changes on mobile */}
+          {/* Form Section */}
           <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-12 order-2 md:order-1">
             <div className="text-center mb-6 md:mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Create Account</h2>
@@ -122,6 +125,7 @@ function Signup() {
                     onChange={handleOnChange}
                     placeholder="Enter first name"
                     className="w-full rounded-[0.5rem] bg-gray-100 p-2 sm:p-[12px] text-gray-800 text-sm sm:text-base"
+                    autoComplete="given-name"
                   />
                 </label>
                 <label className="w-full">
@@ -136,6 +140,7 @@ function Signup() {
                     onChange={handleOnChange}
                     placeholder="Enter last name"
                     className="w-full rounded-[0.5rem] bg-gray-100 p-2 sm:p-[12px] text-gray-800 text-sm sm:text-base"
+                    autoComplete="family-name"
                   />
                 </label>
               </div>
@@ -152,6 +157,7 @@ function Signup() {
                   onChange={handleOnChange}
                   placeholder="Enter email address"
                   className="w-full rounded-[0.5rem] bg-gray-100 p-2 sm:p-[12px] text-gray-800 text-sm sm:text-base"
+                  autoComplete="email"
                 />
               </label>
               
@@ -216,7 +222,7 @@ function Signup() {
                   isLoading ? "opacity-75" : "hover:bg-yellow-600"
                 } transition-colors`}
               >
-                {isLoading ? "Sending OTP..." : "Create Account"}
+                {isLoading ? "Creating Account..." : "Create Account"}
               </button>
               
               <div className="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-gray-600">
@@ -231,7 +237,7 @@ function Signup() {
             </form>
           </div>
           
-          {/* Image Section - Order changes on mobile */}
+          {/* Image Section */}
           <div className="w-full md:w-1/2 bg-gray-100 order-1 md:order-2">
             <img
               src={hotelImage}

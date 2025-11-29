@@ -5,45 +5,12 @@ import { apiConnector } from "../apiConnector"
 import { endpoints } from "../apis"
 import { getUserDetails } from "./profileAPI"
 
-const { SENDOTP_API, SIGNUP_API, LOGIN_API, RESETPASSTOKEN_API, RESETPASSWORD_API } = endpoints
+const { SIGNUP_API, LOGIN_API, RESETPASSTOKEN_API, RESETPASSWORD_API } = endpoints
 
 // Export USER_ROLE for backward compatibility
 export { USER_ROLE, USER_ROLES } from "../../utils/constants"
 
-export function sendOtp(email, navigate) {
-  return async (dispatch) => {
-    const toastId = toast.loading("Sending OTP...")
-    dispatch(setLoading(true))
-    try {
-      const response = await apiConnector("POST", SENDOTP_API, {
-        email,
-      })
-      console.log("✅ SENDOTP API RESPONSE:", response)
-
-      if (!response.data.success) {
-        throw new Error(response.data.message)
-      }
-
-      toast.success("OTP Sent Successfully! Check your email.")
-      navigate("/verify-email")
-    } catch (error) {
-      console.log("❌ SENDOTP API ERROR:", error)
-      
-      let errorMessage = "Could Not Send OTP"
-      if (error.response?.data?.message) {
-        errorMessage = error.response.data.message
-      } else if (error.message) {
-        errorMessage = error.message
-      }
-      
-      toast.error(errorMessage)
-    } finally {
-      dispatch(setLoading(false))
-      toast.dismiss(toastId)
-    }
-  }
-}
-export function signUp(firstName, lastName, email, password, confirmPassword, role, otp, navigate) {
+export function signUp(firstName, lastName, email, password, confirmPassword, role, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
@@ -55,7 +22,6 @@ export function signUp(firstName, lastName, email, password, confirmPassword, ro
         password,
         confirmPassword,
         role,
-        otp,
       })
 
       console.log("SIGNUP API RESPONSE............", response)

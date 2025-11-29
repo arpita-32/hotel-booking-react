@@ -9,7 +9,6 @@ import HomePage from "./pages/HomePage"
 import Login from "./pages/Login"
 import Rooms from "./pages/Rooms"
 import Signup from "./pages/Signup"
-import VerifyEmail from "./pages/VerifyEmail"
 import Settings from "./components/core/Dashboard/Settings"
 import AddRoomForm from "./components/core/Dashboard/admin/AddRoomForm"
 import AllRooms from "./components/core/Dashboard/admin/AllRooms"
@@ -57,11 +56,7 @@ const App = () => {
                 <UpdatePassword />
               </OpenRoute>
             } />
-            <Route path="/verify-email" element={
-              <OpenRoute>
-                <VerifyEmail />
-              </OpenRoute>
-            } />
+            
 
             {/* Admin Dashboard */}
             <Route path="/admin/dashboard" element={

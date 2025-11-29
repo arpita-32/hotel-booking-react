@@ -1,86 +1,157 @@
 const bcrypt = require("bcryptjs")
 const User = require("../models/User")
-const Profile = require("../models/Profile") // Add this import
-const OTP = require("../models/OTP")
+const Profile = require("../models/Profile")
 const jwt = require("jsonwebtoken")
-const otpGenerator = require("otp-generator")
 const mailSender = require("../utils/mailSender")
 const { passwordUpdated } = require("../mail/templates/passwordUpdate")
 
 exports.signup = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, confirmPassword, role, otp } = req.body
+    console.log("=== 🚀 SIGNUP REQUEST STARTED ===");
+    console.log("📨 FULL REQUEST BODY:", JSON.stringify(req.body, null, 2));
+    console.log("📨 Headers:", req.headers['content-type']);
+    
+    // Destructure with defaults to avoid undefined errors
+    const { 
+      firstName = '', 
+      lastName = '', 
+      email = '', 
+      password = '', 
+      confirmPassword = '', 
+      role = 'Customer' 
+    } = req.body;
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
+    // Log each field individually
+    console.log("🔍 FIELD ANALYSIS:");
+    console.log(`firstName: "${firstName}" [type: ${typeof firstName}, length: ${firstName.length}]`);
+    console.log(`lastName: "${lastName}" [type: ${typeof lastName}, length: ${lastName.length}]`);
+    console.log(`email: "${email}" [type: ${typeof email}, length: ${email.length}]`);
+    console.log(`password: "${password ? '***' : ''}" [type: ${typeof password}, length: ${password.length}]`);
+    console.log(`confirmPassword: "${confirmPassword ? '***' : ''}" [type: ${typeof confirmPassword}, length: ${confirmPassword.length}]`);
+    console.log(`role: "${role}" [type: ${typeof role}]`);
+
+    // Check for empty strings after trimming
+    const trimmedFirstName = firstName.toString().trim();
+    const trimmedLastName = lastName.toString().trim();
+    const trimmedEmail = email.toString().trim();
+    const trimmedPassword = password.toString().trim();
+    const trimmedConfirmPassword = confirmPassword.toString().trim();
+
+    console.log("✂️  TRIMMED FIELD ANALYSIS:");
+    console.log(`firstName: "${trimmedFirstName}" [length: ${trimmedFirstName.length}]`);
+    console.log(`lastName: "${trimmedLastName}" [length: ${trimmedLastName.length}]`);
+    console.log(`email: "${trimmedEmail}" [length: ${trimmedEmail.length}]`);
+    console.log(`password: "${trimmedPassword ? '***' : ''}" [length: ${trimmedPassword.length}]`);
+    console.log(`confirmPassword: "${trimmedConfirmPassword ? '***' : ''}" [length: ${trimmedConfirmPassword.length}]`);
+
+    // Validation checks
+    if (!trimmedFirstName) {
+      console.log("❌ VALIDATION FAILED: First name is empty");
       return res.status(403).json({
         success: false,
-        message: "All fields are required",
-      })
+        message: "First name is required",
+      });
+    }
+    
+    if (!trimmedLastName) {
+      console.log("❌ VALIDATION FAILED: Last name is empty");
+      return res.status(403).json({
+        success: false,
+        message: "Last name is required",
+      });
+    }
+    
+    if (!trimmedEmail) {
+      console.log("❌ VALIDATION FAILED: Email is empty");
+      return res.status(403).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+    
+    if (!trimmedPassword) {
+      console.log("❌ VALIDATION FAILED: Password is empty");
+      return res.status(403).json({
+        success: false,
+        message: "Password is required",
+      });
+    }
+    
+    if (!trimmedConfirmPassword) {
+      console.log("❌ VALIDATION FAILED: Confirm password is empty");
+      return res.status(403).json({
+        success: false,
+        message: "Confirm password is required",
+      });
     }
 
-    if (password !== confirmPassword) {
+    console.log("✅ ALL FIELDS VALIDATED");
+
+    if (trimmedPassword !== trimmedConfirmPassword) {
+      console.log("❌ VALIDATION FAILED: Passwords don't match");
       return res.status(400).json({
         success: false,
         message: "Password and Confirm Password do not match",
-      })
+      });
     }
 
     // Check existing user
-    const existingUser = await User.findOne({ email })
+    console.log("🔍 Checking for existing user with email:", trimmedEmail);
+    const existingUser = await User.findOne({ email: trimmedEmail });
     if (existingUser) {
+      console.log("❌ USER ALREADY EXISTS:", trimmedEmail);
       return res.status(400).json({
         success: false,
         message: "User already exists",
-      })
+      });
     }
 
-    // Verify OTP
-    const recentOtp = await OTP.findOne({ email, otp }).sort({ createdAt: -1 })
-    if (!recentOtp) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid OTP",
-      })
-    }
+    console.log("✅ No existing user found");
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10)
+    console.log("🔐 Hashing password...");
+    const hashedPassword = await bcrypt.hash(trimmedPassword, 10);
 
-    // Create Profile first
+    // Create Profile
+    console.log("👤 Creating profile...");
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
       about: null,
       contactNumber: null,
-    })
+    });
 
-    // Create user with profile reference
+    // Create user
+    console.log("👤 Creating user...");
     const user = await User.create({
-      firstName,
-      lastName,
-      email,
+      firstName: trimmedFirstName,
+      lastName: trimmedLastName,
+      email: trimmedEmail,
       password: hashedPassword,
-      role,
-      additionalDetails: profileDetails._id, // Link the profile
-    })
+      role: role,
+      additionalDetails: profileDetails._id,
+    });
 
-    user.password = undefined
+    user.password = undefined;
 
+    console.log("✅ USER CREATED SUCCESSFULLY:", user.email);
+    console.log("=== 🎉 SIGNUP COMPLETED SUCCESSFULLY ===");
+    
     return res.status(201).json({
       success: true,
       user,
       message: "User registered successfully",
-    })
+    });
   } catch (error) {
-    console.error("Error in signup:", error)
+    console.error("❌ ERROR IN SIGNUP:", error);
+    console.error("❌ ERROR STACK:", error.stack);
     return res.status(500).json({
       success: false,
       message: "User registration failed",
       error: error.message,
-    })
+    });
   }
 }
-
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -141,83 +212,6 @@ exports.login = async (req, res) => {
     })
   }
 }
-
-exports.sendotp = async (req, res) => {
-  try {
-    console.log("📨 Send OTP request received:", req.body);
-
-    if (!req.body || !req.body.email) {
-      return res.status(400).json({
-        success: false,
-        message: "Email is required in the request body",
-      });
-    }
-
-    const { email } = req.body;
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide a valid email address",
-      });
-    }
-
-    // Check if user already exists
-    const checkUserPresent = await User.findOne({ email });
-    if (checkUserPresent) {
-      return res.status(400).json({
-        success: false,
-        message: "User is already registered",
-      });
-    }
-
-    // Generate OTP
-    let otp = otpGenerator.generate(6, {
-      upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false,
-    });
-
-    console.log(`🔑 Generated OTP: ${otp} for email: ${email}`);
-
-    // Ensure OTP is unique
-    let result = await OTP.findOne({ otp });
-    while (result) {
-      otp = otpGenerator.generate(6, {
-        upperCaseAlphabets: false,
-      });
-      result = await OTP.findOne({ otp });
-    }
-
-    // Create OTP in database
-    const otpPayload = { email, otp };
-    const otpBody = await OTP.create(otpPayload);
-
-    console.log(`✅ OTP saved to database for: ${email}`);
-    console.log(`📝 OTP document ID: ${otpBody._id}`);
-
-    // Return success response immediately
-    // Email will be sent via the post-save hook
-    return res.status(200).json({
-      success: true,
-      message: "OTP sent successfully",
-      otp: process.env.NODE_ENV === 'development' ? otp : undefined, // Return OTP only in development for testing
-    });
-
-  } catch (error) {
-    console.error("❌ Error in sendotp controller:");
-    console.error("Error message:", error.message);
-    console.error("Stack trace:", error.stack);
-    
-    return res.status(500).json({
-      success: false,
-      message: "Failed to send OTP",
-      error: error.message,
-    });
-  }
-};
 
 exports.changePassword = async (req, res) => {
   try {

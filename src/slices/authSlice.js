@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit"
 import { getTokenFromStorage, getUserFromStorage, isTokenExpired, clearAuthStorage } from "../utils/authUtils"
 
 const initialState = {
-  signupData: null,
   loading: false,
   token: getTokenFromStorage(),
   user: getUserFromStorage(),
@@ -13,9 +12,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setSignupData(state, action) {
-      state.signupData = action.payload
-    },
     setLoading(state, action) {
       state.loading = action.payload
     },
@@ -33,7 +29,6 @@ const authSlice = createSlice({
       state.user = user
       
       if (user) {
-        // Ensure additionalDetails exists
         const userWithDetails = {
           ...user,
           additionalDetails: user.additionalDetails || {}
@@ -46,7 +41,6 @@ const authSlice = createSlice({
     logout(state) {
       state.token = null
       state.user = null
-      state.signupData = null
       state.isAuthenticated = false
       clearAuthStorage()
     },
@@ -64,7 +58,6 @@ const authSlice = createSlice({
 })
 
 export const { 
-  setSignupData, 
   setLoading, 
   setToken, 
   setUser, 
