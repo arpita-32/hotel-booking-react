@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllRooms } from '../services/operations/roomAPI';
-import { FiCalendar, FiChevronRight, FiStar, FiUser, FiX } from 'react-icons/fi';
+import { FiCalendar, FiChevronRight, FiStar, FiUser, FiX, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navbar from '../components/common/NavBar';
@@ -15,6 +15,7 @@ const Rooms = () => {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [bookingForm, setBookingForm] = useState({
     checkIn: '',
     checkOut: '',
@@ -30,8 +31,8 @@ const Rooms = () => {
   const allRooms = backendRooms?.map(room => ({
     id: room._id,
     name: `${room.roomType} Room ${room.roomNumber}`,
-    price: room.price, // Use the actual price from database (no multiplication)
-    size: `${Math.floor(Math.random() * 200) + 300} sq ft`, // Can be replaced with actual size if available
+    price: room.price,
+    size: `${Math.floor(Math.random() * 200) + 300} sq ft`,
     beds: room.capacity <= 2 ? '1 King Bed' : `${room.capacity} Queen Beds`,
     description: room.description || 'Comfortable room with premium amenities',
     longDescription: room.description || 'Our comfortable room features premium amenities and quality service.',
@@ -42,12 +43,21 @@ const Rooms = () => {
     capacity: room.capacity,
     roomType: room.roomType,
     images: room.images || [],
-    isAvailable: room.isAvailable // Include availability status
+    isAvailable: room.isAvailable
   })) || [];
 
-  const filteredRooms = activeFilter === 'all' 
-    ? allRooms 
-    : allRooms.filter(room => room.type === activeFilter);
+  // Filter rooms based on active filter and search query
+  const filteredRooms = allRooms.filter(room => {
+    const matchesFilter = activeFilter === 'all' || room.type === activeFilter;
+    const matchesSearch = room.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         room.roomType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         room.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         room.amenities.some(amenity => 
+                           amenity.toLowerCase().includes(searchQuery.toLowerCase())
+                         );
+    
+    return matchesFilter && matchesSearch;
+  });
 
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
@@ -73,6 +83,14 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
     setShowBookingModal(false);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -95,11 +113,11 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
   }
 
   return (
-    <div className="bg-black text-yellow-50  min-h-screen flex flex-col">
+    <div className="bg-black text-yellow-50 min-h-screen flex flex-col">
       <Navbar />
       
       {/* Hero Section */}
-        <div className="bg-gray-900 w-full py-12 sm:py-16">
+      <div className="bg-gray-900 w-full py-12 sm:py-16">
         <div className="mx-auto pt-22 max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-yellow-50">
             Our <HighlightText text="Rooms" /> & Suites
@@ -110,39 +128,71 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
         </div>
       </div>
 
-      {/* Room Filter Tabs */}
-      <div className="flex justify-center my-6 sm:my-8 px-4">
-        <div className="inline-flex rounded-md shadow-sm flex-wrap justify-center gap-2 sm:gap-0">
-          <button
-            onClick={() => setActiveFilter('all')}
-            className={`px-4 py-2 sm:rounded-l-lg font-medium text-sm sm:text-base ${
-              activeFilter === 'all' 
-                ? 'bg-yellow-500 text-black' 
-                : 'bg-gray-800 text-yellow-50'
-            }`}
-          >
-            All Rooms
-          </button>
-          <button
-            onClick={() => setActiveFilter('room')}
-            className={`px-4 py-2 font-medium text-sm sm:text-base ${
-              activeFilter === 'room' 
-                ? 'bg-yellow-500 text-black' 
-                : 'bg-gray-800 text-yellow-50'
-            }`}
-          >
-            Standard Rooms
-          </button>
-          <button
-            onClick={() => setActiveFilter('suite')}
-            className={`px-4 py-2 sm:rounded-r-lg font-medium text-sm sm:text-base ${
-              activeFilter === 'suite' 
-                ? 'bg-yellow-500 text-black' 
-                : 'bg-gray-800 text-yellow-50'
-            }`}
-          >
-            Suites
-          </button>
+      {/* Search Bar and Filter Tabs */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+        {/* Search Bar */}
+        <div className="mb-6 max-w-2xl mx-auto">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FiSearch className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search rooms by name, type, amenities..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="block w-full pl-10 pr-12 py-3 border border-gray-600 rounded-lg bg-gray-800 text-yellow-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm sm:text-base"
+            />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                <FiX className="h-5 w-5 text-gray-400 hover:text-gray-300" />
+              </button>
+            )}
+          </div>
+          {searchQuery && (
+            <div className="text-center mt-2 text-sm text-gray-400">
+              Found {filteredRooms.length} room{filteredRooms.length !== 1 ? 's' : ''} matching "{searchQuery}"
+            </div>
+          )}
+        </div>
+
+        {/* Room Filter Tabs */}
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex rounded-md shadow-sm flex-wrap justify-center gap-2 sm:gap-0">
+            <button
+              onClick={() => setActiveFilter('all')}
+              className={`px-4 py-2 sm:rounded-l-lg font-medium text-sm sm:text-base ${
+                activeFilter === 'all' 
+                  ? 'bg-yellow-500 text-black' 
+                  : 'bg-gray-800 text-yellow-50 hover:bg-gray-700'
+              }`}
+            >
+              All Rooms
+            </button>
+            <button
+              onClick={() => setActiveFilter('room')}
+              className={`px-4 py-2 font-medium text-sm sm:text-base ${
+                activeFilter === 'room' 
+                  ? 'bg-yellow-500 text-black' 
+                  : 'bg-gray-800 text-yellow-50 hover:bg-gray-700'
+              }`}
+            >
+              Standard Rooms
+            </button>
+            <button
+              onClick={() => setActiveFilter('suite')}
+              className={`px-4 py-2 sm:rounded-r-lg font-medium text-sm sm:text-base ${
+                activeFilter === 'suite' 
+                  ? 'bg-yellow-500 text-black' 
+                  : 'bg-gray-800 text-yellow-50 hover:bg-gray-700'
+              }`}
+            >
+              Suites
+            </button>
+          </div>
         </div>
       </div>
 
@@ -150,7 +200,26 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {filteredRooms.length === 0 ? (
           <div className="text-center py-12 text-gray-300">
-            No rooms found matching your criteria
+            <FiSearch className="mx-auto h-12 w-12 text-gray-500 mb-4" />
+            <h3 className="text-lg font-medium text-gray-400 mb-2">
+              No rooms found
+            </h3>
+            <p className="text-gray-500 max-w-md mx-auto">
+              {searchQuery || activeFilter !== 'all' 
+                ? `No rooms match your search criteria. Try adjusting your search or filters.`
+                : 'No rooms available at the moment.'}
+            </p>
+            {(searchQuery || activeFilter !== 'all') && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setActiveFilter('all');
+                }}
+                className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
+              >
+                Clear all filters
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -182,18 +251,18 @@ Guests: ${bookingForm.adults} adults, ${bookingForm.children} children`);
                   </div>
                   <p className="text-gray-400 text-sm mb-4 flex-grow">{room.description}</p>
                   <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-black mb-2">Amenities:</h4>
+                    <h4 className="text-sm font-semibold text-yellow-50 mb-2">Amenities:</h4>
                     <div className="flex flex-wrap gap-2">
                       {room.amenities.slice(0, 4).map((amenity, index) => (
                         <span 
                           key={index} 
-                          className="bg-gray-800 px-2 py-1 rounded-full text-xs text-black"
+                          className="bg-gray-700 px-2 py-1 rounded-full text-xs text-yellow-50"
                         >
                           {amenity}
                         </span>
                       ))}
                       {room.amenities.length > 4 && (
-                        <span className="bg-gray-800 px-2 py-1 rounded-full text-xs text-black">
+                        <span className="bg-gray-700 px-2 py-1 rounded-full text-xs text-yellow-50">
                           +{room.amenities.length - 4} more
                         </span>
                       )}
