@@ -12,9 +12,10 @@
     "dev": "concurrently -n \"FRONTEND,BACKEND\" -c \"bgBlue.bold,bgYellow.bold\" \"npm run dev:frontend\" \"npm run dev:backend\""
   },
   "dependencies": {
+    "@getbrevo/brevo": "^3.0.1",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.8",
-    "axios": "^1.10.0", 
+    "axios": "^1.10.0",
     "express": "^5.1.0",
     "express-fileupload": "^1.5.1",
     "framer-motion": "^12.16.0",
